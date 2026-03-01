@@ -1,31 +1,48 @@
 const STORAGE_KEY = 'hopie_api_key';
 
-function setStoredKey(val) {
-  if (val) {
-    localStorage.setItem(STORAGE_KEY, val);
-  } else {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
 // Try-it form API key field
 const formKeyInput = document.getElementById('try-it-api-key');
 const formKeyClear = document.getElementById('try-it-api-key-clear');
+const saveCheckbox = document.getElementById('try-it-save-key');
 
 if (formKeyInput) {
-  // Prefill from localStorage
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) formKeyInput.value = saved;
 
+  // Reflect localStorage state on load
+  if (saved) {
+    formKeyInput.value = saved;
+    if (saveCheckbox) saveCheckbox.checked = true;
+  }
+
+  // Typing: save only if checkbox is checked
   formKeyInput.addEventListener('input', () => {
-    setStoredKey(formKeyInput.value.trim());
+    if (saveCheckbox && saveCheckbox.checked) {
+      const val = formKeyInput.value.trim();
+      if (val) {
+        localStorage.setItem(STORAGE_KEY, val);
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
+  });
+}
+
+if (saveCheckbox) {
+  saveCheckbox.addEventListener('change', () => {
+    if (saveCheckbox.checked) {
+      const val = formKeyInput && formKeyInput.value.trim();
+      if (val) localStorage.setItem(STORAGE_KEY, val);
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
   });
 }
 
 if (formKeyClear) {
   formKeyClear.addEventListener('click', () => {
     if (formKeyInput) formKeyInput.value = '';
-    setStoredKey('');
+    if (saveCheckbox) saveCheckbox.checked = false;
+    localStorage.removeItem(STORAGE_KEY);
   });
 }
 
