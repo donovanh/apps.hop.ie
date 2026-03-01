@@ -4,6 +4,14 @@ const keyStatus = document.getElementById('api-key-status');
 
 const STORAGE_KEY = 'hopie_api_key';
 
+function setStoredKey(val) {
+  if (val) {
+    localStorage.setItem(STORAGE_KEY, val);
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+}
+
 if (keyInput) {
   // Restore saved key
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -14,18 +22,48 @@ if (keyInput) {
 
   keyInput.addEventListener('input', () => {
     const val = keyInput.value.trim();
-    if (val) {
-      localStorage.setItem(STORAGE_KEY, val);
-      keyStatus.textContent = 'Saved';
-    } else {
-      localStorage.removeItem(STORAGE_KEY);
-      keyStatus.textContent = '';
+    setStoredKey(val);
+    keyStatus.textContent = val ? 'Saved' : '';
+    // Sync to try-it form field if present
+    const formKey = document.getElementById('try-it-api-key');
+    if (formKey) formKey.value = val;
+  });
+}
+
+// Try-it form API key field
+const formKeyInput = document.getElementById('try-it-api-key');
+const formKeyClear = document.getElementById('try-it-api-key-clear');
+
+if (formKeyInput) {
+  // Prefill from localStorage
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) formKeyInput.value = saved;
+
+  formKeyInput.addEventListener('input', () => {
+    const val = formKeyInput.value.trim();
+    setStoredKey(val);
+    // Sync to header input if present
+    if (keyInput) {
+      keyInput.value = val;
+      if (keyStatus) keyStatus.textContent = val ? 'Saved' : '';
     }
   });
 }
 
+if (formKeyClear) {
+  formKeyClear.addEventListener('click', () => {
+    if (formKeyInput) formKeyInput.value = '';
+    if (keyInput) keyInput.value = '';
+    if (keyStatus) keyStatus.textContent = '';
+    setStoredKey('');
+  });
+}
+
 function getApiKey() {
-  return (keyInput && keyInput.value.trim()) || localStorage.getItem(STORAGE_KEY) || '';
+  return (formKeyInput && formKeyInput.value.trim())
+    || (keyInput && keyInput.value.trim())
+    || localStorage.getItem(STORAGE_KEY)
+    || '';
 }
 
 // Try-it form
@@ -41,13 +79,14 @@ if (form) {
 
     const apiKey = getApiKey();
     if (!apiKey) {
-      alert('Paste your API key in the header first.');
+      alert('Paste your API key above first.');
       return;
     }
 
     const endpoint = form.dataset.endpoint;
     const body = {};
     new FormData(form).forEach((val, key) => { body[key] = val; });
+    // api key field is not a named form field — won't appear in body
 
     btn.disabled = true;
     btn.textContent = 'Sending…';
@@ -70,7 +109,6 @@ if (form) {
       bodyEl.textContent = JSON.stringify(data, null, 2);
       responseBox.style.display = 'block';
 
-      // Show remaining credits if header present
       const remaining = res.headers.get('X-Credits-Remaining');
       creditsEl.textContent = remaining ? `${remaining} credits remaining` : '';
     } catch (err) {
