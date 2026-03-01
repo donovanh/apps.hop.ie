@@ -39,14 +39,14 @@
     <a href="/services/email-validator/" class="service-card">
       <div>
         <h3>Email Validator</h3>
-        <p>Validate format, DNS records, and MX routing. 3 credits per call.</p>
+        <p>Validate format, DNS records, and MX routing. 1–5 credits per call.</p>
       </div>
       <span style="color:var(--accent)">→</span>
     </a>
   </li>
 </ul>
 <h2>Quick start</h2>
-<pre><code class="language-bash"># 1. Buy credits (returns a Lightning invoice)
+<pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your accountId
 curl -X POST https://api.hop.ie/api/v1/credits \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;quantity&quot;: 100}'
@@ -55,9 +55,9 @@ curl -X POST https://api.hop.ie/api/v1/credits \
 curl -X POST https://api.hop.ie/api/v1/credits/verify \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;invoiceId&quot;: &quot;&lt;id&gt;&quot;, &quot;quantity&quot;: 100}'
-# → returns your API key
+# → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;accountId&quot;: &quot;...&quot;, &quot;credits&quot;: 100, &quot;balance&quot;: { ... } }
 
-# 3. Use a service
+# 3. Use a service with your API key
 curl -X POST https://api.hop.ie/email-validator/validate \
   -H &quot;Authorization: Bearer &lt;apiKey&gt;&quot; \
   -H &quot;Content-Type: application/json&quot; \
