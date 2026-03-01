@@ -374,6 +374,7 @@ pre code { background: none; padding: 0; }
 }
 
 .qr-wrap canvas {
+  display: block;
   border: 4px solid #fff;
   border-radius: 8px;
 }

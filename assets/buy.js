@@ -185,10 +185,16 @@ btnGenerate.addEventListener('click', async () => {
 
     showInvoice();
 
-    // Render QR code after section is visible (best-effort — CDN may not be available)
+    // Render QR code after section is visible (best-effort — library may not be available)
     if (typeof QRCode !== 'undefined') {
-      QRCode.toCanvas(qrCanvas, invoiceStr, { width: 240, margin: 2, color: { dark: '#000000', light: '#ffffff' } }, (err) => {
-        if (err) console.error('QR render error:', err);
+      qrCanvas.innerHTML = '';
+      new QRCode(qrCanvas, {
+        text: invoiceStr,
+        width: 240,
+        height: 240,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M,
       });
     }
   } catch (err) {
