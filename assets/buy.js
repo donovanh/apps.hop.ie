@@ -190,14 +190,14 @@ btnGenerate.addEventListener('click', async () => {
     const invoiceStr = data.invoice;
     invoiceInput.value = invoiceStr;
 
-    // Render QR code (best-effort — CDN may not be available)
+    showInvoice();
+
+    // Render QR code after section is visible (best-effort — CDN may not be available)
     if (typeof QRCode !== 'undefined') {
       QRCode.toCanvas(qrCanvas, invoiceStr, { width: 240, margin: 2 }, (err) => {
         if (err) console.error('QR render error:', err);
       });
     }
-
-    showInvoice();
   } catch (err) {
     showResponse(responseAmount, statusAmount, bodyAmount, 'Network error', { error: err.message });
     announce('Network error. Could not reach the server.');
