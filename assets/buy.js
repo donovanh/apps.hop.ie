@@ -190,10 +190,12 @@ btnGenerate.addEventListener('click', async () => {
     const invoiceStr = data.invoice;
     invoiceInput.value = invoiceStr;
 
-    // Render QR code
-    QRCode.toCanvas(qrCanvas, invoiceStr, { width: 240, margin: 2 }, (err) => {
-      if (err) console.error('QR render error:', err);
-    });
+    // Render QR code (best-effort — CDN may not be available)
+    if (typeof QRCode !== 'undefined') {
+      QRCode.toCanvas(qrCanvas, invoiceStr, { width: 240, margin: 2 }, (err) => {
+        if (err) console.error('QR render error:', err);
+      });
+    }
 
     showInvoice();
   } catch (err) {
