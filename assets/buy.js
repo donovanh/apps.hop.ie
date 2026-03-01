@@ -187,7 +187,7 @@ btnGenerate.addEventListener('click', async () => {
 
     // Render QR code after section is visible (best-effort — CDN may not be available)
     if (typeof QRCode !== 'undefined') {
-      QRCode.toCanvas(qrCanvas, invoiceStr, { width: 240, margin: 2 }, (err) => {
+      QRCode.toCanvas(qrCanvas, invoiceStr, { width: 240, margin: 2, color: { dark: '#000000', light: '#ffffff' } }, (err) => {
         if (err) console.error('QR render error:', err);
       });
     }
