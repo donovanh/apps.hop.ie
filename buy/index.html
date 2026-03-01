@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy Credits | hop.ie API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="site-logo">hop.ie API</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/services/email-validator/">Email Validator</a>
+    </nav>
+    <div class="api-key-wrap">
+      <input
+        type="password"
+        id="global-api-key"
+        placeholder="Paste API key…"
+        autocomplete="off"
+      />
+      <span id="api-key-status"></span>
+    </div>
+  </header>
+  <main class="site-main">
+    
+<div aria-live="polite" aria-atomic="true" class="sr-only" id="buy-live-region"></div>
+
+<article class="buy-page">
+
+  <header class="service-header">
+    <h1>Buy credits</h1>
+    <p class="service-desc">Pay once with Bitcoin Lightning. Receive an API key instantly.</p>
+  </header>
+
+  <nav class="buy-steps" aria-label="Purchase progress">
+    <div class="buy-step is-active" id="step-1">
+      <span class="buy-step-num" aria-hidden="true">1</span>
+      <span class="buy-step-label">Amount</span>
+    </div>
+    <span class="buy-step-arrow" aria-hidden="true">→</span>
+    <div class="buy-step" id="step-2">
+      <span class="buy-step-num" aria-hidden="true">2</span>
+      <span class="buy-step-label">Invoice</span>
+    </div>
+    <span class="buy-step-arrow" aria-hidden="true">→</span>
+    <div class="buy-step" id="step-3">
+      <span class="buy-step-num" aria-hidden="true">3</span>
+      <span class="buy-step-label">Confirm</span>
+    </div>
+  </nav>
+
+  
+  <section class="card buy-state is-active" id="state-amount">
+    <h2 tabindex="-1">How many credits?</h2>
+    <p class="buy-hint">1 credit = 1 sat. Minimum 50.</p>
+
+    <div class="field">
+      <label for="buy-quantity">Amount (sats)</label>
+      <input
+        type="number"
+        id="buy-quantity"
+        value="100"
+        min="50"
+        step="1"
+        placeholder="100"
+        aria-describedby="quantity-error"
+      />
+      <span class="field-error" id="quantity-error" role="alert"></span>
+    </div>
+
+    <button class="btn" id="btn-generate">Generate invoice ⚡</button>
+
+    <div class="try-it-response" id="response-amount">
+      <div class="response-meta">
+        <span class="response-status" id="status-amount"></span>
+      </div>
+      <pre><code id="body-amount"></code></pre>
+    </div>
+  </section>
+
+  
+  <section class="card buy-state" id="state-invoice">
+    <h2 tabindex="-1">Pay this invoice</h2>
+    <p class="buy-hint">Scan with your Lightning wallet or copy the invoice string.</p>
+
+    <div class="qr-wrap">
+      <canvas id="qr-canvas"></canvas>
+    </div>
+
+    <div class="field invoice-field">
+      <label for="invoice-string">Invoice</label>
+      <div class="copy-wrap">
+        <input type="text" id="invoice-string" readonly aria-label="Lightning invoice string" />
+        <button type="button" class="btn-copy" id="btn-copy-invoice">Copy</button>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-paid">I've paid</button>
+      <button type="button" class="btn btn-secondary" id="btn-back">← Change amount</button>
+    </div>
+
+    <div class="try-it-response" id="response-invoice">
+      <div class="response-meta">
+        <span class="response-status" id="status-invoice"></span>
+      </div>
+      <pre><code id="body-invoice"></code></pre>
+    </div>
+  </section>
+
+  
+  <section class="card card--success buy-state" id="state-success">
+    <h2 tabindex="-1">✓ Payment confirmed</h2>
+
+    <div class="field">
+      <label for="api-key-out">Your API key</label>
+      <div class="copy-wrap">
+        <input type="text" id="api-key-out" readonly aria-label="Your API key" />
+        <button type="button" class="btn-copy" id="btn-copy-key">Copy</button>
+      </div>
+    </div>
+
+    <div class="save-key-wrap">
+      <button type="button" class="btn btn-secondary" id="btn-save-key">Save key to this browser</button>
+      <p class="save-key-hint">
+        Saves to <code>localStorage</code> so the Try it forms on service pages are pre-filled.
+        Nothing is sent anywhere. You can clear it any time using the API key field in the header.
+      </p>
+      <span class="save-key-status" id="save-key-status" aria-live="polite"></span>
+    </div>
+
+    <div class="try-it-response" id="response-success">
+      <div class="response-meta">
+        <span class="response-status" id="status-success"></span>
+      </div>
+      <pre><code id="body-success"></code></pre>
+    </div>
+
+    <div class="buy-next">
+      <p>Ready to use your credits:</p>
+      <a href="/services/email-validator/" class="btn">Try Email Validator →</a>
+    </div>
+  </section>
+
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script src="/assets/buy.js"></script>
+
+  </main>
+  <footer class="site-footer">
+    <p>hop.ie · Lightning-powered API services · <a href="https://api.hop.ie/health">API status</a></p>
+  </footer>
+  <script src="/assets/try-it.js"></script>
+</body>
+</html>
