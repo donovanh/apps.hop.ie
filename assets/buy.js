@@ -43,7 +43,6 @@ const bodySuccess     = document.getElementById('body-success');
 // ── Session state ────────────────────────────────────────────
 let currentInvoiceId = null;
 let currentQuantity  = null;
-let currentAccountId = null;
 
 // ── Announce to screen readers ───────────────────────────────
 function announce(msg) {
@@ -122,7 +121,6 @@ qtyInput.addEventListener('input', () => validateQuantity());
 btnBack.addEventListener('click', () => {
   currentInvoiceId = null;
   currentQuantity  = null;
-  currentAccountId = null;
   responseAmount.style.display = 'none';
   showAmount();
 });
@@ -179,7 +177,7 @@ btnGenerate.addEventListener('click', async () => {
     const data = await res.json();
     showResponse(responseAmount, statusAmount, bodyAmount, String(res.status), data);
 
-    if (!res.ok) {
+    if (res.status !== 402) {
       announce(`Error ${res.status}: ${data.error || 'Could not generate invoice.'}`);
       return;
     }
@@ -187,7 +185,6 @@ btnGenerate.addEventListener('click', async () => {
     // Store session state
     currentInvoiceId = data.invoiceId;
     currentQuantity  = quantity;
-    currentAccountId = data.accountId;
 
     // Populate invoice field
     const invoiceStr = data.invoice;
@@ -221,7 +218,7 @@ btnPaid.addEventListener('click', async () => {
     const res = await fetch(`${API_BASE}/credits/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity, accountId: currentAccountId }),
+      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
     });
 
     const data = await res.json();
