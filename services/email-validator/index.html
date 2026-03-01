@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Validator | hop.ie API</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="site-logo">hop.ie API</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/services/email-validator/">Email Validator</a>
+    </nav>
+    <div class="api-key-wrap">
+      <input
+        type="password"
+        id="global-api-key"
+        placeholder="Paste API key…"
+        autocomplete="off"
+      />
+      <span id="api-key-status"></span>
+    </div>
+  </header>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+    <h1>Email Validator</h1>
+    <p class="service-desc">Validate email addresses against format rules, DNS records, and MX routing.</p>
+    <div class="credit-badge">⚡ 3 credits per call</div>
+  </header>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.hop.ie/email-validator/validate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+Idempotency-Key: &lt;unique-uuid&gt;</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;tier&quot;: &quot;basic&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;valid&quot;: true,
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;tier&quot;: &quot;basic&quot;,
+  &quot;checks&quot;: {
+    &quot;format&quot;: true,
+    &quot;dns&quot;: false,
+    &quot;mx&quot;: false
+  }
+}
+</code></pre>
+  </section>
+
+  <section class="card">
+    <h2>Validation tiers</h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Checks</th>
+<th>Credits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>basic</code></td>
+<td>Email format (regex)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>Format + DNS lookup</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>full</code></td>
+<td>Format + DNS + MX records</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h2>Notes</h2>
+<ul>
+<li>The <code>Idempotency-Key</code> header is required — use a UUID per request</li>
+<li>Invalid format returns <code>valid: false</code> immediately without DNS lookup</li>
+<li>DNS and MX checks add ~100–500ms latency depending on the domain</li>
+</ul>
+
+  </section>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Enter your API key in the header above, then fill in the fields and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.hop.ie/email-validator/validate"
+  data-credits="3">
+
+  
+  <div class="field">
+    <label for="field-email">Email address</label>
+    
+      <input
+        type="email"
+        id="field-email"
+        name="email"
+        placeholder="test@example.com"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-tier">Validation tier</label>
+    
+      <select id="field-tier" name="tier">
+        
+          <option value="basic">basic</option>
+        
+          <option value="dns">dns</option>
+        
+          <option value="full">full</option>
+        
+      </select>
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>hop.ie · Lightning-powered API services · <a href="https://api.hop.ie/health">API status</a></p>
+  </footer>
+  <script src="/assets/try-it.js"></script>
+</body>
+</html>
