@@ -17,15 +17,7 @@
       <a href="/buy/">Buy credits</a>
       <a href="/services/email-validator/">Email Validator</a>
     </nav>
-    <div class="api-key-wrap">
-      <input
-        type="password"
-        id="global-api-key"
-        placeholder="Paste API key…"
-        autocomplete="off"
-      />
-      <span id="api-key-status"></span>
-    </div>
+
   </header>
   <main class="site-main">
     <article class="service-page">
@@ -146,11 +138,17 @@ Content-Type: application/json
     
       <select id="field-tier" name="tier">
         
-          <option value="basic">basic</option>
+          
+            <option value="basic">basic — Format check only (1 credit)</option>
+          
         
-          <option value="dns">dns</option>
+          
+            <option value="dns">dns — Format + DNS lookup (3 credits)</option>
+          
         
-          <option value="full">full</option>
+          
+            <option value="full">full — Format + DNS + MX records (5 credits)</option>
+          
         
       </select>
     

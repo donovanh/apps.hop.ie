@@ -1,7 +1,3 @@
-// Global API key — persisted to localStorage
-const keyInput = document.getElementById('global-api-key');
-const keyStatus = document.getElementById('api-key-status');
-
 const STORAGE_KEY = 'hopie_api_key';
 
 function setStoredKey(val) {
@@ -10,24 +6,6 @@ function setStoredKey(val) {
   } else {
     localStorage.removeItem(STORAGE_KEY);
   }
-}
-
-if (keyInput) {
-  // Restore saved key
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    keyInput.value = saved;
-    keyStatus.textContent = 'Key loaded';
-  }
-
-  keyInput.addEventListener('input', () => {
-    const val = keyInput.value.trim();
-    setStoredKey(val);
-    keyStatus.textContent = val ? 'Saved' : '';
-    // Sync to try-it form field if present
-    const formKey = document.getElementById('try-it-api-key');
-    if (formKey) formKey.value = val;
-  });
 }
 
 // Try-it form API key field
@@ -40,28 +18,19 @@ if (formKeyInput) {
   if (saved) formKeyInput.value = saved;
 
   formKeyInput.addEventListener('input', () => {
-    const val = formKeyInput.value.trim();
-    setStoredKey(val);
-    // Sync to header input if present
-    if (keyInput) {
-      keyInput.value = val;
-      if (keyStatus) keyStatus.textContent = val ? 'Saved' : '';
-    }
+    setStoredKey(formKeyInput.value.trim());
   });
 }
 
 if (formKeyClear) {
   formKeyClear.addEventListener('click', () => {
     if (formKeyInput) formKeyInput.value = '';
-    if (keyInput) keyInput.value = '';
-    if (keyStatus) keyStatus.textContent = '';
     setStoredKey('');
   });
 }
 
 function getApiKey() {
   return (formKeyInput && formKeyInput.value.trim())
-    || (keyInput && keyInput.value.trim())
     || localStorage.getItem(STORAGE_KEY)
     || '';
 }
@@ -86,7 +55,6 @@ if (form) {
     const endpoint = form.dataset.endpoint;
     const body = {};
     new FormData(form).forEach((val, key) => { body[key] = val; });
-    // api key field is not a named form field — won't appear in body
 
     btn.disabled = true;
     btn.textContent = 'Sending…';

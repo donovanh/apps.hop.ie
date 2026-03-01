@@ -143,13 +143,6 @@ btnSaveKey.addEventListener('click', () => {
   if (!key) return;
   try {
     localStorage.setItem(STORAGE_KEY, key);
-    // Sync to header input if present (same page session)
-    const headerInput = document.getElementById('global-api-key');
-    if (headerInput) {
-      headerInput.value = key;
-      const status = document.getElementById('api-key-status');
-      if (status) status.textContent = 'Saved';
-    }
     saveKeyStatus.textContent = 'Saved ✓';
     btnSaveKey.disabled = true;
     announce('API key saved to this browser.');
