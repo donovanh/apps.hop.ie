@@ -107,8 +107,8 @@ function validateQuantity() {
     qtyError.textContent = 'Please enter a number.';
     return null;
   }
-  if (val < 50) {
-    qtyError.textContent = 'Minimum 50 sats.';
+  if (val < 1000) {
+    qtyError.textContent = 'Minimum 1000 sats (required for Lightning routing).';
     return null;
   }
   qtyError.textContent = '';
