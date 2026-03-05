@@ -240,6 +240,13 @@ pre code { background: none; padding: 0; }
   margin: 0 0 16px;
 }
 
+.poll-status {
+  font-size: 13px;
+  color: var(--accent);
+  margin: 0 0 16px;
+  min-height: 1.4em;
+}
+
 /* Field inputs (buy page uses .field without .try-it wrapper) */
 .field label {
   display: block;

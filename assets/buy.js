@@ -43,6 +43,18 @@ const bodySuccess     = document.getElementById('body-success');
 // ── Session state ────────────────────────────────────────────
 let currentInvoiceId = null;
 let currentQuantity  = null;
+let pollTimer        = null;
+let pollCount        = 0;
+
+const POLL_INTERVAL_MS = 3000;
+const POLL_MAX         = 200; // 10 minutes
+
+// ── Poll status element ──────────────────────────────────────
+const pollStatus = document.getElementById('poll-status');
+
+function setPollStatus(msg) {
+  if (pollStatus) pollStatus.textContent = msg;
+}
 
 // ── Announce to screen readers ───────────────────────────────
 function announce(msg) {
@@ -81,6 +93,7 @@ function showInvoice() {
   setStep(step2, [step1]);
   focusHeading(stateInvoice);
   announce('Invoice generated. Scan the QR code or copy the invoice string to pay.');
+  startPolling();
 }
 
 function showSuccess() {
@@ -117,8 +130,64 @@ function validateQuantity() {
 
 qtyInput.addEventListener('input', () => validateQuantity());
 
+// ── Polling ───────────────────────────────────────────────────
+function stopPolling() {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+  pollCount = 0;
+  setPollStatus('');
+}
+
+async function verifyPayment() {
+  if (!currentInvoiceId || !currentQuantity) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/credits/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      stopPolling();
+      apiKeyOut.value = data.apiKey || '';
+      saveKeyStatus.textContent = '';
+      btnSaveKey.disabled = false;
+      showResponse(responseSuccess, statusSuccess, bodySuccess, String(res.status), data);
+      showSuccess();
+      return true;
+    }
+  } catch (_) {
+    // Network blip — keep polling silently
+  }
+  return false;
+}
+
+function startPolling() {
+  stopPolling();
+  pollCount = 0;
+  setPollStatus('Waiting for payment confirmation…');
+  btnPaid.textContent = 'I\'ve paid';
+  btnPaid.disabled = false;
+
+  pollTimer = setInterval(async () => {
+    pollCount++;
+    if (pollCount >= POLL_MAX) {
+      stopPolling();
+      setPollStatus('Taking longer than expected — click "I\'ve paid" to check manually.');
+      return;
+    }
+    await verifyPayment();
+  }, POLL_INTERVAL_MS);
+}
+
 // ── Back button ──────────────────────────────────────────────
 btnBack.addEventListener('click', () => {
+  stopPolling();
   currentInvoiceId = null;
   currentQuantity  = null;
   responseAmount.style.display = 'none';
@@ -207,52 +276,19 @@ btnGenerate.addEventListener('click', async () => {
   }
 });
 
-// ── Verify payment ───────────────────────────────────────────
+// ── Manual verify (I've paid button) ─────────────────────────
 btnPaid.addEventListener('click', async () => {
-  if (!currentInvoiceId || !currentQuantity) return;
-
   btnPaid.disabled = true;
   btnPaid.setAttribute('aria-busy', 'true');
   btnPaid.textContent = 'Checking…';
 
-  try {
-    const res = await fetch(`${API_BASE}/credits/verify`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
-    });
+  const success = await verifyPayment();
 
-    const data = await res.json();
-
-    if (res.status === 402) {
-      // Not yet paid — show response, re-enable as "Check again"
-      showResponse(responseInvoice, statusInvoice, bodyInvoice, String(res.status), data);
-      btnPaid.textContent = 'Check again';
-      btnPaid.disabled = false;
-      btnPaid.removeAttribute('aria-busy');
-      announce('Payment not yet detected. Try again after paying.');
-      return;
-    }
-
-    if (!res.ok) {
-      showResponse(responseInvoice, statusInvoice, bodyInvoice, String(res.status), data);
-      btnPaid.textContent = 'I\'ve paid';
-      btnPaid.disabled = false;
-      btnPaid.removeAttribute('aria-busy');
-      return;
-    }
-
-    // Success — populate success state
-    apiKeyOut.value = data.apiKey || '';
-    saveKeyStatus.textContent = '';
-    btnSaveKey.disabled = false;
-    showResponse(responseSuccess, statusSuccess, bodySuccess, String(res.status), data);
-    showSuccess();
-  } catch (err) {
-    showResponse(responseInvoice, statusInvoice, bodyInvoice, 'Network error', { error: err.message });
-    announce('Network error. Could not reach the server.');
-    btnPaid.textContent = 'I\'ve paid';
+  if (!success) {
+    setPollStatus('Payment not yet detected — still checking automatically…');
+    btnPaid.textContent = 'Check again';
     btnPaid.disabled = false;
     btnPaid.removeAttribute('aria-busy');
+    announce('Payment not yet detected. Still checking automatically.');
   }
 });
