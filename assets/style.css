@@ -29,6 +29,41 @@ body {
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* ── Staging banner ── */
+.staging-banner {
+  align-items: center;
+  gap: 12px;
+  background: #5b21b6;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.staging-label {
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+.staging-input {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 13px;
+  padding: 3px 8px;
+}
+.staging-input::placeholder { color: rgba(255, 255, 255, 0.55); }
+.staging-input:focus { outline: 1px solid #fff; }
+.staging-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+}
+.staging-btn:hover { background: rgba(255, 255, 255, 0.35); }
+
 /* ── Header ── */
 .site-header {
   display: flex;

@@ -1,4 +1,4 @@
-const API_BASE = 'https://api.hop.ie/api/v1';
+const API_BASE = window.stagingApiBase || 'https://api.hop.ie/api/v1';
 // STORAGE_KEY is declared in try-it.js (loaded globally) as 'hopie_api_key'
 
 // ── State refs ──────────────────────────────────────────────
