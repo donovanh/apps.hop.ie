@@ -47,6 +47,41 @@ let currentQuantity  = null;
 // ── EventSource (SSE) ─────────────────────────────────────────
 let currentEventSource = null;
 
+let stagingPollTimer = null;
+
+function stopStagingPoller() {
+  if (stagingPollTimer) {
+    clearTimeout(stagingPollTimer);
+    stagingPollTimer = null;
+  }
+}
+
+async function startStagingPoller() {
+  stopStagingPoller();
+  let attempts = 0;
+  const maxAttempts = 20;
+
+  async function poll() {
+    if (attempts >= maxAttempts) return;
+    attempts++;
+    try {
+      const res = await fetch(`${API_BASE}/credits/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        showSuccess(data);
+        return;
+      }
+    } catch (_) { /* network blip, keep polling */ }
+    stagingPollTimer = setTimeout(poll, 1500);
+  }
+
+  stagingPollTimer = setTimeout(poll, 1500);
+}
+
 function stopEventSource() {
   if (currentEventSource) {
     currentEventSource.close();
@@ -110,7 +145,11 @@ function showInvoice() {
   setStep(step2, [step1]);
   focusHeading(stateInvoice);
   announce('Invoice generated. Scan the QR code or copy the invoice string to pay. Your account will be credited automatically.');
-  startEventSource(currentInvoiceId);
+  if (window.stagingApiBase) {
+    startStagingPoller();
+  } else {
+    startEventSource(currentInvoiceId);
+  }
 }
 
 function showSuccess(data) {
@@ -156,6 +195,7 @@ qtyInput.addEventListener('input', () => validateQuantity());
 // ── Back button ──────────────────────────────────────────────
 btnBack.addEventListener('click', () => {
   stopEventSource();
+  stopStagingPoller();
   currentInvoiceId = null;
   currentQuantity  = null;
   responseAmount.style.display = 'none';
