@@ -40,6 +40,14 @@
     return _fetch.call(this, resource, init);
   };
 
+  // Hash password before storing — plain text never touches localStorage or the network
+  async function hashPassword(password) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+    return Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
   // Banner: password prompt state
   function renderPrompt(el) {
     el.innerHTML = [
@@ -55,8 +63,10 @@
     function submit() {
       const val = input.value.trim();
       if (!val) return;
-      localStorage.setItem(STAGING_PWD_KEY, val);
-      renderActive(el);
+      hashPassword(val).then(hash => {
+        localStorage.setItem(STAGING_PWD_KEY, hash);
+        renderActive(el);
+      });
     }
 
     btn.onclick = submit;
