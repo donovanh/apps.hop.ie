@@ -1,5 +1,5 @@
 const API_BASE = 'https://api.hop.ie/api/v1';
-const STORAGE_KEY = 'hop_api_key';
+// STORAGE_KEY is declared in try-it.js (loaded globally) as 'hopie_api_key'
 
 // ── State refs ──────────────────────────────────────────────
 const stateAmount  = document.getElementById('state-amount');
