@@ -1,4 +1,5 @@
 const API_BASE = 'https://api.hop.ie/api/v1';
+const STORAGE_KEY = 'hop_api_key';
 
 // ── State refs ──────────────────────────────────────────────
 const stateAmount  = document.getElementById('state-amount');
@@ -43,6 +44,36 @@ const bodySuccess     = document.getElementById('body-success');
 let currentInvoiceId = null;
 let currentQuantity  = null;
 
+// ── EventSource (SSE) ─────────────────────────────────────────
+let currentEventSource = null;
+
+function stopEventSource() {
+  if (currentEventSource) {
+    currentEventSource.close();
+    currentEventSource = null;
+  }
+}
+
+function startEventSource(invoiceId) {
+  stopEventSource();
+
+  currentEventSource = new EventSource(`${API_BASE}/credits/events/${encodeURIComponent(invoiceId)}`);
+
+  currentEventSource.onmessage = (e) => {
+    let payload;
+    try { payload = JSON.parse(e.data); } catch { return; }
+
+    if (payload.status === 'paid') {
+      stopEventSource();
+      verifyPayment();
+    }
+  };
+
+  currentEventSource.onerror = () => {
+    stopEventSource();
+  };
+}
+
 // ── Announce to screen readers ───────────────────────────────
 function announce(msg) {
   if (!liveRegion) return;
@@ -79,6 +110,7 @@ function showInvoice() {
   setStep(step2, [step1]);
   focusHeading(stateInvoice);
   announce('Invoice generated. Scan the QR code or copy the invoice string to pay. Your account will be credited automatically.');
+  startEventSource(currentInvoiceId);
 }
 
 function showSuccess(data) {
@@ -123,6 +155,7 @@ qtyInput.addEventListener('input', () => validateQuantity());
 
 // ── Back button ──────────────────────────────────────────────
 btnBack.addEventListener('click', () => {
+  stopEventSource();
   currentInvoiceId = null;
   currentQuantity  = null;
   responseAmount.style.display = 'none';
@@ -154,6 +187,23 @@ btnSaveKey.addEventListener('click', () => {
     // localStorage unavailable (e.g. private browsing) — silent fail
   }
 });
+
+// ── Verify payment and show success ──────────────────────────
+async function verifyPayment() {
+  try {
+    const res = await fetch(`${API_BASE}/credits/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      showSuccess(data);
+    }
+  } catch (_) {
+    // silent — SSE already confirmed payment, retry is handled by page reload
+  }
+}
 
 // ── Generate invoice ─────────────────────────────────────────
 btnGenerate.addEventListener('click', async () => {
