@@ -95,6 +95,9 @@ Content-Type: application/json
 <ul>
 <li>Invalid format returns <code>valid: false</code> immediately without DNS lookup</li>
 <li>DNS and MX checks add ~100–500ms latency depending on the domain</li>
+<li>Every successful response includes an <code>X-Credits-Remaining</code> header with your updated balance:<pre><code>X-Credits-Remaining: 94
+</code></pre>
+</li>
 </ul>
 
   </section>

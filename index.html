@@ -29,6 +29,7 @@
 <li><strong>Buy credits</strong> — POST to <code>/api/v1/credits</code>, pay the Lightning invoice, receive your API key</li>
 <li><strong>Call services</strong> — include <code>Authorization: Bearer &lt;apiKey&gt;</code> on every request</li>
 <li><strong>Credits deducted automatically</strong> — each call costs a small number of credits</li>
+<li><strong>Check balance</strong> — every successful response includes <code>X-Credits-Remaining: &lt;n&gt;</code> so you always know how many credits you have left</li>
 </ol>
 <h2>Services</h2>
 <ul class="service-list">
