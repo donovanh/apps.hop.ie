@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>QR Code Generator | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+    </nav>
+  </header>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+    <h1>QR Code Generator</h1>
+    <p class="service-desc">Generate QR codes as base64 PNG or SVG. One call, one code, 1 credit.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.hop.ie/qr-code/generate">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-text">Text or URL</label>
+    
+      <input
+        type="text"
+        id="field-text"
+        name="text"
+        placeholder="https://example.com"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-format">Format</label>
+    
+      <select id="field-format" name="format">
+        
+          
+            <option value="png">PNG (base64)</option>
+          
+        
+          
+            <option value="svg">SVG</option>
+          
+        
+      </select>
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Generating QR codes in an agent pipeline means no external service dependency, no rate limits, and no wasted tokens describing what you want. One call, deterministic output.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any content, any format</th>
+<th>1 credit</th>
+</tr>
+</thead>
+</table>
+<h2>Request format</h2>
+<pre><code class="language-json">{
+  &quot;text&quot;: &quot;https://example.com&quot;,
+  &quot;format&quot;: &quot;png&quot;,
+  &quot;size&quot;: 256,
+  &quot;errorCorrectionLevel&quot;: &quot;M&quot;
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>string</td>
+<td>required</td>
+<td>Content to encode</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td><code>png</code> | <code>svg</code></td>
+<td><code>png</code></td>
+<td>Output format</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>integer</td>
+<td><code>256</code></td>
+<td>Pixels, PNG only. Min 64, max 1024.</td>
+</tr>
+<tr>
+<td><code>errorCorrectionLevel</code></td>
+<td><code>L</code> | <code>M</code> | <code>Q</code> | <code>H</code></td>
+<td><code>M</code></td>
+<td>Data recovery: 7% / 15% / 25% / 30%</td>
+</tr>
+</tbody>
+</table>
+<h2>Response</h2>
+<p><code>data</code> is a <strong>raw base64 string</strong> for PNG (no <code>data:image/png;base64,</code> prefix). For SVG it is the raw SVG markup.</p>
+<p>To use the PNG in an <code>&lt;img&gt;</code> tag: <code>&lt;img src=&quot;data:image/png;base64,{data}&quot;&gt;</code></p>
+<h2>Errors</h2>
+<p>Text too long for a QR code → <code>400</code>. Empty text → <code>400</code>.</p>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.hop.ie/qr-code/generate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;text&quot;: &quot;https://example.com&quot;,
+  &quot;format&quot;: &quot;png&quot;,
+  &quot;size&quot;: 256,
+  &quot;errorCorrectionLevel&quot;: &quot;M&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;text&quot;: &quot;https://example.com&quot;,
+  &quot;format&quot;: &quot;png&quot;,
+  &quot;data&quot;: &quot;&lt;base64 string&gt;&quot;
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.hop.ie/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+</body>
+</html>
