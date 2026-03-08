@@ -587,6 +587,14 @@ pre code {
   line-height: 1.4;
 }
 
+.service-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.service-card-meta .credit-badge { margin-bottom: 0; }
+
 .service-arrow {
   color: var(--muted);
   font-size: 18px;

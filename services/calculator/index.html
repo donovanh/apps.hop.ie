@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Calculator | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+    </nav>
+  </header>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+    <h1>Calculator</h1>
+    <p class="service-desc">Deterministic arithmetic, scientific, geometric, trigonometric, and conversion calculations. Always correct — no tokens wasted reasoning through maths.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.hop.ie/calculator/calculate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;operation&quot;: &quot;evaluate&quot;,
+  &quot;params&quot;: { &quot;expression&quot;: &quot;2 * (3 + 4) ^ 2&quot; }
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;operation&quot;: &quot;evaluate&quot;,
+  &quot;result&quot;: 98
+}
+</code></pre>
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>LLMs burn tokens reasoning through maths and still produce wrong answers. One API call costs 1 credit and is always deterministic. Use it for anything numeric — from basic arithmetic to quadratic roots, trig ratios, volume calculations, and unit conversions.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any operation</th>
+<th>1 credit</th>
+</tr>
+</thead>
+</table>
+<h2>Request format</h2>
+<pre><code class="language-json">{
+  &quot;operation&quot;: &quot;&lt;operation-name&gt;&quot;,
+  &quot;params&quot;: { &quot;&lt;field&gt;&quot;: &quot;&lt;value&gt;&quot; }
+}
+</code></pre>
+<p>All errors return a <code>200</code> with an <code>error</code> field (the call was valid and is still charged). Unknown operations or missing fields return a <code>400</code> with no charge.</p>
+<hr>
+<h2>Operations reference</h2>
+<p>For full method signatures see <a href="https://www.npmjs.com/package/advanced-calculator">advanced-calculator on npm</a>.</p>
+<h3>Expression evaluation</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>evaluate</code></td>
+<td><code>expression</code></td>
+<td>Supports <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code> <code>^</code>, functions <code>sin</code> <code>cos</code> <code>tan</code> <code>ln</code> <code>log</code> <code>max</code> <code>min</code>, constant <code>pi</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-json">{ &quot;operation&quot;: &quot;evaluate&quot;, &quot;params&quot;: { &quot;expression&quot;: &quot;sin(pi / 2) + log(100)&quot; } }
+</code></pre>
+<hr>
+<h3>Arithmetic</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>add</code></td>
+<td><code>a</code>, <code>b</code></td>
+</tr>
+<tr>
+<td><code>subtract</code></td>
+<td><code>a</code>, <code>b</code></td>
+</tr>
+<tr>
+<td><code>multiply</code></td>
+<td><code>a</code>, <code>b</code></td>
+</tr>
+<tr>
+<td><code>divide</code></td>
+<td><code>a</code>, <code>b</code> — error on <code>b = 0</code></td>
+</tr>
+<tr>
+<td><code>sqrt</code></td>
+<td><code>a</code> — error on negative</td>
+</tr>
+<tr>
+<td><code>root</code></td>
+<td><code>a</code>, <code>n</code> — nth root</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Exponents</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>negativeExponent</code></td>
+<td><code>a</code>, <code>n</code> → <code>a^(-n)</code></td>
+</tr>
+<tr>
+<td><code>fractionalExponent</code></td>
+<td><code>a</code>, <code>p</code>, <code>q</code> → <code>a^(p/q)</code></td>
+</tr>
+<tr>
+<td><code>powerOfPower</code></td>
+<td><code>a</code>, <code>m</code>, <code>p</code> → <code>(a^m)^p</code></td>
+</tr>
+<tr>
+<td><code>scientificNotation</code></td>
+<td><code>num</code>, <code>exp</code> → <code>num × 10^exp</code></td>
+</tr>
+<tr>
+<td><code>multiplyExponents</code></td>
+<td><code>terms</code>: array of <code>{base, exponent}</code></td>
+</tr>
+<tr>
+<td><code>divideExponents</code></td>
+<td><code>terms</code>: array of <code>{base, exponent}</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Logarithms</h3>
+<p>All logarithms take a <code>base</code> argument (not base-10 by default).</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>base</code>, <code>value</code> → log_base(value)</td>
+</tr>
+<tr>
+<td><code>logProduct</code></td>
+<td><code>base</code>, <code>u</code>, <code>v</code> → log(u) + log(v)</td>
+</tr>
+<tr>
+<td><code>logQuotient</code></td>
+<td><code>base</code>, <code>u</code>, <code>v</code> → log(u) − log(v)</td>
+</tr>
+<tr>
+<td><code>logExponential</code></td>
+<td><code>base</code>, <code>u</code>, <code>v</code> → v × log(u)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Geometry — 2D areas</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>areaCircle</code></td>
+<td><code>r</code></td>
+</tr>
+<tr>
+<td><code>areaSquare</code></td>
+<td><code>side</code></td>
+</tr>
+<tr>
+<td><code>areaRectangle</code></td>
+<td><code>a</code>, <code>b</code></td>
+</tr>
+<tr>
+<td><code>areaTriangle</code></td>
+<td><code>base</code>, <code>height</code></td>
+</tr>
+<tr>
+<td><code>areaTrapezoid</code></td>
+<td><code>height</code>, <code>b1</code>, <code>b2</code></td>
+</tr>
+<tr>
+<td><code>areaParallelogram</code></td>
+<td><code>base</code>, <code>height</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Geometry — 2D perimeters</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>perimeterCircle</code></td>
+<td><code>r</code></td>
+</tr>
+<tr>
+<td><code>perimeterSquare</code></td>
+<td><code>side</code></td>
+</tr>
+<tr>
+<td><code>perimeterRectangle</code></td>
+<td><code>a</code>, <code>b</code></td>
+</tr>
+<tr>
+<td><code>perimeterTriangle</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Geometry — 3D volumes</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>volumeSphere</code></td>
+<td><code>r</code></td>
+</tr>
+<tr>
+<td><code>volumeCube</code></td>
+<td><code>side</code></td>
+</tr>
+<tr>
+<td><code>volumeCylinder</code></td>
+<td><code>r</code>, <code>h</code></td>
+</tr>
+<tr>
+<td><code>volumeCone</code></td>
+<td><code>r</code>, <code>h</code></td>
+</tr>
+<tr>
+<td><code>volumeRectPrism</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Geometry — 3D surface areas</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>surfaceAreaSphere</code></td>
+<td><code>r</code></td>
+</tr>
+<tr>
+<td><code>surfaceAreaCube</code></td>
+<td><code>side</code></td>
+</tr>
+<tr>
+<td><code>surfaceAreaCylinder</code></td>
+<td><code>r</code>, <code>h</code></td>
+</tr>
+<tr>
+<td><code>surfaceAreaCone</code></td>
+<td><code>r</code>, <code>h</code>, <code>slantHeight</code></td>
+</tr>
+<tr>
+<td><code>surfaceAreaRectPrism</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Geometry utilities</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pythagorean</code></td>
+<td><code>a</code>, <code>b</code> → hypotenuse c</td>
+</tr>
+<tr>
+<td><code>distanceBetweenPoints</code></td>
+<td><code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code></td>
+</tr>
+<tr>
+<td><code>midpoint</code></td>
+<td><code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Trigonometry</h3>
+<p><strong>Note:</strong> <code>sinRatio</code>, <code>cosRatio</code>, <code>tanRatio</code> are geometric ratios (opposite/hypotenuse etc.), not <code>Math.sin(angle)</code>. For angle-based trig use <code>evaluate</code> with <code>sin(...)</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>radsToDegs</code></td>
+<td><code>radians</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>degsToRads</code></td>
+<td><code>degrees</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sinRatio</code></td>
+<td><code>opposite</code>, <code>hypotenuse</code></td>
+<td>opp/hyp</td>
+</tr>
+<tr>
+<td><code>cosRatio</code></td>
+<td><code>adjacent</code>, <code>hypotenuse</code></td>
+<td>adj/hyp</td>
+</tr>
+<tr>
+<td><code>tanRatio</code></td>
+<td><code>opposite</code>, <code>adjacent</code></td>
+<td>opp/adj</td>
+</tr>
+<tr>
+<td><code>arcsinRatio</code></td>
+<td><code>opposite</code>, <code>hypotenuse</code></td>
+<td>→ angle in radians</td>
+</tr>
+<tr>
+<td><code>arccosRatio</code></td>
+<td><code>adjacent</code>, <code>hypotenuse</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>arctanRatio</code></td>
+<td><code>opposite</code>, <code>adjacent</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sineRuleThetaA</code></td>
+<td><code>a</code>, <code>b</code>, <code>A</code></td>
+<td>angle A in radians</td>
+</tr>
+<tr>
+<td><code>sineRuleLengthB</code></td>
+<td><code>b</code>, <code>A</code>, <code>B</code></td>
+<td>side lengths</td>
+</tr>
+<tr>
+<td><code>cosLawTheta</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+<td>returns all 3 angles</td>
+</tr>
+<tr>
+<td><code>cosLawSideA</code></td>
+<td><code>b</code>, <code>c</code>, <code>A</code></td>
+<td>angle A in radians</td>
+</tr>
+<tr>
+<td><code>exactValues</code></td>
+<td><code>trig</code>, <code>piOver</code></td>
+<td><code>trig</code>: <code>&quot;sin&quot;/&quot;cos&quot;/&quot;tan&quot;</code>, <code>piOver</code>: 6, 4, or 3</td>
+</tr>
+<tr>
+<td><code>sumFormulas</code></td>
+<td><code>trig</code>, <code>a</code>, <code>b</code></td>
+<td>sin/cos/tan of (a+b)</td>
+</tr>
+<tr>
+<td><code>differenceFormulas</code></td>
+<td><code>trig</code>, <code>a</code>, <code>b</code></td>
+<td>sin/cos/tan of (a−b)</td>
+</tr>
+<tr>
+<td><code>doubleAngle</code></td>
+<td><code>trig</code>, <code>angle</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>heronS</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+<td>semi-perimeter</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Graphs &amp; algebra</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>slope</code></td>
+<td><code>rise</code>, <code>run</code></td>
+<td>rise/run</td>
+</tr>
+<tr>
+<td><code>slopeFromPoints</code></td>
+<td><code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code></td>
+<td>slope from two points</td>
+</tr>
+<tr>
+<td><code>yIntercept</code></td>
+<td><code>m</code>, <code>b</code></td>
+<td>returns <code>(x, y)</code> string</td>
+</tr>
+<tr>
+<td><code>discriminant</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+<td>b²−4ac</td>
+</tr>
+<tr>
+<td><code>quadratic</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+<td>returns roots as string, including complex</td>
+</tr>
+<tr>
+<td><code>vertexParabola</code></td>
+<td><code>a</code>, <code>b</code>, <code>c</code></td>
+<td>returns vertex as <code>&quot;x, y&quot;</code></td>
+</tr>
+<tr>
+<td><code>concavity</code></td>
+<td><code>a</code></td>
+<td><code>&quot;Concave Up&quot;</code> or <code>&quot;Concave Down&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Number utilities</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isEven</code></td>
+<td><code>n</code></td>
+</tr>
+<tr>
+<td><code>isOdd</code></td>
+<td><code>n</code></td>
+</tr>
+<tr>
+<td><code>isPrime</code></td>
+<td><code>n</code></td>
+</tr>
+<tr>
+<td><code>hcf</code></td>
+<td><code>a</code>, <code>b</code> — highest common factor</td>
+</tr>
+<tr>
+<td><code>lcm</code></td>
+<td><code>a</code>, <code>b</code> — lowest common multiple</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Length conversions</h3>
+<p>Imperial ↔ metric and between imperial units.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feetToMeters</code> / <code>feetToInches</code> / <code>feetToYards</code> / <code>feetToMiles</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>inchesToFeet</code> / <code>inchesToMeters</code> / <code>inchesToYards</code> / <code>inchesToMiles</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>milesToFeet</code> / <code>milesToMeters</code> / <code>milesToYards</code> / <code>milesToInches</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>yardsToFeet</code> / <code>yardsToMeters</code> / <code>yardsToInches</code> / <code>yardsToMiles</code></td>
+<td><code>value</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Metric prefix conversions</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>metreToKilo</code> / <code>metreToMilli</code> / <code>metreToMicro</code> / <code>metreToNano</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>kiloToMetre</code> / <code>milliToMetre</code> / <code>microToMetre</code> / <code>nanoToMetre</code></td>
+<td><code>value</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Temperature</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>celsiusToFahrenheit</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>fahrenheitToCelsius</code></td>
+<td><code>value</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Physics / motion</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>speed</code></td>
+<td><code>distance</code>, <code>time</code></td>
+</tr>
+<tr>
+<td><code>distance</code></td>
+<td><code>speed</code>, <code>time</code></td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td><code>distance</code>, <code>speed</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Error responses</h2>
+<p>Math errors (division by zero, no real roots, etc.) return <code>200</code> with an <code>error</code> field — the call consumed 1 credit.</p>
+<pre><code class="language-json">{ &quot;operation&quot;: &quot;divide&quot;, &quot;error&quot;: &quot;Division by zero&quot; }
+</code></pre>
+<p>Unknown operation or missing field returns <code>400</code> — no credit charge.</p>
+
+  </section>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.hop.ie/calculator/calculate">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-operation">Operation</label>
+    
+      <input
+        type="text"
+        id="field-operation"
+        name="operation"
+        placeholder="evaluate"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-params">Params (JSON)</label>
+    
+      <input
+        type="text"
+        id="field-params"
+        name="params"
+        placeholder="{&quot;expression&quot;: &quot;2 * (3 + 4) ^ 2&quot;}"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.hop.ie/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+</body>
+</html>
