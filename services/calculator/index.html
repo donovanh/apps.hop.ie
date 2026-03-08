@@ -32,29 +32,70 @@
     
   </header>
 
-  <section class="card">
-    <h2>API Reference</h2>
-    <h3>Endpoint</h3>
-    <pre><code>POST https://api.hop.ie/calculator/calculate</code></pre>
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
 
-    <h3>Required headers</h3>
-    <pre><code>Authorization: Bearer &lt;apiKey&gt;
-Content-Type: application/json
-</code></pre>
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.hop.ie/calculator/calculate">
 
-    <h3>Example request</h3>
-    <pre><code>{
-  &quot;operation&quot;: &quot;evaluate&quot;,
-  &quot;params&quot;: { &quot;expression&quot;: &quot;2 * (3 + 4) ^ 2&quot; }
-}
-</code></pre>
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
 
-    <h3>Example response</h3>
-    <pre><code>{
-  &quot;operation&quot;: &quot;evaluate&quot;,
-  &quot;result&quot;: 98
-}
-</code></pre>
+  
+  <div class="field">
+    <label for="field-operation">Operation</label>
+    
+      <input
+        type="text"
+        id="field-operation"
+        name="operation"
+        placeholder="evaluate"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-params">Params (JSON)</label>
+    
+      <input
+        type="text"
+        id="field-params"
+        name="params"
+        placeholder="{&quot;expression&quot;: &quot;2 * (3 + 4) ^ 2&quot;}"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
   </section>
 
   <section class="card">
@@ -626,70 +667,29 @@ Content-Type: application/json
 
   </section>
 
-  <section class="card" id="try-it-section">
-    <h2>Try it</h2>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
-      Fill in the fields below and hit Send.
-    </p>
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.hop.ie/calculator/calculate</code></pre>
 
-    <form class="try-it" id="try-it-form"
-  data-endpoint="https://api.hop.ie/calculator/calculate">
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
 
-  <div class="field">
-    <label for="try-it-api-key">API key</label>
-    <div class="api-key-field-wrap">
-      <input
-        type="password"
-        id="try-it-api-key"
-        placeholder="Paste your API key…"
-        autocomplete="off"
-      />
-      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
-    </div>
-    <label class="save-key-label">
-      <input type="checkbox" id="try-it-save-key" />
-      Save to this browser
-    </label>
-  </div>
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;operation&quot;: &quot;evaluate&quot;,
+  &quot;params&quot;: { &quot;expression&quot;: &quot;2 * (3 + 4) ^ 2&quot; }
+}
+</code></pre>
 
-  
-  <div class="field">
-    <label for="field-operation">Operation</label>
-    
-      <input
-        type="text"
-        id="field-operation"
-        name="operation"
-        placeholder="evaluate"
-      />
-    
-  </div>
-  
-  <div class="field">
-    <label for="field-params">Params (JSON)</label>
-    
-      <input
-        type="text"
-        id="field-params"
-        name="params"
-        placeholder="{&quot;expression&quot;: &quot;2 * (3 + 4) ^ 2&quot;}"
-      />
-    
-  </div>
-  
-
-  <button type="submit" class="btn" id="try-it-btn">Send request</button>
-
-  <div class="try-it-response" id="try-it-response">
-    <div class="response-meta">
-      <span class="response-status" id="response-status"></span>
-      <span class="credits-remaining" id="credits-remaining"></span>
-    </div>
-    <pre><code id="response-body"></code></pre>
-  </div>
-
-</form>
-
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;operation&quot;: &quot;evaluate&quot;,
+  &quot;result&quot;: 98
+}
+</code></pre>
   </section>
 
 </article>

@@ -32,76 +32,6 @@
     
   </header>
 
-  <section class="card">
-    <h2>API Reference</h2>
-    <h3>Endpoint</h3>
-    <pre><code>POST https://api.hop.ie/email-validator/validate</code></pre>
-
-    <h3>Required headers</h3>
-    <pre><code>Authorization: Bearer &lt;apiKey&gt;
-Content-Type: application/json
-</code></pre>
-
-    <h3>Example request</h3>
-    <pre><code>{
-  &quot;email&quot;: &quot;test@example.com&quot;,
-  &quot;tier&quot;: &quot;basic&quot;
-}
-</code></pre>
-
-    <h3>Example response</h3>
-    <pre><code>{
-  &quot;valid&quot;: true,
-  &quot;email&quot;: &quot;test@example.com&quot;,
-  &quot;tier&quot;: &quot;basic&quot;,
-  &quot;checks&quot;: {
-    &quot;format&quot;: true,
-    &quot;dns&quot;: false,
-    &quot;mx&quot;: false
-  }
-}
-</code></pre>
-  </section>
-
-  <section class="card">
-    <h2>Validation tiers</h2>
-<table>
-<thead>
-<tr>
-<th>Tier</th>
-<th>Checks</th>
-<th>Credits</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>basic</code></td>
-<td>Email format (regex)</td>
-<td>1</td>
-</tr>
-<tr>
-<td><code>dns</code></td>
-<td>Format + DNS lookup</td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>full</code></td>
-<td>Format + DNS + MX records</td>
-<td>5</td>
-</tr>
-</tbody>
-</table>
-<h2>Notes</h2>
-<ul>
-<li>Invalid format returns <code>valid: false</code> immediately without DNS lookup</li>
-<li>DNS and MX checks add ~100–500ms latency depending on the domain</li>
-<li>Every successful response includes an <code>X-Credits-Remaining</code> header with your updated balance:<pre><code>X-Credits-Remaining: 94
-</code></pre>
-</li>
-</ul>
-
-  </section>
-
   <section class="card" id="try-it-section">
     <h2>Try it</h2>
     <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
@@ -175,6 +105,76 @@ Content-Type: application/json
 
 </form>
 
+  </section>
+
+  <section class="card">
+    <h2>Validation tiers</h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Checks</th>
+<th>Credits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>basic</code></td>
+<td>Email format (regex)</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>Format + DNS lookup</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>full</code></td>
+<td>Format + DNS + MX records</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<h2>Notes</h2>
+<ul>
+<li>Invalid format returns <code>valid: false</code> immediately without DNS lookup</li>
+<li>DNS and MX checks add ~100–500ms latency depending on the domain</li>
+<li>Every successful response includes an <code>X-Credits-Remaining</code> header with your updated balance:<pre><code>X-Credits-Remaining: 94
+</code></pre>
+</li>
+</ul>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.hop.ie/email-validator/validate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;tier&quot;: &quot;basic&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;valid&quot;: true,
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;tier&quot;: &quot;basic&quot;,
+  &quot;checks&quot;: {
+    &quot;format&quot;: true,
+    &quot;dns&quot;: false,
+    &quot;mx&quot;: false
+  }
+}
+</code></pre>
   </section>
 
 </article>
