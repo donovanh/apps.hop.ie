@@ -26,8 +26,8 @@
   <h1 class="hero-title">Pay-per-call tools<br>for AI agents.</h1>
   <p class="hero-sub">Buy credits once with Bitcoin Lightning. Spend them on tool calls. No subscriptions, no sign-up &mdash; just an API key.</p>
   <div class="hero-actions">
-    <a href="/buy/" class="btn">Buy credits ⚡</a>
-    <a href="#quick-start" class="btn btn-ghost">Quick start →</a>
+    <a href="/buy/" class="btn">Buy credits</a>
+    <a href="#quick-start" class="btn btn-ghost">Quick start</a>
   </div>
 </div>
 <div class="how-it-works">
@@ -73,13 +73,13 @@
 <pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your API key
 curl -X POST https://api.hop.ie/api/v1/credits \
   -H &quot;Content-Type: application/json&quot; \
-  -d '{&quot;quantity&quot;: 100}'
+  -d '{&quot;quantity&quot;: 1000}'
 
 # 2. Pay the Lightning invoice, then verify:
 curl -X POST https://api.hop.ie/api/v1/credits/verify \
   -H &quot;Content-Type: application/json&quot; \
-  -d '{&quot;invoiceId&quot;: &quot;&lt;id&gt;&quot;, &quot;quantity&quot;: 100}'
-# → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;credits&quot;: 100 }
+  -d '{&quot;invoiceId&quot;: &quot;&lt;id&gt;&quot;, &quot;quantity&quot;: 1000}'
+# → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;credits&quot;: 1000&quot;... }
 
 # 3. Call a tool
 curl -X POST https://api.hop.ie/email-validator/validate \
