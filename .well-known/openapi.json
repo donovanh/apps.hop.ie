@@ -1,0 +1,818 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Lightning Tools API",
+    "description": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning, spend them on tool calls. Every response includes X-Credits-Remaining so agents can track their balance.",
+    "version": "1.0.0",
+    "contact": {
+      "url": "https://apps.hop.ie"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.hop.ie",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API key obtained from POST /api/v1/credits after paying a Lightning invoice. Format: sk_<hex>"
+      }
+    },
+    "headers": {
+      "XCreditsRemaining": {
+        "description": "Remaining credit balance after this request",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PaymentRequired": {
+        "description": "Insufficient credits",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Insufficient credits"
+                },
+                "required": {
+                  "type": "integer",
+                  "example": 3
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Invalid request body",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "VALIDATION_ERROR"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/credits": {
+      "post": {
+        "operationId": "purchaseCredits",
+        "summary": "Buy credits",
+        "description": "Creates a Lightning invoice. Pay the invoice, then call /api/v1/credits/verify to receive your API key.",
+        "security": [],
+        "tags": [
+          "Credits"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "quantity"
+                ],
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Number of credits to purchase (1 credit = 1 sat)",
+                    "example": 1000
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Optional. Associate an email with the account for recovery.",
+                    "example": "agent@example.com"
+                  },
+                  "accountId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Optional. Top up an existing account."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lightning invoice created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invoiceId": {
+                      "type": "string"
+                    },
+                    "invoice": {
+                      "type": "string",
+                      "description": "BOLT-11 Lightning invoice"
+                    },
+                    "amount": {
+                      "type": "integer",
+                      "description": "Amount in satoshis"
+                    },
+                    "accountId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/api/v1/credits/verify": {
+      "post": {
+        "operationId": "verifyPayment",
+        "summary": "Verify payment and receive API key",
+        "description": "After paying the Lightning invoice, call this endpoint to confirm payment and receive your API key.",
+        "security": [],
+        "tags": [
+          "Credits"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "invoiceId",
+                  "quantity"
+                ],
+                "properties": {
+                  "invoiceId": {
+                    "type": "string",
+                    "description": "Invoice ID from POST /api/v1/credits"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "description": "Must match quantity from the original purchase request"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment confirmed — API key returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "apiKey": {
+                      "type": "string",
+                      "example": "sk_abc123..."
+                    },
+                    "credits": {
+                      "type": "integer"
+                    },
+                    "accountId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "402": {
+            "description": "Invoice not yet paid"
+          }
+        }
+      }
+    },
+    "/email-validator/validate": {
+      "post": {
+        "operationId": "validateEmail",
+        "summary": "Validate an email address",
+        "description": "Validates an email address with configurable depth. Cost: 1 credit (basic), 3 credits (dns), 5 credits (full). The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com"
+                  },
+                  "tier": {
+                    "type": "string",
+                    "enum": [
+                      "basic",
+                      "dns",
+                      "full"
+                    ],
+                    "default": "basic",
+                    "description": "basic (1cr): format only. dns (3cr): + domain lookup. full (5cr): + MX records."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "type": "string"
+                    },
+                    "checks": {
+                      "type": "object",
+                      "properties": {
+                        "format": {
+                          "type": "boolean"
+                        },
+                        "dns": {
+                          "type": "boolean"
+                        },
+                        "mx": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/calculator/calculate": {
+      "post": {
+        "operationId": "calculate",
+        "summary": "Perform a calculation",
+        "description": "Deterministic arithmetic, scientific, geometric, trigonometric, and unit-conversion calculations. Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "operation"
+                ],
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "description": "The operation to perform. See description for full list.",
+                    "example": "evaluate",
+                    "enum": [
+                      "evaluate",
+                      "add",
+                      "subtract",
+                      "multiply",
+                      "divide",
+                      "sqrt",
+                      "power",
+                      "modulo",
+                      "abs",
+                      "multiplyExponents",
+                      "divideExponents",
+                      "areaCircle",
+                      "areaRectangle",
+                      "areaSquare",
+                      "areaTriangle",
+                      "areaTrapezoid",
+                      "areaEllipse",
+                      "perimeterCircle",
+                      "perimeterRectangle",
+                      "perimeterSquare",
+                      "perimeterTriangle",
+                      "volumeSphere",
+                      "volumeCylinder",
+                      "volumeCone",
+                      "volumeCube",
+                      "volumeRectangularPrism",
+                      "sin",
+                      "cos",
+                      "tan",
+                      "asin",
+                      "acos",
+                      "atan",
+                      "sinA",
+                      "cosA",
+                      "tanA",
+                      "log",
+                      "log10",
+                      "ln",
+                      "slope",
+                      "distance",
+                      "midpoint",
+                      "celsiusToFahrenheit",
+                      "fahrenheitToCelsius",
+                      "speed",
+                      "distance",
+                      "time"
+                    ]
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Parameters for the operation. Required fields depend on the operation.",
+                    "example": {
+                      "expression": "2 + 2"
+                    },
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Calculation result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "operation": {
+                      "type": "string"
+                    },
+                    "result": {}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/qr-code/generate": {
+      "post": {
+        "operationId": "generateQrCode",
+        "summary": "Generate a QR code",
+        "description": "Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "text"
+                ],
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Content to encode in the QR code",
+                    "example": "https://example.com"
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "png",
+                      "svg"
+                    ],
+                    "default": "png",
+                    "description": "png returns a raw base64 string. svg returns an SVG string."
+                  },
+                  "size": {
+                    "type": "integer",
+                    "minimum": 64,
+                    "maximum": 1024,
+                    "default": 256,
+                    "description": "Width/height in pixels (PNG only)"
+                  },
+                  "errorCorrectionLevel": {
+                    "type": "string",
+                    "enum": [
+                      "L",
+                      "M",
+                      "Q",
+                      "H"
+                    ],
+                    "default": "M",
+                    "description": "L=7%, M=15%, Q=25%, H=30% data recovery capability"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "QR code generated",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    },
+                    "format": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string",
+                      "description": "Raw base64 PNG or SVG string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/readability/extract": {
+      "post": {
+        "operationId": "extractReadability",
+        "summary": "Extract readable content from a URL",
+        "description": "Fetches a URL and extracts clean article content using Mozilla Readability — the same engine as Firefox Reader View. Returns title, plain text, clean HTML, excerpt, byline, and word count. All fields except url are nullable. Cost: 2 credits per call.",
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The URL to fetch and extract content from.",
+                    "example": "https://en.wikipedia.org/wiki/Node.js"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Extracted content. All fields except url are nullable — Readability may not extract every field from every page.",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "byline": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Author name or byline if detected"
+                    },
+                    "excerpt": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Short excerpt or lede"
+                    },
+                    "html": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Clean article HTML with boilerplate stripped"
+                    },
+                    "text": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Plain text body"
+                    },
+                    "wordCount": {
+                      "type": "integer",
+                      "nullable": true,
+                      "description": "Word count of plain text body"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/phone-validator/validate": {
+      "post": {
+        "operationId": "validatePhone",
+        "summary": "Validate a phone number",
+        "description": "Validates and parses a phone number using libphonenumber-js. Returns country, type (MOBILE/FIXED_LINE/VOIP/etc.), and formatted variants. Invalid numbers return valid:false with HTTP 200 — credits are still charged. Cost: 1 credit per call.",
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "phone"
+                ],
+                "properties": {
+                  "phone": {
+                    "type": "string",
+                    "description": "Phone number to validate. E.164 format preferred (e.g. +353861234567). National format accepted with country hint.",
+                    "example": "+353861234567"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "ISO 3166-1 alpha-2 country code hint for parsing national-format numbers (e.g. IE, US, GB)",
+                    "example": "IE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation result. valid:false means the number is not a real number — this is not an error, credits are charged.",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "valid": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "phone": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string",
+                          "example": "IE"
+                        },
+                        "countryCallingCode": {
+                          "type": "string",
+                          "example": "353"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "MOBILE",
+                          "description": "MOBILE, FIXED_LINE, FIXED_LINE_OR_MOBILE, TOLL_FREE, PREMIUM_RATE, VOIP, UNKNOWN, etc."
+                        },
+                        "formatted": {
+                          "type": "object",
+                          "properties": {
+                            "national": {
+                              "type": "string",
+                              "example": "086 123 4567"
+                            },
+                            "international": {
+                              "type": "string",
+                              "example": "+353 86 123 4567"
+                            },
+                            "e164": {
+                              "type": "string",
+                              "example": "+353861234567"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "valid": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    }
+  }
+}

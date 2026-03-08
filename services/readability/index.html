@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Readability Extractor | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+    </nav>
+  </header>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+    <h1>Readability Extractor</h1>
+    <p class="service-desc">Fetch any URL and get back clean, readable article content — title, plain text, clean HTML, excerpt, byline, and word count. Powered by Mozilla Readability, the same engine as Firefox Reader View.</p>
+    
+    <div class="credit-badge">⚡ 2 credits per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.hop.ie/readability/extract">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-url">URL</label>
+    
+      <input
+        type="text"
+        id="field-url"
+        name="url"
+        placeholder="https://example.com/article"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>AI agents can't fetch and clean web pages on their own. Here's why that matters:</p>
+<p><strong>How it works:</strong> The service fetches the URL server-side, parses the raw HTML, and runs it through Mozilla Readability — the open-source library that powers Firefox Reader View. Readability strips navigation menus, ads, footers, sidebars, and scripts, leaving only the article body. The result is clean, structured text ready to pass directly to an LLM or process programmatically.</p>
+<p><strong>Why AIs can't do this themselves:</strong> Language models have no HTTP access at inference time — they can't retrieve a URL. Even if an agent could fetch the raw HTML, passing it to an LLM wastes context window on boilerplate (a typical news page is 80–90% non-content). And because the service runs server-side, it handles redirects, cookies, and compressed responses that would trip up a naive client.</p>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Summarise a news article or blog post without passing raw HTML to your LLM</li>
+<li>Pull developer documentation (MDN, GitHub READMEs, API docs) into agent context</li>
+<li>Research pipelines that need clean article text before analysis</li>
+<li>Citation and fact-checking tasks where the agent needs the article body</li>
+<li>Any workflow where the agent is given a URL and needs to act on its content</li>
+</ul>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any URL</th>
+<th>2 credits</th>
+</tr>
+</thead>
+</table>
+<p>2 credits covers the server-side HTTP fetch, HTML parse, and Readability extraction. The call is always charged if the URL is reachable — even if the page has no extractable article content (null fields returned).</p>
+<h2>Request format</h2>
+<pre><code class="language-json">{ &quot;url&quot;: &quot;https://example.com/article&quot; }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>Required. Must be a valid URL including protocol (<code>https://</code>).</td>
+</tr>
+</tbody>
+</table>
+<h2>Response</h2>
+<pre><code class="language-json">{
+  &quot;url&quot;: &quot;https://example.com/article&quot;,
+  &quot;title&quot;: &quot;Article Title&quot;,
+  &quot;byline&quot;: &quot;Author Name&quot;,
+  &quot;excerpt&quot;: &quot;First sentence or lede...&quot;,
+  &quot;html&quot;: &quot;&lt;div&gt;&lt;p&gt;Clean HTML body...&lt;/p&gt;&lt;/div&gt;&quot;,
+  &quot;text&quot;: &quot;Clean plain text body...&quot;,
+  &quot;wordCount&quot;: 842
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Page or article title. <code>null</code> if not detected.</td>
+</tr>
+<tr>
+<td><code>byline</code></td>
+<td>Author name or byline. <code>null</code> if not present.</td>
+</tr>
+<tr>
+<td><code>excerpt</code></td>
+<td>Short excerpt or lede. <code>null</code> if not detected.</td>
+</tr>
+<tr>
+<td><code>html</code></td>
+<td>Clean article HTML with navigation, ads, and boilerplate stripped. <code>null</code> if Readability found no article.</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>Plain text body. <code>null</code> if Readability found no article.</td>
+</tr>
+<tr>
+<td><code>wordCount</code></td>
+<td>Word count of the plain text body. <code>null</code> if <code>text</code> is null.</td>
+</tr>
+</tbody>
+</table>
+<p>All fields except <code>url</code> are nullable. A null result means Readability couldn't identify an article — this is not an error and credits are still charged.</p>
+<h2>Errors (400, no charge)</h2>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invalid URL</td>
+<td>Missing protocol, malformed URL</td>
+</tr>
+<tr>
+<td>Fetch failed</td>
+<td>DNS error, connection refused, network timeout (10s)</td>
+</tr>
+<tr>
+<td>Non-200 response</td>
+<td>Target URL returned 4xx or 5xx</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.hop.ie/readability/extract</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;url&quot;: &quot;https://en.wikipedia.org/wiki/Node.js&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;url&quot;: &quot;https://en.wikipedia.org/wiki/Node.js&quot;,
+  &quot;title&quot;: &quot;Node.js&quot;,
+  &quot;byline&quot;: null,
+  &quot;excerpt&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment...&quot;,
+  &quot;html&quot;: &quot;&lt;div id=&#92;&quot;readability-page-1&#92;&quot;&gt;&lt;p&gt;Node.js is...&lt;/p&gt;&lt;/div&gt;&quot;,
+  &quot;text&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment...&quot;,
+  &quot;wordCount&quot;: 4821
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.hop.ie/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+</body>
+</html>

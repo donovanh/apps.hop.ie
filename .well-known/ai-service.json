@@ -1,0 +1,50 @@
+{
+  "name": "Lightning Tools",
+  "version": "1.0.0",
+  "description": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning.",
+  "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+  "services": [
+    {
+      "id": "email-validator",
+      "name": "Validate an email address",
+      "description": "Validates an email address with configurable depth.",
+      "endpoint": "https://api.hop.ie"
+    },
+    {
+      "id": "calculator",
+      "name": "Perform a calculation",
+      "description": "Deterministic arithmetic, scientific, geometric, trigonometric, and unit-conversion calculations.",
+      "endpoint": "https://api.hop.ie"
+    },
+    {
+      "id": "qr-code",
+      "name": "Generate a QR code",
+      "description": "Generates a QR code as a base64 PNG string or SVG string.",
+      "endpoint": "https://api.hop.ie"
+    },
+    {
+      "id": "readability",
+      "name": "Extract readable content from a URL",
+      "description": "Fetches a URL and extracts clean article content using Mozilla Readability — the same engine as Firefox Reader View.",
+      "endpoint": "https://api.hop.ie"
+    },
+    {
+      "id": "phone-validator",
+      "name": "Validate a phone number",
+      "description": "Validates and parses a phone number using libphonenumber-js.",
+      "endpoint": "https://api.hop.ie"
+    }
+  ],
+  "payment": {
+    "endpoint": "https://api.hop.ie/api/v1/credits",
+    "protocol": "Lightning",
+    "network": "Lightning",
+    "rates": "1 sat = 1 credit"
+  },
+  "authentication": {
+    "type": "token",
+    "header": "Authorization",
+    "format": "Bearer <token>",
+    "description": "API key from POST /api/v1/credits/verify after paying Lightning invoice"
+  }
+}
