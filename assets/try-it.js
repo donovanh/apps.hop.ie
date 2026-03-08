@@ -71,7 +71,10 @@ if (form) {
 
     const endpoint = form.dataset.endpoint;
     const body = {};
-    new FormData(form).forEach((val, key) => { body[key] = val; });
+    new FormData(form).forEach((val, key) => {
+      // Attempt to parse JSON values (e.g. the params field on the calculator form)
+      try { body[key] = JSON.parse(val); } catch { body[key] = val; }
+    });
 
     btn.disabled = true;
     btn.textContent = 'Sending…';
