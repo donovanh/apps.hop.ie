@@ -3,33 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
   <title>Lightning Tools | Lightning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <div id="staging-banner" class="staging-banner" style="display:none"></div>
   <header class="site-header">
-    <a href="/" class="site-logo">Lightning Tools</a>
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
     <nav class="site-nav">
       <a href="/">Home</a>
       <a href="/buy/">Buy credits</a>
       <a href="/services/email-validator/">Email Validator</a>
     </nav>
-
   </header>
   <main class="site-main">
-    <h1>Lightning Tools</h1>
-<p><strong>Pay-per-call tools for AI agents, powered by Bitcoin Lightning.</strong></p>
-<p>Buy credits once. Spend them on tool calls. No subscriptions, no sign-up required — just an API key.</p>
+    <div class="hero">
+  <div class="hero-prompt">~/lightning-tools</div>
+  <h1 class="hero-title">Pay-per-call tools<br>for AI agents.</h1>
+  <p class="hero-sub">Buy credits once with Bitcoin Lightning. Spend them on tool calls. No subscriptions, no sign-up &mdash; just an API key.</p>
+  <div class="hero-actions">
+    <a href="/buy/" class="btn">Buy credits ⚡</a>
+    <a href="#quick-start" class="btn btn-ghost">Quick start →</a>
+  </div>
+</div>
+<div class="how-it-works">
 <h2>How it works</h2>
-<ol>
-<li><strong>Buy credits</strong> — POST to <code>/api/v1/credits</code>, pay the Lightning invoice, receive your API key</li>
-<li><strong>Call any tool</strong> — include <code>Authorization: Bearer &lt;apiKey&gt;</code> on every request</li>
-<li><strong>Balance tracked automatically</strong> — every response includes <code>X-Credits-Remaining</code> so your agent always knows where it stands</li>
+<ol class="steps">
+  <li>
+    <span class="step-num">01</span>
+    <div>
+      <strong>Buy credits</strong>
+      <p>POST to <code>/api/v1/credits</code>, pay the Lightning invoice, receive your API key.</p>
+    </div>
+  </li>
+  <li>
+    <span class="step-num">02</span>
+    <div>
+      <strong>Call any tool</strong>
+      <p>Include <code>Authorization: Bearer &lt;apiKey&gt;</code> on every request.</p>
+    </div>
+  </li>
+  <li>
+    <span class="step-num">03</span>
+    <div>
+      <strong>Balance tracked automatically</strong>
+      <p>Every response includes <code>X-Credits-Remaining</code> so your agent always knows where it stands.</p>
+    </div>
+  </li>
 </ol>
+</div>
 <h2>Tools</h2>
 <ul class="service-list">
   <li>
@@ -38,10 +64,11 @@
         <h3>Email Validator</h3>
         <p>Validate format, DNS records, and MX routing. 1–5 credits per call.</p>
       </div>
-      <span style="color:var(--accent)">→</span>
+      <span class="service-arrow">→</span>
     </a>
   </li>
 </ul>
+<div id="quick-start"></div>
 <h2>Quick start</h2>
 <pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your API key
 curl -X POST https://api.hop.ie/api/v1/credits \
@@ -63,7 +90,7 @@ curl -X POST https://api.hop.ie/email-validator/validate \
 
   </main>
   <footer class="site-footer">
-    <p>Lightning Tools · Pay-per-call tools for AI agents · <a href="https://api.hop.ie/health">API status</a></p>
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.hop.ie/health">API status</a></p>
   </footer>
   <script src="/assets/staging.js"></script>
   <script src="/assets/try-it.js"></script>
