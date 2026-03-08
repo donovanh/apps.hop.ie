@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hop.ie API | hop.ie API</title>
+  <title>Lightning Tools | Lightning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
   <div id="staging-banner" class="staging-banner" style="display:none"></div>
   <header class="site-header">
-    <a href="/" class="site-logo">hop.ie API</a>
+    <a href="/" class="site-logo">Lightning Tools</a>
     <nav class="site-nav">
       <a href="/">Home</a>
       <a href="/buy/">Buy credits</a>
@@ -21,17 +21,16 @@
 
   </header>
   <main class="site-main">
-    <h1>hop.ie API</h1>
-<p><strong>Pay-per-call AI services via Lightning Network micropayments.</strong></p>
-<p>Buy credits once with Bitcoin Lightning. Use them across all services. No subscription, no sign-up required — just an API key.</p>
+    <h1>Lightning Tools</h1>
+<p><strong>Pay-per-call tools for AI agents, powered by Bitcoin Lightning.</strong></p>
+<p>Buy credits once. Spend them on tool calls. No subscriptions, no sign-up required — just an API key.</p>
 <h2>How it works</h2>
 <ol>
 <li><strong>Buy credits</strong> — POST to <code>/api/v1/credits</code>, pay the Lightning invoice, receive your API key</li>
-<li><strong>Call services</strong> — include <code>Authorization: Bearer &lt;apiKey&gt;</code> on every request</li>
-<li><strong>Credits deducted automatically</strong> — each call costs a small number of credits</li>
-<li><strong>Check balance</strong> — every successful response includes <code>X-Credits-Remaining: &lt;n&gt;</code> so you always know how many credits you have left</li>
+<li><strong>Call any tool</strong> — include <code>Authorization: Bearer &lt;apiKey&gt;</code> on every request</li>
+<li><strong>Balance tracked automatically</strong> — every response includes <code>X-Credits-Remaining</code> so your agent always knows where it stands</li>
 </ol>
-<h2>Services</h2>
+<h2>Tools</h2>
 <ul class="service-list">
   <li>
     <a href="/services/email-validator/" class="service-card">
@@ -44,18 +43,18 @@
   </li>
 </ul>
 <h2>Quick start</h2>
-<pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your accountId
+<pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your API key
 curl -X POST https://api.hop.ie/api/v1/credits \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;quantity&quot;: 100}'
 
-# 2. Pay the invoice with any Lightning wallet, then verify:
+# 2. Pay the Lightning invoice, then verify:
 curl -X POST https://api.hop.ie/api/v1/credits/verify \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;invoiceId&quot;: &quot;&lt;id&gt;&quot;, &quot;quantity&quot;: 100}'
-# → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;accountId&quot;: &quot;...&quot;, &quot;credits&quot;: 100, &quot;balance&quot;: { ... } }
+# → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;credits&quot;: 100 }
 
-# 3. Use a service with your API key
+# 3. Call a tool
 curl -X POST https://api.hop.ie/email-validator/validate \
   -H &quot;Authorization: Bearer &lt;apiKey&gt;&quot; \
   -H &quot;Content-Type: application/json&quot; \
@@ -64,7 +63,7 @@ curl -X POST https://api.hop.ie/email-validator/validate \
 
   </main>
   <footer class="site-footer">
-    <p>hop.ie · Lightning-powered API services · <a href="https://api.hop.ie/health">API status</a></p>
+    <p>Lightning Tools · Pay-per-call tools for AI agents · <a href="https://api.hop.ie/health">API status</a></p>
   </footer>
   <script src="/assets/staging.js"></script>
   <script src="/assets/try-it.js"></script>
