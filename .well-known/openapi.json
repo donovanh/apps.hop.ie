@@ -244,6 +244,11 @@
         "operationId": "validateEmail",
         "summary": "Validate an email address",
         "description": "Validates an email address with configurable depth. Cost: 1 credit (basic), 3 credits (dns), 5 credits (full). The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
+        "x-price": {
+          "basic": 1,
+          "dns": 3,
+          "full": 5
+        },
         "tags": [
           "Tools"
         ],
@@ -347,6 +352,7 @@
         "operationId": "calculate",
         "summary": "Perform a calculation",
         "description": "Deterministic arithmetic, scientific, geometric, trigonometric, and unit-conversion calculations. Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "x-price": 1,
         "tags": [
           "Tools"
         ],
@@ -477,6 +483,7 @@
         "operationId": "generateQrCode",
         "summary": "Generate a QR code",
         "description": "Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "x-price": 1,
         "tags": [
           "Tools"
         ],
@@ -584,6 +591,7 @@
         "operationId": "extractReadability",
         "summary": "Extract readable content from a URL",
         "description": "Fetches a URL and extracts clean article content using Mozilla Readability — the same engine as Firefox Reader View. Returns title, plain text, clean HTML, excerpt, byline, and word count. All fields except url are nullable. Cost: 2 credits per call.",
+        "x-price": 2,
         "tags": [
           "Tools"
         ],
@@ -687,6 +695,7 @@
         "operationId": "validatePhone",
         "summary": "Validate a phone number",
         "description": "Validates and parses a phone number using libphonenumber-js. Returns country, type (MOBILE/FIXED_LINE/VOIP/etc.), and formatted variants. Invalid numbers return valid:false with HTTP 200 — credits are still charged. Cost: 1 credit per call.",
+        "x-price": 1,
         "tags": [
           "Tools"
         ],
