@@ -350,8 +350,8 @@
     "/calculator/calculate": {
       "post": {
         "operationId": "calculate",
-        "summary": "Perform a calculation",
-        "description": "Deterministic arithmetic, scientific, geometric, trigonometric, and unit-conversion calculations. Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "summary": "Evaluate a mathematical expression",
+        "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math. Accepts mathjs syntax (e.g. 'sqrt(144)', 'log(100, 10)', '1 mile to km') or plain English (e.g. 'square root of 144', '15% of 340', '100 celsius to fahrenheit'). Cost: 1 credit per call. The Idempotency-Key header is required.",
         "x-price": 1,
         "tags": [
           "Tools"
@@ -375,69 +375,13 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "operation"
+                  "expression"
                 ],
                 "properties": {
-                  "operation": {
+                  "expression": {
                     "type": "string",
-                    "description": "The operation to perform. See description for full list.",
-                    "example": "evaluate",
-                    "enum": [
-                      "evaluate",
-                      "add",
-                      "subtract",
-                      "multiply",
-                      "divide",
-                      "sqrt",
-                      "power",
-                      "modulo",
-                      "abs",
-                      "multiplyExponents",
-                      "divideExponents",
-                      "areaCircle",
-                      "areaRectangle",
-                      "areaSquare",
-                      "areaTriangle",
-                      "areaTrapezoid",
-                      "areaEllipse",
-                      "perimeterCircle",
-                      "perimeterRectangle",
-                      "perimeterSquare",
-                      "perimeterTriangle",
-                      "volumeSphere",
-                      "volumeCylinder",
-                      "volumeCone",
-                      "volumeCube",
-                      "volumeRectangularPrism",
-                      "sin",
-                      "cos",
-                      "tan",
-                      "asin",
-                      "acos",
-                      "atan",
-                      "sinA",
-                      "cosA",
-                      "tanA",
-                      "log",
-                      "log10",
-                      "ln",
-                      "slope",
-                      "distance",
-                      "midpoint",
-                      "celsiusToFahrenheit",
-                      "fahrenheitToCelsius",
-                      "speed",
-                      "distance",
-                      "time"
-                    ]
-                  },
-                  "params": {
-                    "type": "object",
-                    "description": "Parameters for the operation. Required fields depend on the operation.",
-                    "example": {
-                      "expression": "2 + 2"
-                    },
-                    "additionalProperties": true
+                    "description": "A mathematical expression in mathjs syntax or plain English.",
+                    "example": "sqrt(144)"
                   }
                 }
               }
@@ -457,10 +401,13 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "operation": {
-                      "type": "string"
+                    "result": {
+                      "description": "The computed value (number, boolean, string, or array depending on the expression)"
                     },
-                    "result": {}
+                    "expression": {
+                      "type": "string",
+                      "description": "The expression that was evaluated. For natural language input this shows the normalised mathjs form."
+                    }
                   }
                 }
               }

@@ -19,8 +19,8 @@
     },
     {
       "id": "calculator",
-      "name": "Perform a calculation",
-      "description": "Deterministic arithmetic, scientific, geometric, trigonometric, and unit-conversion calculations.",
+      "name": "Evaluate a mathematical expression",
+      "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math.",
       "endpoint": "https://api.lightningapi.tools",
       "path": "/calculator/calculate",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",

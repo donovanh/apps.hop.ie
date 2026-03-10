@@ -1,19 +1,3 @@
-// Quick-start curl line hover
-const quickStart = document.getElementById('quick-start');
-if (quickStart) {
-  const pre = quickStart.nextElementSibling && quickStart.nextElementSibling.nextElementSibling;
-  const code = pre && pre.querySelector('code');
-  if (code) {
-    const lines = code.textContent.split('\n');
-    code.innerHTML = lines.map(line => {
-      const isCurl = line.trimStart().startsWith('curl');
-      return `<span class="code-line${isCurl ? ' curl-line' : ''}">${
-        line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      }</span>`;
-    }).join('\n');
-  }
-}
-
 const STORAGE_KEY = 'hopie_api_key';
 
 // Try-it form API key field
