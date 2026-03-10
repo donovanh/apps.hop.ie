@@ -10,8 +10,8 @@
   --border:       #1c1c1c;
   --border-bright:#2e2e2e;
   --text:         #d0d0d0;
-  --muted:        #4e4e4e;
-  --muted-bright: #707070;
+  --muted:        #6a6a6a;
+  --muted-bright: #909090;
   --accent:       #00e87a;
   --accent-dim:   rgba(0, 232, 122, 0.07);
   --accent-glow:  rgba(0, 232, 122, 0.22);
@@ -371,6 +371,16 @@ pre code {
   color: #b0d4b0;
   font-size: 13px;
 }
+
+/* ── Quick-start curl hover ── */
+.code-line { display: block; transition: color 0.15s; }
+.curl-line { cursor: default; border-radius: 3px; }
+.curl-line:hover {
+  color: #fff;
+  background: rgba(0, 232, 122, 0.08);
+  outline: 1px solid rgba(0, 232, 122, 0.15);
+}
+pre:has(.curl-line:hover) .code-line:not(:hover) { color: #506450; }
 
 /* ── Cards / surfaces ── */
 .card {
