@@ -62,18 +62,18 @@
 <div id="quick-start"></div>
 <h2>Quick start</h2>
 <pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your API key
-curl -X POST https://api.hop.ie/api/v1/credits \
+curl -X POST https://api.lightningapi.tools/api/v1/credits \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;quantity&quot;: 1000}'
 
 # 2. Pay the Lightning invoice, then verify:
-curl -X POST https://api.hop.ie/api/v1/credits/verify \
+curl -X POST https://api.lightningapi.tools/api/v1/credits/verify \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;invoiceId&quot;: &quot;&lt;id&gt;&quot;, &quot;quantity&quot;: 1000}'
 # → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;credits&quot;: 1000&quot;... }
 
 # 3. Call a tool
-curl -X POST https://api.hop.ie/email-validator/validate \
+curl -X POST https://api.lightningapi.tools/email-validator/validate \
   -H &quot;Authorization: Bearer &lt;apiKey&gt;&quot; \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;email&quot;: &quot;test@example.com&quot;, &quot;tier&quot;: &quot;basic&quot;}'
@@ -81,7 +81,7 @@ curl -X POST https://api.hop.ie/email-validator/validate \
 
   </main>
   <footer class="site-footer">
-    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.hop.ie/health">API status</a></p>
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
   </footer>
   <script src="/assets/staging.js"></script>
   <script src="/assets/try-it.js"></script>

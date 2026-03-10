@@ -2,15 +2,15 @@
   "name": "Lightning Tools",
   "version": "1.0.0",
   "description": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning.",
-  "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+  "openapi": "https://lightningapi.tools/.well-known/openapi.json",
   "services": [
     {
       "id": "email-validator",
       "name": "Validate an email address",
       "description": "Validates an email address with configurable depth.",
-      "endpoint": "https://api.hop.ie",
+      "endpoint": "https://api.lightningapi.tools",
       "path": "/email-validator/validate",
-      "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": {
         "basic": 1,
         "dns": 3,
@@ -21,41 +21,41 @@
       "id": "calculator",
       "name": "Perform a calculation",
       "description": "Deterministic arithmetic, scientific, geometric, trigonometric, and unit-conversion calculations.",
-      "endpoint": "https://api.hop.ie",
+      "endpoint": "https://api.lightningapi.tools",
       "path": "/calculator/calculate",
-      "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
     },
     {
       "id": "qr-code",
       "name": "Generate a QR code",
       "description": "Generates a QR code as a base64 PNG string or SVG string.",
-      "endpoint": "https://api.hop.ie",
+      "endpoint": "https://api.lightningapi.tools",
       "path": "/qr-code/generate",
-      "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
     },
     {
       "id": "readability",
       "name": "Extract readable content from a URL",
       "description": "Fetches a URL and extracts clean article content using Mozilla Readability — the same engine as Firefox Reader View.",
-      "endpoint": "https://api.hop.ie",
+      "endpoint": "https://api.lightningapi.tools",
       "path": "/readability/extract",
-      "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 2
     },
     {
       "id": "phone-validator",
       "name": "Validate a phone number",
       "description": "Validates and parses a phone number using libphonenumber-js.",
-      "endpoint": "https://api.hop.ie",
+      "endpoint": "https://api.lightningapi.tools",
       "path": "/phone-validator/validate",
-      "openapi": "https://apps.hop.ie/.well-known/openapi.json",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
     }
   ],
   "payment": {
-    "endpoint": "https://api.hop.ie/api/v1/credits",
+    "endpoint": "https://api.lightningapi.tools/api/v1/credits",
     "protocol": "Lightning",
     "network": "Lightning",
     "rates": "1 sat = 1 credit"

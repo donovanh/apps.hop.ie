@@ -5,12 +5,12 @@
     "description": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning, spend them on tool calls. Every response includes X-Credits-Remaining so agents can track their balance.",
     "version": "1.0.0",
     "contact": {
-      "url": "https://apps.hop.ie"
+      "url": "https://lightningapi.tools"
     }
   },
   "servers": [
     {
-      "url": "https://api.hop.ie",
+      "url": "https://api.lightningapi.tools",
       "description": "Production"
     }
   ],

@@ -10,9 +10,9 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://apps.hop.ie/.well-known/openapi.json"
+    "url": "https://lightningapi.tools/.well-known/openapi.json"
   },
-  "logo_url": "https://apps.hop.ie/assets/logo.png",
+  "logo_url": "https://lightningapi.tools/assets/logo.png",
   "contact_email": "hello@hop.ie",
-  "legal_info_url": "https://apps.hop.ie"
+  "legal_info_url": "https://lightningapi.tools"
 }

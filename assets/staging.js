@@ -2,7 +2,7 @@
   const STAGING_MODE_KEY = 'hopie_staging_mode';
   const STAGING_PWD_KEY  = 'hopie_staging_key';
   const STAGING_ORIGIN   = 'https://api-staging.hop.ie';
-  const PROD_ORIGIN      = 'https://api.hop.ie';
+  const PROD_ORIGIN      = 'https://api.lightningapi.tools';
 
   // Activate from ?staging=true
   if (new URLSearchParams(window.location.search).get('staging') === 'true') {
