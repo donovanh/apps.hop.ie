@@ -15,7 +15,9 @@ const step3 = document.getElementById('step-3');
 const liveRegion = document.getElementById('buy-live-region');
 
 // ── Amount state elements ────────────────────────────────────
-const existingApiKeyInput = document.getElementById('existing-api-key');
+const existingApiKeyInput  = document.getElementById('existing-api-key');
+const useSavedKeyField     = document.getElementById('use-saved-key-field');
+const useSavedKeyCheckbox  = document.getElementById('use-saved-key');
 const qtyInput       = document.getElementById('buy-quantity');
 const qtyError       = document.getElementById('quantity-error');
 const btnGenerate    = document.getElementById('btn-generate');
@@ -230,6 +232,18 @@ btnSaveKey.addEventListener('click', () => {
     // localStorage unavailable (e.g. private browsing) — silent fail
   }
 });
+
+// ── Pre-fill from localStorage ───────────────────────────────
+(function initSavedKey() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    useSavedKeyField.style.display = '';
+    useSavedKeyCheckbox.addEventListener('change', () => {
+      existingApiKeyInput.value = useSavedKeyCheckbox.checked ? saved : '';
+    });
+  } catch (_) { /* localStorage unavailable */ }
+})();
 
 // ── Verify payment and show success ──────────────────────────
 async function verifyPayment() {
