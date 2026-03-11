@@ -15,6 +15,7 @@ const step3 = document.getElementById('step-3');
 const liveRegion = document.getElementById('buy-live-region');
 
 // ── Amount state elements ────────────────────────────────────
+const existingApiKeyInput = document.getElementById('existing-api-key');
 const qtyInput       = document.getElementById('buy-quantity');
 const qtyError       = document.getElementById('quantity-error');
 const btnGenerate    = document.getElementById('btn-generate');
@@ -43,6 +44,7 @@ const bodySuccess     = document.getElementById('body-success');
 // ── Session state ────────────────────────────────────────────
 let currentInvoiceId = null;
 let currentQuantity  = null;
+let existingApiKey   = null;
 
 // ── EventSource (SSE) ─────────────────────────────────────────
 let currentEventSource = null;
@@ -68,7 +70,7 @@ async function startStagingPoller() {
       const res = await fetch(`${API_BASE}/credits/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
+        body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity, ...(existingApiKey ? { existingApiKey } : {}) }),
       });
       if (res.ok) {
         const data = await res.json();
@@ -160,7 +162,7 @@ function showSuccess(data) {
   focusHeading(stateSuccess);
   announce('Payment confirmed. Your API key is ready.');
   if (data) {
-    apiKeyOut.value = data.apiKey || '';
+    apiKeyOut.value = data.apiKey || existingApiKey || '';
     saveKeyStatus.textContent = '';
     btnSaveKey.disabled = false;
     showResponse(responseSuccess, statusSuccess, bodySuccess, '200', data);
@@ -198,6 +200,7 @@ btnBack.addEventListener('click', () => {
   stopStagingPoller();
   currentInvoiceId = null;
   currentQuantity  = null;
+  existingApiKey   = null;
   responseAmount.style.display = 'none';
   showAmount();
 });
@@ -234,7 +237,7 @@ async function verifyPayment() {
     const res = await fetch(`${API_BASE}/credits/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity }),
+      body: JSON.stringify({ invoiceId: currentInvoiceId, quantity: currentQuantity, ...(existingApiKey ? { existingApiKey } : {}) }),
     });
     const data = await res.json();
     if (res.ok) {
@@ -255,10 +258,15 @@ btnGenerate.addEventListener('click', async () => {
   btnGenerate.textContent = 'Requesting invoice…';
 
   try {
+    existingApiKey = existingApiKeyInput.value.trim() || null;
+
     const res = await fetch(`${API_BASE}/credits`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quantity }),
+      body: JSON.stringify({
+        quantity,
+        ...(existingApiKey ? { apiKey: existingApiKey } : {}),
+      }),
     });
 
     const data = await res.json();

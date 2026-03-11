@@ -1,8 +1,8 @@
 (function () {
   const STAGING_MODE_KEY = 'hopie_staging_mode';
-  const STAGING_PWD_KEY  = 'hopie_staging_key';
-  const STAGING_ORIGIN   = 'https://api-staging.hop.ie';
-  const PROD_ORIGIN      = 'https://api.lightningapi.tools';
+  const STAGING_PWD_KEY = 'hopie_staging_key';
+  const STAGING_ORIGIN = 'https://api-staging.lightningapi.tools';
+  const PROD_ORIGIN = 'https://api.lightningapi.tools';
 
   // Activate from ?staging=true
   if (new URLSearchParams(window.location.search).get('staging') === 'true') {
@@ -20,15 +20,17 @@
   // Patch fetch: rewrite URLs, inject key header, clear key on 401
   const _fetch = window.fetch;
   window.fetch = function (resource, init) {
-    if (typeof resource === 'string' &&
-        (resource.includes(PROD_ORIGIN) || resource.includes(STAGING_ORIGIN))) {
+    if (
+      typeof resource === 'string' &&
+      (resource.includes(PROD_ORIGIN) || resource.includes(STAGING_ORIGIN))
+    ) {
       resource = resource.replace(PROD_ORIGIN, STAGING_ORIGIN);
       const key = localStorage.getItem(STAGING_PWD_KEY);
       init = {
         ...(init || {}),
         headers: { ...(init?.headers || {}), ...(key ? { 'X-Staging-Key': key } : {}) },
       };
-      return _fetch.call(this, resource, init).then(res => {
+      return _fetch.call(this, resource, init).then((res) => {
         if (res.status === 401) {
           localStorage.removeItem(STAGING_PWD_KEY);
           const banner = document.getElementById('staging-banner');
@@ -44,7 +46,7 @@
   async function hashPassword(password) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
     return Array.from(new Uint8Array(buf))
-      .map(b => b.toString(16).padStart(2, '0'))
+      .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
   }
 
@@ -58,19 +60,21 @@
     ].join('');
 
     const input = document.getElementById('staging-pwd');
-    const btn   = document.getElementById('staging-enter');
+    const btn = document.getElementById('staging-enter');
 
     function submit() {
       const val = input.value.trim();
       if (!val) return;
-      hashPassword(val).then(hash => {
+      hashPassword(val).then((hash) => {
         localStorage.setItem(STAGING_PWD_KEY, hash);
         renderActive(el);
       });
     }
 
     btn.onclick = submit;
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+    });
     input.focus();
   }
 
@@ -98,4 +102,4 @@
       renderPrompt(banner);
     }
   });
-}());
+})();

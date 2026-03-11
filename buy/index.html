@@ -67,6 +67,17 @@
       <span class="field-error" id="quantity-error" role="alert"></span>
     </div>
 
+    <div class="field">
+      <label for="existing-api-key">Existing API key <span class="field-optional">(optional — to top up)</span></label>
+      <input
+        type="text"
+        id="existing-api-key"
+        placeholder="sk_... leave blank to create new account"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+
     <button class="btn" id="btn-generate">Generate invoice ⚡</button>
 
     <div class="try-it-response" id="response-amount">
