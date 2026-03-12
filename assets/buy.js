@@ -1,5 +1,5 @@
 const API_BASE = window.stagingApiBase || 'https://api.lightningapi.tools/api/v1';
-// STORAGE_KEY is declared in try-it.js (loaded globally) as 'hopie_api_key'
+const STORAGE_KEY = 'lightningtools_api_key';
 
 // ── State refs ──────────────────────────────────────────────
 const stateAmount  = document.getElementById('state-amount');

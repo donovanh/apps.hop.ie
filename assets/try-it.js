@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'hopie_api_key';
+const STORAGE_KEY = 'lightningtools_api_key';
 
 // Try-it form API key field
 const formKeyInput = document.getElementById('try-it-api-key');
