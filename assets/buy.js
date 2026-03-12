@@ -203,6 +203,8 @@ btnBack.addEventListener('click', () => {
   currentInvoiceId = null;
   currentQuantity  = null;
   existingApiKey   = null;
+  existingApiKeyInput.value = '';
+  useSavedKeyCheckbox.checked = false;
   responseAmount.style.display = 'none';
   showAmount();
 });
@@ -236,11 +238,12 @@ btnSaveKey.addEventListener('click', () => {
 // ── Pre-fill from localStorage ───────────────────────────────
 (function initSavedKey() {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return;
-    useSavedKeyField.style.display = '';
+    if (!localStorage.getItem(STORAGE_KEY)) return;
+    useSavedKeyField.style.display = 'block';
     useSavedKeyCheckbox.addEventListener('change', () => {
-      existingApiKeyInput.value = useSavedKeyCheckbox.checked ? saved : '';
+      existingApiKeyInput.value = useSavedKeyCheckbox.checked
+        ? (localStorage.getItem(STORAGE_KEY) || '')
+        : '';
     });
   } catch (_) { /* localStorage unavailable */ }
 })();
