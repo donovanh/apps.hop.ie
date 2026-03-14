@@ -27,7 +27,7 @@
   <header class="service-header">
     <p class="breadcrumb"><a href="/">Home</a> / Services</p>
     <h1>Calculator</h1>
-    <p class="service-desc">Evaluate any mathematical expression — arithmetic, algebra, trig, logarithms, unit conversions, and plain English queries. Always deterministic, never hallucinates.</p>
+    <p class="service-desc">Evaluate mathematical expressions: arithmetic, algebra, trig, logarithms, unit conversions, and plain English queries.</p>
     
     <div class="credit-badge">⚡ 1 credit per call</div>
     
@@ -89,7 +89,7 @@
 
   <section class="card">
     <h2>Why use this</h2>
-<p>LLMs burn tokens reasoning through maths and still produce wrong answers. One API call costs 1 credit and is always deterministic. Accepts mathjs syntax or plain English — no need to format a structured request.</p>
+<p>Models get maths wrong. This offloads calculation to a proper evaluator. Accepts mathjs syntax or plain English.</p>
 <h2>Pricing</h2>
 <table>
 <thead>
@@ -105,7 +105,7 @@
 </code></pre>
 <pre><code class="language-json">{ &quot;expression&quot;: &quot;square root of 144&quot; }
 </code></pre>
-<p>The response always echoes the expression that was evaluated (plain English input is shown in its normalised mathjs form):</p>
+<p>Plain English input is echoed back in its normalised mathjs form:</p>
 <pre><code class="language-json">{ &quot;result&quot;: 12, &quot;expression&quot;: &quot;sqrt(144)&quot; }
 </code></pre>
 <hr>

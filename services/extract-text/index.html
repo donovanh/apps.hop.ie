@@ -27,7 +27,7 @@
   <header class="service-header">
     <p class="breadcrumb"><a href="/">Home</a> / Services</p>
     <h1>Text Extractor</h1>
-    <p class="service-desc">Fetch any URL and get back clean readable text — title, plain text, clean HTML, excerpt, byline, and word count. Powered by Mozilla Readability, the same engine as Firefox Reader View.</p>
+    <p class="service-desc">Fetch any URL and get back clean readable text: title, plain text, clean HTML, excerpt, byline, and word count. Powered by Mozilla Readability, the same library that drives Firefox Reader View.</p>
     
     <div class="credit-badge">⚡ 2 credits per call</div>
     
@@ -89,16 +89,14 @@
 
   <section class="card">
     <h2>Why use this</h2>
-<p>AI agents can't fetch and clean web pages on their own. Here's why that matters:</p>
-<p><strong>How it works:</strong> The service fetches the URL server-side, parses the raw HTML, and runs it through Mozilla Readability — the open-source library that powers Firefox Reader View. Readability strips navigation menus, ads, footers, sidebars, and scripts, leaving only the article body. The result is clean, structured text ready to pass directly to an LLM or process programmatically.</p>
-<p><strong>Why AIs can't do this themselves:</strong> Language models have no HTTP access at inference time — they can't retrieve a URL. Even if an agent could fetch the raw HTML, passing it to an LLM wastes context window on boilerplate (a typical news page is 80–90% non-content). And because the service runs server-side, it handles redirects, cookies, and compressed responses that would trip up a naive client.</p>
-<p><strong>When to use it:</strong></p>
+<p>Language models can't retrieve URLs at inference time, and raw HTML is mostly noise. A typical news page is 80-90% navigation, ads, and scripts.</p>
+<p>This service fetches the URL server-side, strips the boilerplate using Mozilla Readability (the library that powers Firefox Reader View), and returns just the article content. It handles redirects, cookies, and compressed responses without any extra work on your end.</p>
+<p>Good for:</p>
 <ul>
-<li>Summarise a news article or blog post without passing raw HTML to your LLM</li>
-<li>Pull developer documentation (MDN, GitHub READMEs, API docs) into agent context</li>
-<li>Research pipelines that need clean article text before analysis</li>
-<li>Citation and fact-checking tasks where the agent needs the article body</li>
-<li>Any workflow where the agent is given a URL and needs to act on its content</li>
+<li>Summarising articles without feeding raw HTML to your model</li>
+<li>Pulling developer docs (MDN, GitHub READMEs, API references) into context</li>
+<li>Research pipelines that need article text before analysis</li>
+<li>Fact-checking tasks where the model needs the actual page content</li>
 </ul>
 <h2>Pricing</h2>
 <table>
@@ -109,7 +107,7 @@
 </tr>
 </thead>
 </table>
-<p>2 credits covers the server-side HTTP fetch, HTML parse, and text extraction. The call is always charged if the URL is reachable — even if the page has no extractable article content (null fields returned).</p>
+<p>Charged on any reachable URL, including pages with no extractable content.</p>
 <h2>Request format</h2>
 <pre><code class="language-json">{ &quot;url&quot;: &quot;https://example.com/article&quot; }
 </code></pre>
@@ -174,7 +172,7 @@
 </tr>
 </tbody>
 </table>
-<p>All fields except <code>url</code> are nullable. A null result means Readability couldn't identify an article — this is not an error and credits are still charged.</p>
+<p>All fields except <code>url</code> are nullable.</p>
 <h2>Errors (400, no charge)</h2>
 <table>
 <thead>
