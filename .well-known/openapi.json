@@ -192,16 +192,16 @@
       "post": {
         "operationId": "validateEmail",
         "summary": "Validate an email address",
-        "description": "Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score. Cost: 2 credits per call. The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
+        "description": "Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score. Cost: 2 credits per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice.",
         "x-price": 2,
         "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": { "type": "string", "format": "uuid" },
-            "description": "Unique key per request. Retry with the same key without double-charging."
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
           }
         ],
         "requestBody": {
@@ -259,16 +259,16 @@
       "post": {
         "operationId": "calculate",
         "summary": "Evaluate a mathematical expression",
-        "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math. Accepts mathjs syntax (e.g. 'sqrt(144)', 'log(100, 10)', '1 mile to km') or plain English (e.g. 'square root of 144', '15% of 340', '100 celsius to fahrenheit'). Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math. Accepts mathjs syntax (e.g. 'sqrt(144)', 'log(100, 10)', '1 mile to km') or plain English (e.g. 'square root of 144', '15% of 340', '100 celsius to fahrenheit'). Cost: 1 credit per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice.",
         "x-price": 1,
         "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": { "type": "string", "format": "uuid" },
-            "description": "Unique key per request. Retry with the same key without double-charging."
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
           }
         ],
         "requestBody": {
@@ -322,16 +322,16 @@
       "post": {
         "operationId": "generateQrCode",
         "summary": "Generate a QR code",
-        "description": "Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. The Idempotency-Key header is required.",
+        "description": "Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice.",
         "x-price": 1,
         "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": { "type": "string", "format": "uuid" },
-            "description": "Unique key per request. Retry with the same key without double-charging."
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
           }
         ],
         "requestBody": {
@@ -407,9 +407,9 @@
           {
             "name": "Idempotency-Key",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": { "type": "string", "format": "uuid" },
-            "description": "Unique key per request. Retry with the same key without double-charging."
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
           }
         ],
         "requestBody": {
@@ -471,9 +471,9 @@
           {
             "name": "Idempotency-Key",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": { "type": "string", "format": "uuid" },
-            "description": "Unique key per request. Retry with the same key without double-charging."
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
           }
         ],
         "requestBody": {
