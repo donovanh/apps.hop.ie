@@ -243,12 +243,8 @@
       "post": {
         "operationId": "validateEmail",
         "summary": "Validate an email address",
-        "description": "Validates an email address with configurable depth. Cost: 1 credit (basic), 3 credits (dns), 5 credits (full). The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
-        "x-price": {
-          "basic": 1,
-          "dns": 3,
-          "full": 5
-        },
+        "description": "Validates an email address and returns a comprehensive quality signal: syntax, DNS, MX, disposable check, role account detection, free provider detection, domain type, domain age, and a quality score. Cost: 2 credits per call. The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
+        "x-price": 2,
         "tags": [
           "Tools"
         ],
@@ -277,17 +273,7 @@
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "example": "user@example.com"
-                  },
-                  "tier": {
-                    "type": "string",
-                    "enum": [
-                      "basic",
-                      "dns",
-                      "full"
-                    ],
-                    "default": "basic",
-                    "description": "basic (1cr): format only. dns (3cr): + domain lookup. full (5cr): + MX records."
+                    "example": "john@acmecorp.com"
                   }
                 }
               }
@@ -307,28 +293,48 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "valid": {
-                      "type": "boolean"
-                    },
                     "email": {
                       "type": "string"
                     },
-                    "tier": {
-                      "type": "string"
+                    "valid": {
+                      "type": "boolean",
+                      "description": "true only if syntax, DNS, and MX all pass"
                     },
-                    "checks": {
-                      "type": "object",
-                      "properties": {
-                        "format": {
-                          "type": "boolean"
-                        },
-                        "dns": {
-                          "type": "boolean"
-                        },
-                        "mx": {
-                          "type": "boolean"
-                        }
-                      }
+                    "syntax": {
+                      "type": "boolean"
+                    },
+                    "dns": {
+                      "type": "boolean"
+                    },
+                    "mx": {
+                      "type": "boolean"
+                    },
+                    "role_account": {
+                      "type": "boolean",
+                      "description": "Local part is a role address (admin, support, sales…)"
+                    },
+                    "disposable": {
+                      "type": "boolean",
+                      "description": "Domain is a known throwaway provider"
+                    },
+                    "free_provider": {
+                      "type": "boolean",
+                      "description": "Domain is a known free email provider (Gmail, Yahoo…)"
+                    },
+                    "domain_type": {
+                      "type": "string",
+                      "enum": ["disposable", "free", "corporate", "unknown"]
+                    },
+                    "domain_age_days": {
+                      "type": "integer",
+                      "nullable": true,
+                      "description": "Days since domain registration. null if WHOIS unavailable."
+                    },
+                    "score": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "description": "0–1 quality signal. 1 = strong signal of a real address."
                     }
                   }
                 }

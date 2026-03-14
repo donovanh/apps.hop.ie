@@ -27,9 +27,9 @@
   <header class="service-header">
     <p class="breadcrumb"><a href="/">Home</a> / Services</p>
     <h1>Email Validator</h1>
-    <p class="service-desc">Validate email addresses against format rules, DNS records, and MX routing.</p>
+    <p class="service-desc">Validate an email address and get back a full quality signal: syntax, DNS, MX, disposable check, role account detection, and a quality score.</p>
     
-    <div class="credit-badge">⚡ 1–5 credits per call</div>
+    <div class="credit-badge">⚡ 2 credits per call</div>
     
   </header>
 
@@ -72,27 +72,6 @@
     
   </div>
   
-  <div class="field">
-    <label for="field-tier">Validation tier</label>
-    
-      <select id="field-tier" name="tier">
-        
-          
-            <option value="basic">basic — Format check only (1 credit)</option>
-          
-        
-          
-            <option value="dns">dns — Format + DNS lookup (3 credits)</option>
-          
-        
-          
-            <option value="full">full — Format + DNS + MX records (5 credits)</option>
-          
-        
-      </select>
-    
-  </div>
-  
 
   <button type="submit" class="btn" id="try-it-btn">Send request</button>
 
@@ -109,41 +88,172 @@
   </section>
 
   <section class="card">
-    <h2>Validation tiers</h2>
+    <h2>Why use this</h2>
+<p>Agents don't just want valid/invalid. They want to decide: should I contact this person? Is this a real person or a bot? Is this address worth the effort?</p>
+<p>One call runs all checks and returns a structured signal.</p>
+<h2>Pricing</h2>
 <table>
 <thead>
 <tr>
-<th>Tier</th>
-<th>Checks</th>
-<th>Credits</th>
+<th>Any email</th>
+<th>2 credits</th>
+</tr>
+</thead>
+</table>
+<h2>Request format</h2>
+<pre><code class="language-json">{ &quot;email&quot;: &quot;john@acmecorp.com&quot; }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>basic</code></td>
-<td>Email format (regex)</td>
-<td>1</td>
-</tr>
-<tr>
-<td><code>dns</code></td>
-<td>Format + DNS lookup</td>
-<td>3</td>
-</tr>
-<tr>
-<td><code>full</code></td>
-<td>Format + DNS + MX records</td>
-<td>5</td>
+<td><code>email</code></td>
+<td>string</td>
+<td>Required. Must be a valid email format.</td>
 </tr>
 </tbody>
 </table>
-<h2>Notes</h2>
-<ul>
-<li>Invalid format returns <code>valid: false</code> immediately without DNS lookup</li>
-<li>DNS and MX checks add ~100–500ms latency depending on the domain</li>
-<li>Every successful response includes an <code>X-Credits-Remaining</code> header with your updated balance:<pre><code>X-Credits-Remaining: 94
+<h2>Response</h2>
+<pre><code class="language-json">{
+  &quot;email&quot;: &quot;john@acmecorp.com&quot;,
+  &quot;valid&quot;: true,
+  &quot;syntax&quot;: true,
+  &quot;dns&quot;: true,
+  &quot;mx&quot;: true,
+  &quot;role_account&quot;: false,
+  &quot;disposable&quot;: false,
+  &quot;free_provider&quot;: false,
+  &quot;domain_type&quot;: &quot;corporate&quot;,
+  &quot;domain_age_days&quot;: 3200,
+  &quot;score&quot;: 0.93
+}
 </code></pre>
-</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>valid</code></td>
+<td>boolean</td>
+<td><code>true</code> only if syntax, DNS, and MX all pass</td>
+</tr>
+<tr>
+<td><code>syntax</code></td>
+<td>boolean</td>
+<td>Basic format check</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>boolean</td>
+<td>Domain resolves in DNS</td>
+</tr>
+<tr>
+<td><code>mx</code></td>
+<td>boolean</td>
+<td>Domain has mail exchange records</td>
+</tr>
+<tr>
+<td><code>role_account</code></td>
+<td>boolean</td>
+<td>Local part is a role address (admin, support, sales…)</td>
+</tr>
+<tr>
+<td><code>disposable</code></td>
+<td>boolean</td>
+<td>Domain is a known throwaway provider</td>
+</tr>
+<tr>
+<td><code>free_provider</code></td>
+<td>boolean</td>
+<td>Domain is a known free email provider (Gmail, Yahoo…)</td>
+</tr>
+<tr>
+<td><code>domain_type</code></td>
+<td>string</td>
+<td><code>&quot;disposable&quot;</code> | <code>&quot;free&quot;</code> | <code>&quot;corporate&quot;</code> | <code>&quot;unknown&quot;</code></td>
+</tr>
+<tr>
+<td><code>domain_age_days</code></td>
+<td>number | null</td>
+<td>Days since domain registration. <code>null</code> if WHOIS unavailable.</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>number</td>
+<td>0–1 quality signal. 1 = strong signal of a real address.</td>
+</tr>
+</tbody>
+</table>
+<h2>Score</h2>
+<p>Starts at 1.0. Deductions:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Deduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Syntax / DNS / MX fail</td>
+<td>→ 0 immediately</td>
+</tr>
+<tr>
+<td>Disposable domain</td>
+<td>−0.4</td>
+</tr>
+<tr>
+<td>Role account</td>
+<td>−0.2</td>
+</tr>
+<tr>
+<td>Free provider</td>
+<td>−0.1</td>
+</tr>
+<tr>
+<td>Domain age &lt; 30 days</td>
+<td>−0.2</td>
+</tr>
+<tr>
+<td>Domain age 30–364 days</td>
+<td>−0.1</td>
+</tr>
+<tr>
+<td>Domain age unknown</td>
+<td>−0.05</td>
+</tr>
+</tbody>
+</table>
+<h2>Errors (400, no charge)</h2>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Email is required</code></td>
+<td>Empty email field</td>
+</tr>
+<tr>
+<td>Zod validation error</td>
+<td>Invalid email format</td>
+</tr>
+</tbody>
+</table>
 
   </section>
 
@@ -159,21 +269,23 @@ Content-Type: application/json
 
     <h3>Example request</h3>
     <pre><code>{
-  &quot;email&quot;: &quot;test@example.com&quot;,
-  &quot;tier&quot;: &quot;basic&quot;
+  &quot;email&quot;: &quot;john@acmecorp.com&quot;
 }
 </code></pre>
 
     <h3>Example response</h3>
     <pre><code>{
+  &quot;email&quot;: &quot;john@acmecorp.com&quot;,
   &quot;valid&quot;: true,
-  &quot;email&quot;: &quot;test@example.com&quot;,
-  &quot;tier&quot;: &quot;basic&quot;,
-  &quot;checks&quot;: {
-    &quot;format&quot;: true,
-    &quot;dns&quot;: false,
-    &quot;mx&quot;: false
-  }
+  &quot;syntax&quot;: true,
+  &quot;dns&quot;: true,
+  &quot;mx&quot;: true,
+  &quot;role_account&quot;: false,
+  &quot;disposable&quot;: false,
+  &quot;free_provider&quot;: false,
+  &quot;domain_type&quot;: &quot;corporate&quot;,
+  &quot;domain_age_days&quot;: 3200,
+  &quot;score&quot;: 0.93
 }
 </code></pre>
   </section>
