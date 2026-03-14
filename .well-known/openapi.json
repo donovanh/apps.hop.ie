@@ -43,10 +43,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Unauthorized"
-                }
+                "error": { "type": "string", "example": "Unauthorized" }
               }
             }
           }
@@ -59,14 +56,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Insufficient credits"
-                },
-                "required": {
-                  "type": "integer",
-                  "example": 3
-                }
+                "error": { "type": "string", "example": "Insufficient credits" },
+                "required": { "type": "integer", "example": 3 }
               }
             }
           }
@@ -79,17 +70,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "VALIDATION_ERROR"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "details": {
-                  "type": "array",
-                  "items": {}
-                }
+                "error": { "type": "string", "example": "VALIDATION_ERROR" },
+                "message": { "type": "string" },
+                "details": { "type": "array", "items": {} }
               }
             }
           }
@@ -104,18 +87,14 @@
         "summary": "Buy credits",
         "description": "Creates a Lightning invoice. Pay the invoice, then call /api/v1/credits/verify to receive your API key.",
         "security": [],
-        "tags": [
-          "Credits"
-        ],
+        "tags": ["Credits"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "quantity"
-                ],
+                "required": ["quantity"],
                 "properties": {
                   "quantity": {
                     "type": "integer",
@@ -147,29 +126,16 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "invoiceId": {
-                      "type": "string"
-                    },
-                    "invoice": {
-                      "type": "string",
-                      "description": "BOLT-11 Lightning invoice"
-                    },
-                    "amount": {
-                      "type": "integer",
-                      "description": "Amount in satoshis"
-                    },
-                    "accountId": {
-                      "type": "string",
-                      "format": "uuid"
-                    }
+                    "invoiceId": { "type": "string" },
+                    "invoice": { "type": "string", "description": "BOLT-11 Lightning invoice" },
+                    "amount": { "type": "integer", "description": "Amount in satoshis" },
+                    "accountId": { "type": "string", "format": "uuid" }
                   }
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" }
         }
       }
     },
@@ -179,19 +145,14 @@
         "summary": "Verify payment and receive API key",
         "description": "After paying the Lightning invoice, call this endpoint to confirm payment and receive your API key.",
         "security": [],
-        "tags": [
-          "Credits"
-        ],
+        "tags": ["Credits"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "invoiceId",
-                  "quantity"
-                ],
+                "required": ["invoiceId", "quantity"],
                 "properties": {
                   "invoiceId": {
                     "type": "string",
@@ -214,28 +175,16 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "apiKey": {
-                      "type": "string",
-                      "example": "sk_abc123..."
-                    },
-                    "credits": {
-                      "type": "integer"
-                    },
-                    "accountId": {
-                      "type": "string",
-                      "format": "uuid"
-                    }
+                    "apiKey": { "type": "string", "example": "sk_abc123..." },
+                    "credits": { "type": "integer" },
+                    "accountId": { "type": "string", "format": "uuid" }
                   }
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "402": {
-            "description": "Invoice not yet paid"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" },
+          "402": { "description": "Invoice not yet paid" }
         }
       }
     },
@@ -243,20 +192,15 @@
       "post": {
         "operationId": "validateEmail",
         "summary": "Validate an email address",
-        "description": "Validates an email address and returns a comprehensive quality signal: syntax, DNS, MX, disposable check, role account detection, free provider detection, domain type, domain age, and a quality score. Cost: 2 credits per call. The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
+        "description": "Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score. Cost: 2 credits per call. The Idempotency-Key header is required — use the same key to safely retry without being charged twice.",
         "x-price": 2,
-        "tags": [
-          "Tools"
-        ],
+        "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "description": "Unique key per request. Retry with the same key without double-charging."
           }
         ],
@@ -266,9 +210,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "email"
-                ],
+                "required": ["email"],
                 "properties": {
                   "email": {
                     "type": "string",
@@ -284,72 +226,32 @@
           "200": {
             "description": "Validation result",
             "headers": {
-              "X-Credits-Remaining": {
-                "$ref": "#/components/headers/XCreditsRemaining"
-              }
+              "X-Credits-Remaining": { "$ref": "#/components/headers/XCreditsRemaining" }
             },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "email": {
-                      "type": "string"
-                    },
-                    "valid": {
-                      "type": "boolean",
-                      "description": "true only if syntax, DNS, and MX all pass"
-                    },
-                    "syntax": {
-                      "type": "boolean"
-                    },
-                    "dns": {
-                      "type": "boolean"
-                    },
-                    "mx": {
-                      "type": "boolean"
-                    },
-                    "role_account": {
-                      "type": "boolean",
-                      "description": "Local part is a role address (admin, support, sales…)"
-                    },
-                    "disposable": {
-                      "type": "boolean",
-                      "description": "Domain is a known throwaway provider"
-                    },
-                    "free_provider": {
-                      "type": "boolean",
-                      "description": "Domain is a known free email provider (Gmail, Yahoo…)"
-                    },
-                    "domain_type": {
-                      "type": "string",
-                      "enum": ["disposable", "free", "corporate", "unknown"]
-                    },
-                    "domain_age_days": {
-                      "type": "integer",
-                      "nullable": true,
-                      "description": "Days since domain registration. null if WHOIS unavailable."
-                    },
-                    "score": {
-                      "type": "number",
-                      "minimum": 0,
-                      "maximum": 1,
-                      "description": "0–1 quality signal. 1 = strong signal of a real address."
-                    }
+                    "email": { "type": "string" },
+                    "valid": { "type": "boolean", "description": "true only if syntax, DNS, and MX all pass" },
+                    "syntax": { "type": "boolean" },
+                    "dns": { "type": "boolean" },
+                    "mx": { "type": "boolean" },
+                    "role_account": { "type": "boolean", "description": "Local part is a role address (admin, support, sales…)" },
+                    "disposable": { "type": "boolean", "description": "Domain is a known throwaway provider" },
+                    "free_provider": { "type": "boolean", "description": "Domain is a known free email provider" },
+                    "domain_type": { "type": "string", "enum": ["disposable", "free", "corporate", "unknown"] },
+                    "domain_age_days": { "type": "integer", "nullable": true, "description": "Days since domain registration. null if WHOIS unavailable." },
+                    "score": { "type": "number", "minimum": 0, "maximum": 1, "description": "0-1 quality signal. 1 = strong signal of a real address." }
                   }
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/PaymentRequired"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "402": { "$ref": "#/components/responses/PaymentRequired" }
         }
       }
     },
@@ -359,18 +261,13 @@
         "summary": "Evaluate a mathematical expression",
         "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math. Accepts mathjs syntax (e.g. 'sqrt(144)', 'log(100, 10)', '1 mile to km') or plain English (e.g. 'square root of 144', '15% of 340', '100 celsius to fahrenheit'). Cost: 1 credit per call. The Idempotency-Key header is required.",
         "x-price": 1,
-        "tags": [
-          "Tools"
-        ],
+        "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "description": "Unique key per request. Retry with the same key without double-charging."
           }
         ],
@@ -380,9 +277,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "expression"
-                ],
+                "required": ["expression"],
                 "properties": {
                   "expression": {
                     "type": "string",
@@ -398,9 +293,7 @@
           "200": {
             "description": "Calculation result",
             "headers": {
-              "X-Credits-Remaining": {
-                "$ref": "#/components/headers/XCreditsRemaining"
-              }
+              "X-Credits-Remaining": { "$ref": "#/components/headers/XCreditsRemaining" }
             },
             "content": {
               "application/json": {
@@ -419,15 +312,9 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/PaymentRequired"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "402": { "$ref": "#/components/responses/PaymentRequired" }
         }
       }
     },
@@ -437,18 +324,13 @@
         "summary": "Generate a QR code",
         "description": "Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. The Idempotency-Key header is required.",
         "x-price": 1,
-        "tags": [
-          "Tools"
-        ],
+        "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "description": "Unique key per request. Retry with the same key without double-charging."
           }
         ],
@@ -458,21 +340,16 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "text"
-                ],
+                "required": ["content"],
                 "properties": {
-                  "text": {
+                  "content": {
                     "type": "string",
                     "description": "Content to encode in the QR code",
                     "example": "https://example.com"
                   },
                   "format": {
                     "type": "string",
-                    "enum": [
-                      "png",
-                      "svg"
-                    ],
+                    "enum": ["png", "svg"],
                     "default": "png",
                     "description": "png returns a raw base64 string. svg returns an SVG string."
                   },
@@ -485,12 +362,7 @@
                   },
                   "errorCorrectionLevel": {
                     "type": "string",
-                    "enum": [
-                      "L",
-                      "M",
-                      "Q",
-                      "H"
-                    ],
+                    "enum": ["L", "M", "Q", "H"],
                     "default": "M",
                     "description": "L=7%, M=15%, Q=25%, H=30% data recovery capability"
                   }
@@ -503,39 +375,24 @@
           "200": {
             "description": "QR code generated",
             "headers": {
-              "X-Credits-Remaining": {
-                "$ref": "#/components/headers/XCreditsRemaining"
-              }
+              "X-Credits-Remaining": { "$ref": "#/components/headers/XCreditsRemaining" }
             },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "text": {
-                      "type": "string"
-                    },
-                    "format": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "string",
-                      "description": "Raw base64 PNG or SVG string"
-                    }
+                    "content": { "type": "string" },
+                    "format": { "type": "string" },
+                    "data": { "type": "string", "description": "Raw base64 PNG or SVG string" }
                   }
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/PaymentRequired"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "402": { "$ref": "#/components/responses/PaymentRequired" }
         }
       }
     },
@@ -545,18 +402,13 @@
         "summary": "Extract text from a URL",
         "description": "Fetches a URL and extracts clean readable text using Mozilla Readability. Returns title, plain text, clean HTML, excerpt, byline, and word count. Text is cleaned of excess whitespace and HTML artefacts. All fields except url are nullable. Cost: 2 credits per call.",
         "x-price": 2,
-        "tags": [
-          "Tools"
-        ],
+        "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "description": "Unique key per request. Retry with the same key without double-charging."
           }
         ],
@@ -566,9 +418,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "url"
-                ],
+                "required": ["url"],
                 "properties": {
                   "url": {
                     "type": "string",
@@ -585,61 +435,28 @@
           "200": {
             "description": "Extracted content. All fields except url are nullable — Readability may not extract every field from every page.",
             "headers": {
-              "X-Credits-Remaining": {
-                "$ref": "#/components/headers/XCreditsRemaining"
-              }
+              "X-Credits-Remaining": { "$ref": "#/components/headers/XCreditsRemaining" }
             },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "url": {
-                      "type": "string"
-                    },
-                    "title": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "byline": {
-                      "type": "string",
-                      "nullable": true,
-                      "description": "Author name or byline if detected"
-                    },
-                    "excerpt": {
-                      "type": "string",
-                      "nullable": true,
-                      "description": "Short excerpt or lede"
-                    },
-                    "html": {
-                      "type": "string",
-                      "nullable": true,
-                      "description": "Clean article HTML with boilerplate stripped"
-                    },
-                    "text": {
-                      "type": "string",
-                      "nullable": true,
-                      "description": "Plain text body"
-                    },
-                    "wordCount": {
-                      "type": "integer",
-                      "nullable": true,
-                      "description": "Word count of plain text body"
-                    }
+                    "url": { "type": "string" },
+                    "title": { "type": "string", "nullable": true },
+                    "byline": { "type": "string", "nullable": true, "description": "Author name or byline if detected" },
+                    "excerpt": { "type": "string", "nullable": true, "description": "Short excerpt or lede" },
+                    "html": { "type": "string", "nullable": true, "description": "Clean article HTML with boilerplate stripped" },
+                    "text": { "type": "string", "nullable": true, "description": "Plain text body" },
+                    "wordCount": { "type": "integer", "nullable": true, "description": "Word count of plain text body" }
                   }
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/PaymentRequired"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "402": { "$ref": "#/components/responses/PaymentRequired" }
         }
       }
     },
@@ -649,18 +466,13 @@
         "summary": "Validate a phone number",
         "description": "Validates and parses a phone number using libphonenumber-js. Returns country, type (MOBILE/FIXED_LINE/VOIP/etc.), and formatted variants. Invalid numbers return valid:false with HTTP 200 — credits are still charged. Cost: 1 credit per call.",
         "x-price": 1,
-        "tags": [
-          "Tools"
-        ],
+        "tags": ["Tools"],
         "parameters": [
           {
             "name": "Idempotency-Key",
             "in": "header",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "description": "Unique key per request. Retry with the same key without double-charging."
           }
         ],
@@ -670,9 +482,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "phone"
-                ],
+                "required": ["phone"],
                 "properties": {
                   "phone": {
                     "type": "string",
@@ -693,9 +503,7 @@
           "200": {
             "description": "Validation result. valid:false means the number is not a real number — this is not an error, credits are charged.",
             "headers": {
-              "X-Credits-Remaining": {
-                "$ref": "#/components/headers/XCreditsRemaining"
-              }
+              "X-Credits-Remaining": { "$ref": "#/components/headers/XCreditsRemaining" }
             },
             "content": {
               "application/json": {
@@ -704,43 +512,17 @@
                     {
                       "type": "object",
                       "properties": {
-                        "valid": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "phone": {
-                          "type": "string"
-                        },
-                        "country": {
-                          "type": "string",
-                          "example": "IE"
-                        },
-                        "countryCallingCode": {
-                          "type": "string",
-                          "example": "353"
-                        },
-                        "type": {
-                          "type": "string",
-                          "example": "MOBILE",
-                          "description": "MOBILE, FIXED_LINE, FIXED_LINE_OR_MOBILE, TOLL_FREE, PREMIUM_RATE, VOIP, UNKNOWN, etc."
-                        },
+                        "valid": { "type": "boolean", "enum": [true] },
+                        "phone": { "type": "string" },
+                        "country": { "type": "string", "example": "IE" },
+                        "countryCallingCode": { "type": "string", "example": "353" },
+                        "type": { "type": "string", "example": "MOBILE", "description": "MOBILE, FIXED_LINE, FIXED_LINE_OR_MOBILE, TOLL_FREE, PREMIUM_RATE, VOIP, UNKNOWN, etc." },
                         "formatted": {
                           "type": "object",
                           "properties": {
-                            "national": {
-                              "type": "string",
-                              "example": "086 123 4567"
-                            },
-                            "international": {
-                              "type": "string",
-                              "example": "+353 86 123 4567"
-                            },
-                            "e164": {
-                              "type": "string",
-                              "example": "+353861234567"
-                            }
+                            "national": { "type": "string", "example": "086 123 4567" },
+                            "international": { "type": "string", "example": "+353 86 123 4567" },
+                            "e164": { "type": "string", "example": "+353861234567" }
                           }
                         }
                       }
@@ -748,15 +530,8 @@
                     {
                       "type": "object",
                       "properties": {
-                        "valid": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "phone": {
-                          "type": "string"
-                        }
+                        "valid": { "type": "boolean", "enum": [false] },
+                        "phone": { "type": "string" }
                       }
                     }
                   ]
@@ -764,15 +539,9 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/PaymentRequired"
-          }
+          "400": { "$ref": "#/components/responses/ValidationError" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "402": { "$ref": "#/components/responses/PaymentRequired" }
         }
       }
     }
