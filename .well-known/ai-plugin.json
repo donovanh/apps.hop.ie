@@ -2,8 +2,8 @@
   "schema_version": "v1",
   "name_for_human": "Lightning Tools",
   "name_for_model": "lightning_tools",
-  "description_for_human": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning, then call email validation, phone validation, QR code generation, readability extraction, and calculator tools.",
-  "description_for_model": "Pay-per-call tool API using Bitcoin Lightning for credits. Purchase credits via POST /api/v1/credits (returns a Lightning invoice), verify payment via POST /api/v1/credits/verify (returns an API key). Use the API key as a Bearer token to call tools: email validation, phone validation, QR code generation, URL readability extraction, and arithmetic/scientific calculations. All tool calls require an Idempotency-Key header (UUID) to prevent double-charging on retries. Responses include X-Credits-Remaining header. 1 sat = 1 credit.",
+  "description_for_human": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning, then call email validation, phone validation, QR code generation, text extraction, and calculator tools.",
+  "description_for_model": "Pay-per-call tool API using Bitcoin Lightning for credits. Purchase credits via POST /api/v1/credits (returns a Lightning invoice), verify payment via POST /api/v1/credits/verify (returns an API key). Use the API key as a Bearer token to call tools: email validation, phone validation, QR code generation, URL text extraction, and arithmetic/scientific calculations. All tool calls require an Idempotency-Key header (UUID) to prevent double-charging on retries. Responses include X-Credits-Remaining header. 1 sat = 1 credit.",
   "auth": {
     "type": "user_http",
     "authorization_type": "bearer"

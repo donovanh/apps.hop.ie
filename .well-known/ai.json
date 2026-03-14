@@ -36,11 +36,11 @@
       "price": 1
     },
     {
-      "id": "readability",
-      "name": "Extract readable content from a URL",
-      "description": "Fetches a URL and extracts clean article content using Mozilla Readability — the same engine as Firefox Reader View.",
+      "id": "extract-text",
+      "name": "Extract text from a URL",
+      "description": "Fetches a URL and extracts clean readable text using Mozilla Readability.",
       "endpoint": "https://api.lightningapi.tools",
-      "path": "/readability/extract",
+      "path": "/extract-text",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 2
     },

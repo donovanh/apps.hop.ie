@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#060606">
-  <title>Readability Extractor | Lightning Tools</title>
+  <title>Text Extractor | Lightning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -26,8 +26,8 @@
 
   <header class="service-header">
     <p class="breadcrumb"><a href="/">Home</a> / Services</p>
-    <h1>Readability Extractor</h1>
-    <p class="service-desc">Fetch any URL and get back clean, readable article content — title, plain text, clean HTML, excerpt, byline, and word count. Powered by Mozilla Readability, the same engine as Firefox Reader View.</p>
+    <h1>Text Extractor</h1>
+    <p class="service-desc">Fetch any URL and get back clean readable text — title, plain text, clean HTML, excerpt, byline, and word count. Powered by Mozilla Readability, the same engine as Firefox Reader View.</p>
     
     <div class="credit-badge">⚡ 2 credits per call</div>
     
@@ -40,7 +40,7 @@
     </p>
 
     <form class="try-it" id="try-it-form"
-  data-endpoint="https://api.lightningapi.tools/readability/extract">
+  data-endpoint="https://api.lightningapi.tools/extract-text">
 
   <div class="field">
     <label for="try-it-api-key">API key</label>
@@ -109,7 +109,7 @@
 </tr>
 </thead>
 </table>
-<p>2 credits covers the server-side HTTP fetch, HTML parse, and Readability extraction. The call is always charged if the URL is reachable — even if the page has no extractable article content (null fields returned).</p>
+<p>2 credits covers the server-side HTTP fetch, HTML parse, and text extraction. The call is always charged if the URL is reachable — even if the page has no extractable article content (null fields returned).</p>
 <h2>Request format</h2>
 <pre><code class="language-json">{ &quot;url&quot;: &quot;https://example.com/article&quot; }
 </code></pre>
@@ -204,7 +204,7 @@
   <section class="card">
     <h2>API Reference</h2>
     <h3>Endpoint</h3>
-    <pre><code>POST https://api.lightningapi.tools/readability/extract</code></pre>
+    <pre><code>POST https://api.lightningapi.tools/extract-text</code></pre>
 
     <h3>Required headers</h3>
     <pre><code>Authorization: Bearer &lt;apiKey&gt;
@@ -222,7 +222,7 @@ Content-Type: application/json
   &quot;url&quot;: &quot;https://en.wikipedia.org/wiki/Node.js&quot;,
   &quot;title&quot;: &quot;Node.js&quot;,
   &quot;byline&quot;: null,
-  &quot;excerpt&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment...&quot;,
+  &quot;excerpt&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser.&quot;,
   &quot;html&quot;: &quot;&lt;div id=&#92;&quot;readability-page-1&#92;&quot;&gt;&lt;p&gt;Node.js is...&lt;/p&gt;&lt;/div&gt;&quot;,
   &quot;text&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment...&quot;,
   &quot;wordCount&quot;: 4821

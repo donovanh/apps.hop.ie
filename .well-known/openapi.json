@@ -533,11 +533,11 @@
         }
       }
     },
-    "/readability/extract": {
+    "/extract-text": {
       "post": {
-        "operationId": "extractReadability",
-        "summary": "Extract readable content from a URL",
-        "description": "Fetches a URL and extracts clean article content using Mozilla Readability — the same engine as Firefox Reader View. Returns title, plain text, clean HTML, excerpt, byline, and word count. All fields except url are nullable. Cost: 2 credits per call.",
+        "operationId": "extractText",
+        "summary": "Extract text from a URL",
+        "description": "Fetches a URL and extracts clean readable text using Mozilla Readability. Returns title, plain text, clean HTML, excerpt, byline, and word count. Text is cleaned of excess whitespace and HTML artefacts. All fields except url are nullable. Cost: 2 credits per call.",
         "x-price": 2,
         "tags": [
           "Tools"
