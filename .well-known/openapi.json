@@ -780,6 +780,646 @@
           }
         }
       }
+    },
+    "/date-utils/today": {
+      "post": {
+        "operationId": "dateUtilsToday",
+        "summary": "Get current date and time info",
+        "description": "Returns the current date, day of week, UTC offset, DST status, working day status, week number, quarter, days until month/quarter end, next working day, and upcoming holidays. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/Dublin",
+                    "description": "IANA timezone string. Default: UTC"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "IE",
+                    "description": "ISO 3166-1 alpha-2. Enables holiday data."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/convert-time": {
+      "post": {
+        "operationId": "dateUtilsConvertTime",
+        "summary": "Convert datetime between timezones",
+        "description": "Converts an ISO 8601 datetime from one IANA timezone to another, including UTC offset and DST info. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "datetime",
+                  "from_timezone",
+                  "to_timezone"
+                ],
+                "properties": {
+                  "datetime": {
+                    "type": "string",
+                    "example": "2026-03-15T14:30:00"
+                  },
+                  "from_timezone": {
+                    "type": "string",
+                    "example": "America/New_York"
+                  },
+                  "to_timezone": {
+                    "type": "string",
+                    "example": "Asia/Tokyo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/is-working-day": {
+      "post": {
+        "operationId": "dateUtilsIsWorkingDay",
+        "summary": "Check if a date is a working day",
+        "description": "Returns whether a date is a working day for a given country, including holiday details if not. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "country"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "2026-04-17"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "IE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/next-working-day": {
+      "post": {
+        "operationId": "dateUtilsNextWorkingDay",
+        "summary": "Find next or previous working day",
+        "description": "Finds the next (or previous) working day after a given date, skipping weekends and public holidays. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "country"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "2026-04-16"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "IE"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "forward",
+                      "backward"
+                    ],
+                    "default": "forward"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/add-working-days": {
+      "post": {
+        "operationId": "dateUtilsAddWorkingDays",
+        "summary": "Add working days to a date",
+        "description": "Adds N working days to a date (negative = backward), skipping weekends and public holidays. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "days",
+                  "country"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "2026-04-14"
+                  },
+                  "days": {
+                    "type": "integer",
+                    "example": 5,
+                    "description": "Non-zero integer, -365 to 365"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "IE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/count-working-days": {
+      "post": {
+        "operationId": "dateUtilsCountWorkingDays",
+        "summary": "Count working days in a date range",
+        "description": "Counts working days between start and end (inclusive), excluding weekends and public holidays. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "start",
+                  "end",
+                  "country"
+                ],
+                "properties": {
+                  "start": {
+                    "type": "string",
+                    "example": "2026-04-01"
+                  },
+                  "end": {
+                    "type": "string",
+                    "example": "2026-04-30"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "IE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/meeting-windows": {
+      "post": {
+        "operationId": "dateUtilsMeetingWindows",
+        "summary": "Find days all countries are available",
+        "description": "Returns working day availability for 2-5 countries over a date range (max 90 days), identifying days when all countries are simultaneously available. Cost: 2 credits.",
+        "x-price": 2,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "countries",
+                  "from_date",
+                  "to_date"
+                ],
+                "properties": {
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 2,
+                    "maxItems": 5,
+                    "example": [
+                      "IE",
+                      "US",
+                      "DE"
+                    ]
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-14"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-21"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/date-utils/timezone-overlap": {
+      "post": {
+        "operationId": "dateUtilsTimezoneOverlap",
+        "summary": "Find overlapping working hours across timezones",
+        "description": "Finds the UTC window where all specified timezones are simultaneously within working hours. Cost: 1 credit.",
+        "x-price": 1,
+        "tags": [
+          "Date Utils"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Recommended. Provide a stable UUID per logical request so retries don't double-charge."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "timezones"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "2026-03-16"
+                  },
+                  "timezones": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 2,
+                    "maxItems": 6,
+                    "example": [
+                      "Europe/Dublin",
+                      "America/New_York"
+                    ]
+                  },
+                  "working_hours": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "example": "09:00"
+                      },
+                      "end": {
+                        "type": "string",
+                        "example": "17:00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
     }
   }
 }

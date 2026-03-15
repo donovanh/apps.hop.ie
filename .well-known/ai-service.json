@@ -48,6 +48,78 @@
       "path": "/phone-validator",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Get current date and time info",
+      "description": "Returns the current date, day of week, UTC offset, DST status, working day status, week number, quarter, days until month/quarter end, next working day, and upcoming holidays.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/today",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Convert datetime between timezones",
+      "description": "Converts an ISO 8601 datetime from one IANA timezone to another, including UTC offset and DST info.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/convert-time",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Check if a date is a working day",
+      "description": "Returns whether a date is a working day for a given country, including holiday details if not.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/is-working-day",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Find next or previous working day",
+      "description": "Finds the next (or previous) working day after a given date, skipping weekends and public holidays.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/next-working-day",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Add working days to a date",
+      "description": "Adds N working days to a date (negative = backward), skipping weekends and public holidays.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/add-working-days",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Count working days in a date range",
+      "description": "Counts working days between start and end (inclusive), excluding weekends and public holidays.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/count-working-days",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "date-utils",
+      "name": "Find days all countries are available",
+      "description": "Returns working day availability for 2-5 countries over a date range (max 90 days), identifying days when all countries are simultaneously available.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/meeting-windows",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 2
+    },
+    {
+      "id": "date-utils",
+      "name": "Find overlapping working hours across timezones",
+      "description": "Finds the UTC window where all specified timezones are simultaneously within working hours.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/date-utils/timezone-overlap",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
     }
   ],
   "payment": {
