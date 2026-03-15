@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>API Reference | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    
+<div class="service-header">
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/docs/">Docs</a> / API Reference</div>
+  <h1>API Reference</h1>
+  <p class="service-desc">Full HTTP API — auto-generated from the OpenAPI spec. Base URL: <code>https://api.lightningapi.tools</code></p>
+</div>
+
+<div class="page-content">
+
+  <h2>Authentication</h2>
+  <p>All tool endpoints require a Bearer token: <code>Authorization: Bearer sk_&lt;your-key&gt;</code></p>
+  <p>Obtain a key by calling <code>POST /api/v1/credits</code> after paying a Lightning invoice (see Credits section below).</p>
+
+  
+  <h2>Credits</h2>
+
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/api/v1/credits</code>
+      <span class="api-summary-text">Buy credits</span>
+    </summary>
+
+    
+    <p class="api-description">Creates a Lightning invoice. Pay the invoice, then call /api/v1/credits/verify to receive your API key.</p>
+    
+
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>quantity</code></td>
+          <td>integer</td>
+          <td>✓</td>
+          <td>Number of credits to purchase (1 credit = 1 sat)</td>
+        </tr>
+        
+        <tr>
+          <td><code>email</code></td>
+          <td>string</td>
+          <td></td>
+          <td>Optional. Associate an email with the account for recovery.</td>
+        </tr>
+        
+        <tr>
+          <td><code>accountId</code></td>
+          <td>string</td>
+          <td></td>
+          <td>Optional. Top up an existing account.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/api/v1/credits/verify</code>
+      <span class="api-summary-text">Verify payment and receive API key</span>
+    </summary>
+
+    
+    <p class="api-description">After paying the Lightning invoice, call this endpoint to confirm payment and receive your API key.</p>
+    
+
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>invoiceId</code></td>
+          <td>string</td>
+          <td>✓</td>
+          <td>Invoice ID from POST /api/v1/credits</td>
+        </tr>
+        
+        <tr>
+          <td><code>quantity</code></td>
+          <td>integer</td>
+          <td>✓</td>
+          <td>Must match quantity from the original purchase request</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+
+  
+  <h2>Tools</h2>
+
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/email-validator/validate</code>
+      <span class="api-summary-text">Validate an email address</span>
+    </summary>
+
+    
+    <p class="api-description">Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score. Cost: 2 credits per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice.</p>
+    
+
+    
+    <h4>Parameters</h4>
+    <table class="docs-table">
+      <thead>
+        <tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>Idempotency-Key</code></td>
+          <td>header</td>
+          <td>string</td>
+          <td></td>
+          <td>Recommended. Provide a stable UUID per logical request so retries don&#39;t double-charge.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>email</code></td>
+          <td>string</td>
+          <td>✓</td>
+          <td></td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/calculator/calculate</code>
+      <span class="api-summary-text">Evaluate a mathematical expression</span>
+    </summary>
+
+    
+    <p class="api-description">Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math. Accepts mathjs syntax (e.g. &#39;sqrt(144)&#39;, &#39;log(100, 10)&#39;, &#39;1 mile to km&#39;) or plain English (e.g. &#39;square root of 144&#39;, &#39;15% of 340&#39;, &#39;100 celsius to fahrenheit&#39;). Cost: 1 credit per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice.</p>
+    
+
+    
+    <h4>Parameters</h4>
+    <table class="docs-table">
+      <thead>
+        <tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>Idempotency-Key</code></td>
+          <td>header</td>
+          <td>string</td>
+          <td></td>
+          <td>Recommended. Provide a stable UUID per logical request so retries don&#39;t double-charge.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>expression</code></td>
+          <td>string</td>
+          <td>✓</td>
+          <td>A mathematical expression in mathjs syntax or plain English.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/qr-code/generate</code>
+      <span class="api-summary-text">Generate a QR code</span>
+    </summary>
+
+    
+    <p class="api-description">Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice.</p>
+    
+
+    
+    <h4>Parameters</h4>
+    <table class="docs-table">
+      <thead>
+        <tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>Idempotency-Key</code></td>
+          <td>header</td>
+          <td>string</td>
+          <td></td>
+          <td>Recommended. Provide a stable UUID per logical request so retries don&#39;t double-charge.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>content</code></td>
+          <td>string</td>
+          <td>✓</td>
+          <td>Content to encode in the QR code</td>
+        </tr>
+        
+        <tr>
+          <td><code>format</code></td>
+          <td>string</td>
+          <td></td>
+          <td>png returns a raw base64 string. svg returns an SVG string.</td>
+        </tr>
+        
+        <tr>
+          <td><code>size</code></td>
+          <td>integer</td>
+          <td></td>
+          <td>Width/height in pixels (PNG only)</td>
+        </tr>
+        
+        <tr>
+          <td><code>errorCorrectionLevel</code></td>
+          <td>string</td>
+          <td></td>
+          <td>L=7%, M=15%, Q=25%, H=30% data recovery capability</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/extract-text</code>
+      <span class="api-summary-text">Extract text from a URL</span>
+    </summary>
+
+    
+    <p class="api-description">Fetches a URL and extracts clean readable text using Mozilla Readability. Returns title, plain text, clean HTML, excerpt, byline, and word count. Text is cleaned of excess whitespace and HTML artefacts. All fields except url are nullable. Cost: 2 credits per call.</p>
+    
+
+    
+    <h4>Parameters</h4>
+    <table class="docs-table">
+      <thead>
+        <tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>Idempotency-Key</code></td>
+          <td>header</td>
+          <td>string</td>
+          <td></td>
+          <td>Recommended. Provide a stable UUID per logical request so retries don&#39;t double-charge.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>url</code></td>
+          <td>string</td>
+          <td>✓</td>
+          <td>The URL to fetch and extract content from.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+  <details class="api-endpoint">
+    <summary class="api-endpoint-summary">
+      <span class="api-method api-method--post">POST</span>
+      <code class="api-path">/phone-validator/validate</code>
+      <span class="api-summary-text">Validate a phone number</span>
+    </summary>
+
+    
+    <p class="api-description">Validates and parses a phone number using libphonenumber-js. Returns country, type (MOBILE/FIXED_LINE/VOIP/etc.), and formatted variants. Invalid numbers return valid:false with HTTP 200 — credits are still charged. Cost: 1 credit per call.</p>
+    
+
+    
+    <h4>Parameters</h4>
+    <table class="docs-table">
+      <thead>
+        <tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>Idempotency-Key</code></td>
+          <td>header</td>
+          <td>string</td>
+          <td></td>
+          <td>Recommended. Provide a stable UUID per logical request so retries don&#39;t double-charge.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+
+    
+    <h4>Request body</h4>
+    
+    
+    <table class="docs-table">
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>phone</code></td>
+          <td>string</td>
+          <td>✓</td>
+          <td>Phone number to validate. E.164 format preferred (e.g. +353861234567). National format accepted with country hint.</td>
+        </tr>
+        
+        <tr>
+          <td><code>country</code></td>
+          <td>string</td>
+          <td></td>
+          <td>ISO 3166-1 alpha-2 country code hint for parsing national-format numbers (e.g. IE, US, GB)</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    
+
+  </details>
+  
+
+  
+
+</div>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>CLI Reference | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    
+<div class="service-header">
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/docs/">Docs</a> / CLI Reference</div>
+  <h1>CLI Reference</h1>
+  <p class="service-desc">The <code>lt</code> command-line tool — manage credits and call tools from your terminal.</p>
+</div>
+
+<div class="page-content">
+
+  <h2>Install</h2>
+  <pre><code>npm install -g @lightning-tools/cli</code></pre>
+
+  <h2>Quick start</h2>
+  <pre><code>lt start</code></pre>
+  <p>Follow the prompts to buy credits via Lightning invoice and save your API key. After first run your key is stored automatically.</p>
+
+  <h2>Config file</h2>
+  <p>The API key is stored in <code>~/.lightning-tools/config.json</code>. You can also set <code>LIGHTNING_TOOLS_API_KEY</code> as an environment variable — the CLI will use it if present.</p>
+
+  <h2>Command reference</h2>
+
+  <table class="docs-table">
+    <thead>
+      <tr>
+        <th>Command</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><code>lt start</code></td>
+        <td>Get started — buy credits and get an API key, or manage your existing account</td>
+      </tr>
+      
+      <tr>
+        <td><code>lt topup &lt;quantity&gt;</code></td>
+        <td>Top up credits for your existing account</td>
+      </tr>
+      
+      <tr>
+        <td><code>lt set-key &lt;key&gt;</code></td>
+        <td>Store an existing API key</td>
+      </tr>
+      
+      <tr>
+        <td><code>lt balance</code></td>
+        <td>Show your current credit balance</td>
+      </tr>
+      
+      <tr>
+        <td><code>lt tools</code></td>
+        <td>List all available tools</td>
+      </tr>
+      
+      <tr>
+        <td><code>lt run [name]</code></td>
+        <td>Run a tool interactively with guided prompts, or pass flags directly: lt run <tool> --flag value</td>
+      </tr>
+      
+      <tr>
+        <td><code>lt &lt;tool-name&gt;</code></td>
+        <td>Call a tool directly by name, e.g. <code>lt email-validator</code></td>
+      </tr>
+      
+    </tbody>
+  </table>
+
+</div>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

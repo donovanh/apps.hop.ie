@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>MCP Server | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    
+<div class="service-header">
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/docs/">Docs</a> / MCP Server</div>
+  <h1>Lightning Tools MCP Server</h1>
+  <p class="service-desc">Use Lightning Tools directly inside any MCP-compatible AI agent.</p>
+</div>
+
+<div class="page-content">
+  <h2>Setup</h2>
+
+  <h3>Claude Desktop</h3>
+  <p>Edit <code>Claude/claude_desktop_config.json</code>:</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "lightning-tools": {
+      "command": "npx",
+      "args": ["@lightning-tools/mcp-server"]
+    }
+  }
+}</code></pre>
+
+  <h3>Claude Code</h3>
+  <p>Add to <code>~/.claude/settings.json</code> (global) or <code>.claude/settings.json</code> (project):</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "lightning-tools": {
+      "command": "npx",
+      "args": ["@lightning-tools/mcp-server"]
+    }
+  }
+}</code></pre>
+
+  <h3>Cursor</h3>
+  <p>Edit <code>~/.cursor/mcp.json</code>:</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "lightning-tools": {
+      "command": "npx",
+      "args": ["@lightning-tools/mcp-server"]
+    }
+  }
+}</code></pre>
+
+  <h3>Existing API key</h3>
+  <p>If you already have a key, either pass it as an environment variable:</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "lightning-tools": {
+      "command": "npx",
+      "args": ["@lightning-tools/mcp-server"],
+      "env": {
+        "LIGHTNING_TOOLS_API_KEY": "sk_..."
+      }
+    }
+  }
+}</code></pre>
+
+  <p>Or ask the agent to call <code>set_api_key</code> with your key — it will be saved for future sessions.</p>
+
+  <h2>First use</h2>
+  <p>Ask the agent to call <code>buy_credits</code>. It will generate a Lightning invoice. Pay it from any Lightning wallet, then call <code>verify_payment</code>, then your key is saved automatically for future sessions.</p>
+
+  <h2>Available tools</h2>
+  <ul>
+    <li><strong>buy_credits</strong> — Purchase credits via Lightning invoice</li>
+    <li><strong>verify_payment</strong> — Confirm payment and unlock tools</li>
+    <li><strong>set_api_key</strong> — Store an existing API key and unlock tools</li>
+    <li><strong>check_balance</strong> — Check your current credit balance</li>
+    <li><strong>validate_email</strong> — Validate an email address (1–5 credits)</li>
+    <li><strong>calculate</strong> — Evaluate a mathematical expression (1 credit)</li>
+    <li><strong>generate_qr_code</strong> — Generate a QR code (1 credit)</li>
+    <li><strong>validate_phone</strong> — Validate a phone number (1 credit)</li>
+    <li><strong>extract_text</strong> — Extract text from a URL (2 credits)</li>
+  </ul>
+</div>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

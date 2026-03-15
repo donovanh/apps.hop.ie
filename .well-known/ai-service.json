@@ -7,15 +7,11 @@
     {
       "id": "email-validator",
       "name": "Validate an email address",
-      "description": "Validates an email address with configurable depth.",
+      "description": "Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score.",
       "endpoint": "https://api.lightningapi.tools",
       "path": "/email-validator/validate",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
-      "price": {
-        "basic": 1,
-        "dns": 3,
-        "full": 5
-      }
+      "price": 2
     },
     {
       "id": "calculator",
