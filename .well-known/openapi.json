@@ -239,7 +239,7 @@
         }
       }
     },
-    "/email-validator/validate": {
+    "/email-validator": {
       "post": {
         "operationId": "validateEmail",
         "summary": "Validate an email address",
@@ -358,7 +358,7 @@
         }
       }
     },
-    "/calculator/calculate": {
+    "/calculator": {
       "post": {
         "operationId": "calculate",
         "summary": "Evaluate a mathematical expression",
@@ -436,7 +436,7 @@
         }
       }
     },
-    "/qr-code/generate": {
+    "/qr-code": {
       "post": {
         "operationId": "generateQrCode",
         "summary": "Generate a QR code",
@@ -648,7 +648,7 @@
         }
       }
     },
-    "/phone-validator/validate": {
+    "/phone-validator": {
       "post": {
         "operationId": "validatePhone",
         "summary": "Validate a phone number",

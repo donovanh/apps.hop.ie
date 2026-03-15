@@ -9,7 +9,7 @@
       "name": "Validate an email address",
       "description": "Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score.",
       "endpoint": "https://api.lightningapi.tools",
-      "path": "/email-validator/validate",
+      "path": "/email-validator",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 2
     },
@@ -18,7 +18,7 @@
       "name": "Evaluate a mathematical expression",
       "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math.",
       "endpoint": "https://api.lightningapi.tools",
-      "path": "/calculator/calculate",
+      "path": "/calculator",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
     },
@@ -27,7 +27,7 @@
       "name": "Generate a QR code",
       "description": "Generates a QR code as a base64 PNG string or SVG string.",
       "endpoint": "https://api.lightningapi.tools",
-      "path": "/qr-code/generate",
+      "path": "/qr-code",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
     },
@@ -45,7 +45,7 @@
       "name": "Validate a phone number",
       "description": "Validates and parses a phone number using libphonenumber-js.",
       "endpoint": "https://api.lightningapi.tools",
-      "path": "/phone-validator/validate",
+      "path": "/phone-validator",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
     }
