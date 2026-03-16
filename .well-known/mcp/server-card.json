@@ -1,0 +1,418 @@
+{
+  "serverInfo": {
+    "name": "Lightning Tools",
+    "version": "1.0.0"
+  },
+  "authentication": {
+    "required": false,
+    "schemes": [],
+    "description": "Purchase credits via buy_credits tool (Bitcoin Lightning invoice). Pass API key as LIGHTNING_TOOLS_API_KEY env var or use set_api_key tool."
+  },
+  "tools": [
+    {
+      "name": "buy_credits",
+      "description": "Purchase Lightning Tools credits via Bitcoin Lightning invoice. Costs N sats = N credits.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": "number",
+            "description": "Number of credits to purchase (minimum 1000)"
+          }
+        },
+        "required": [
+          "quantity"
+        ]
+      }
+    },
+    {
+      "name": "verify_payment",
+      "description": "Confirm a Lightning payment and receive your API key.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "invoiceId": {
+            "type": "string",
+            "description": "Invoice ID returned by buy_credits"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Must match quantity from buy_credits"
+          }
+        },
+        "required": [
+          "invoiceId",
+          "quantity"
+        ]
+      }
+    },
+    {
+      "name": "set_api_key",
+      "description": "Store an existing Lightning Tools API key and unlock all service tools.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string",
+            "description": "Your Lightning Tools API key (starts with sk_)"
+          }
+        },
+        "required": [
+          "apiKey"
+        ]
+      }
+    },
+    {
+      "name": "check_balance",
+      "description": "Return the current credit balance for your active API key.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "email-validator",
+      "description": "Validates an email address and returns a comprehensive quality signal including syntax, DNS, MX, disposable check, role account detection, free provider detection, domain age, and a 0-1 quality score. Cost: 2 credits per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice. Costs 2 credits per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@acmecorp.com"
+          }
+        }
+      }
+    },
+    {
+      "name": "calculator",
+      "description": "Evaluates arithmetic, algebra, trigonometry, logarithms, unit conversions, and natural language math. Accepts mathjs syntax (e.g. 'sqrt(144)', 'log(100, 10)', '1 mile to km') or plain English (e.g. 'square root of 144', '15% of 340', '100 celsius to fahrenheit'). Cost: 1 credit per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "expression"
+        ],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "description": "A mathematical expression in mathjs syntax or plain English.",
+            "example": "sqrt(144)"
+          }
+        }
+      }
+    },
+    {
+      "name": "qr-code",
+      "description": "Generates a QR code as a base64 PNG string or SVG string. Cost: 1 credit per call. Idempotency-Key header is recommended — use the same key to safely retry without being charged twice. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Content to encode in the QR code",
+            "example": "https://example.com"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "svg"
+            ],
+            "default": "png",
+            "description": "png returns a raw base64 string. svg returns an SVG string."
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 64,
+            "maximum": 1024,
+            "default": 256,
+            "description": "Width/height in pixels (PNG only)"
+          },
+          "errorCorrectionLevel": {
+            "type": "string",
+            "enum": [
+              "L",
+              "M",
+              "Q",
+              "H"
+            ],
+            "default": "M",
+            "description": "L=7%, M=15%, Q=25%, H=30% data recovery capability"
+          }
+        }
+      }
+    },
+    {
+      "name": "extract-text",
+      "description": "Fetches a URL and extracts clean readable text using Mozilla Readability. Returns title, plain text, clean HTML, excerpt, byline, and word count. Text is cleaned of excess whitespace and HTML artefacts. All fields except url are nullable. Cost: 2 credits per call. Costs 2 credits per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL to fetch and extract content from.",
+            "example": "https://en.wikipedia.org/wiki/Node.js"
+          }
+        }
+      }
+    },
+    {
+      "name": "phone-validator",
+      "description": "Validates and parses a phone number using libphonenumber-js. Returns country, type (MOBILE/FIXED_LINE/VOIP/etc.), and formatted variants. Invalid numbers return valid:false with HTTP 200 — credits are still charged. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "phone"
+        ],
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "Phone number to validate. E.164 format preferred (e.g. +353861234567). National format accepted with country hint.",
+            "example": "+353861234567"
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code hint for parsing national-format numbers (e.g. IE, US, GB)",
+            "example": "IE"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_today",
+      "description": "Returns the current date, day of week, UTC offset, DST status, working day status, week number, quarter, days until month/quarter end, next working day, and upcoming holidays. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "example": "Europe/Dublin",
+            "description": "IANA timezone string. Default: UTC"
+          },
+          "country": {
+            "type": "string",
+            "example": "IE",
+            "description": "ISO 3166-1 alpha-2. Enables holiday data."
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_convert-time",
+      "description": "Converts an ISO 8601 datetime from one IANA timezone to another, including UTC offset and DST info. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "datetime",
+          "from_timezone",
+          "to_timezone"
+        ],
+        "properties": {
+          "datetime": {
+            "type": "string",
+            "example": "2026-03-15T14:30:00"
+          },
+          "from_timezone": {
+            "type": "string",
+            "example": "America/New_York"
+          },
+          "to_timezone": {
+            "type": "string",
+            "example": "Asia/Tokyo"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_is-working-day",
+      "description": "Returns whether a date is a working day for a given country, including holiday details if not. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "date",
+          "country"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-04-17"
+          },
+          "country": {
+            "type": "string",
+            "example": "IE"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_next-working-day",
+      "description": "Finds the next (or previous) working day after a given date, skipping weekends and public holidays. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "date",
+          "country"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-04-16"
+          },
+          "country": {
+            "type": "string",
+            "example": "IE"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "forward",
+              "backward"
+            ],
+            "default": "forward"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_add-working-days",
+      "description": "Adds N working days to a date (negative = backward), skipping weekends and public holidays. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "date",
+          "days",
+          "country"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-04-14"
+          },
+          "days": {
+            "type": "integer",
+            "example": 5,
+            "description": "Non-zero integer, -365 to 365"
+          },
+          "country": {
+            "type": "string",
+            "example": "IE"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_count-working-days",
+      "description": "Counts working days between start and end (inclusive), excluding weekends and public holidays. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "country"
+        ],
+        "properties": {
+          "start": {
+            "type": "string",
+            "example": "2026-04-01"
+          },
+          "end": {
+            "type": "string",
+            "example": "2026-04-30"
+          },
+          "country": {
+            "type": "string",
+            "example": "IE"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_meeting-windows",
+      "description": "Returns working day availability for 2-5 countries over a date range (max 90 days), identifying days when all countries are simultaneously available. Cost: 2 credits. Costs 2 credits per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "countries",
+          "from_date",
+          "to_date"
+        ],
+        "properties": {
+          "countries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 5,
+            "example": [
+              "IE",
+              "US",
+              "DE"
+            ]
+          },
+          "from_date": {
+            "type": "string",
+            "example": "2026-03-14"
+          },
+          "to_date": {
+            "type": "string",
+            "example": "2026-03-21"
+          }
+        }
+      }
+    },
+    {
+      "name": "date-utils_timezone-overlap",
+      "description": "Finds the UTC window where all specified timezones are simultaneously within working hours. Cost: 1 credit. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "timezones"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-03-16"
+          },
+          "timezones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 6,
+            "example": [
+              "Europe/Dublin",
+              "America/New_York"
+            ]
+          },
+          "working_hours": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "example": "09:00"
+              },
+              "end": {
+                "type": "string",
+                "example": "17:00"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "resources": [],
+  "prompts": []
+}
