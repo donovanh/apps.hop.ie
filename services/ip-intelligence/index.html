@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>IP Intelligence | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+    <h1>IP Intelligence</h1>
+    <p class="service-desc">Three signals for any IP address — geolocation, proxy/VPN/Tor reputation, and reverse DNS.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/ip-intelligence/geo">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-ip">IP Address</label>
+    
+      <input
+        type="text"
+        id="field-ip"
+        name="ip"
+        placeholder="8.8.8.8"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>AI agents dealing with user sign-ups, fraud detection, or access control need to know who is behind an IP address — where they are, whether they're hiding behind a VPN or Tor, and what hostname resolves back to them. These three tools provide the raw signals; your agent decides what to do with them.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any call to any endpoint</th>
+<th>1 credit</th>
+</tr>
+</thead>
+</table>
+<hr>
+<h2><code>/ip-intelligence/geo</code></h2>
+<p>Returns geolocation data for an IP address: country, region, city, ISP, ASN, and coordinates.</p>
+<pre><code class="language-json">{ &quot;ip&quot;: &quot;8.8.8.8&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;ip&quot;: &quot;8.8.8.8&quot;,
+  &quot;country&quot;: &quot;United States&quot;,
+  &quot;country_code&quot;: &quot;US&quot;,
+  &quot;region&quot;: &quot;Virginia&quot;,
+  &quot;city&quot;: &quot;Ashburn&quot;,
+  &quot;latitude&quot;: 39.03,
+  &quot;longitude&quot;: -77.5,
+  &quot;isp&quot;: &quot;Google LLC&quot;,
+  &quot;asn&quot;: &quot;AS15169&quot;,
+  &quot;timezone&quot;: &quot;America/New_York&quot;
+}
+</code></pre>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;ip&quot;: &quot;8.8.8.8&quot;, &quot;error&quot;: &quot;lookup_failed&quot; }
+</code></pre>
+<hr>
+<h2><code>/ip-intelligence/reputation</code></h2>
+<p>Checks whether an IP address is associated with a proxy, VPN, Tor exit node, or datacenter. Returns boolean flags for each category.</p>
+<pre><code class="language-json">{ &quot;ip&quot;: &quot;8.8.8.8&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;ip&quot;: &quot;8.8.8.8&quot;,
+  &quot;proxy&quot;: false,
+  &quot;vpn&quot;: false,
+  &quot;tor&quot;: false,
+  &quot;datacenter&quot;: true,
+  &quot;risk_score&quot;: 0
+}
+</code></pre>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;ip&quot;: &quot;8.8.8.8&quot;, &quot;error&quot;: &quot;lookup_failed&quot; }
+</code></pre>
+<hr>
+<h2><code>/ip-intelligence/reverse-dns</code></h2>
+<p>Performs a reverse DNS (PTR) lookup on an IP address, returning any hostnames associated with it.</p>
+<pre><code class="language-json">{ &quot;ip&quot;: &quot;8.8.8.8&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;ip&quot;: &quot;8.8.8.8&quot;,
+  &quot;hostnames&quot;: [&quot;dns.google&quot;]
+}
+</code></pre>
+<p>An empty <code>hostnames</code> array means no PTR record exists — this is normal for many IPs.</p>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;ip&quot;: &quot;8.8.8.8&quot;, &quot;error&quot;: &quot;lookup_failed&quot; }
+</code></pre>
+<h2>Errors (400, no charge)</h2>
+<ul>
+<li>Missing or empty <code>ip</code> field</li>
+<li><code>ip</code> is not a valid IPv4 or IPv6 address</li>
+<li><code>ip</code> is a private, loopback, or reserved address (e.g. <code>192.168.x.x</code>, <code>127.0.0.1</code>, <code>::1</code>)</li>
+</ul>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/ip-intelligence/{tool}</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;ip&quot;: &quot;8.8.8.8&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;ok&quot;: true,
+  &quot;ip&quot;: &quot;8.8.8.8&quot;,
+  &quot;country&quot;: &quot;United States&quot;,
+  &quot;country_code&quot;: &quot;US&quot;,
+  &quot;region&quot;: &quot;Virginia&quot;,
+  &quot;city&quot;: &quot;Ashburn&quot;,
+  &quot;latitude&quot;: 39.03,
+  &quot;longitude&quot;: -77.5,
+  &quot;isp&quot;: &quot;Google LLC&quot;,
+  &quot;asn&quot;: &quot;AS15169&quot;,
+  &quot;timezone&quot;: &quot;America/New_York&quot;
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>
