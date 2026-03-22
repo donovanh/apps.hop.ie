@@ -21,7 +21,7 @@
   input.addEventListener('input', function () {
     var query = input.value.trim();
 
-    if (!query) {
+    if (query.length < 2) {
       items.forEach(function (li) { li.style.display = ''; });
       if (noResults) noResults.style.display = 'none';
       return;
