@@ -1420,6 +1420,557 @@
           }
         }
       }
+    },
+    "/domain-intelligence/dns": {
+      "post": {
+        "operationId": "domainDns",
+        "summary": "DNS lookup for a domain",
+        "description": "Returns A, AAAA, MX, TXT, NS records and derived signals: spf_present, dmarc_present, mx_count. Cost: 1 credit per call. Provide Idempotency-Key to retry safely.",
+        "x-price": 1,
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "domain"
+                ],
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "description": "Domain name to look up",
+                    "example": "example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DNS records and derived signals",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "domain": {
+                          "type": "string"
+                        },
+                        "a": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "aaaa": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "mx": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "exchange": {
+                                "type": "string"
+                              },
+                              "priority": {
+                                "type": "number"
+                              }
+                            }
+                          }
+                        },
+                        "txt": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "ns": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "spf_present": {
+                          "type": "boolean"
+                        },
+                        "dmarc_present": {
+                          "type": "boolean"
+                        },
+                        "mx_count": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "domain": {
+                          "type": "string"
+                        },
+                        "error": {
+                          "type": "string",
+                          "example": "nxdomain"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/domain-intelligence/whois": {
+      "post": {
+        "operationId": "domainWhois",
+        "summary": "WHOIS / RDAP lookup for a domain",
+        "description": "Returns registrar, registration date, expiry date, domain age in days, and days until expiry. Uses RDAP with WHOIS fallback. Cost: 1 credit per call.",
+        "x-price": 1,
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "domain"
+                ],
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "description": "Domain name to look up",
+                    "example": "example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "WHOIS/RDAP result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "domain": {
+                          "type": "string"
+                        },
+                        "registrar": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date",
+                          "nullable": true
+                        },
+                        "expires": {
+                          "type": "string",
+                          "format": "date",
+                          "nullable": true
+                        },
+                        "updated": {
+                          "type": "string",
+                          "format": "date",
+                          "nullable": true
+                        },
+                        "age_days": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "expires_in_days": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "registrant_country": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "rdap",
+                            "whois"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "domain": {
+                          "type": "string"
+                        },
+                        "error": {
+                          "type": "string",
+                          "enum": [
+                            "not_found",
+                            "timeout",
+                            "parse_error"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/domain-intelligence/http": {
+      "post": {
+        "operationId": "domainHttp",
+        "summary": "HTTP probe — status, redirects, content type, response time",
+        "description": "Follows redirects (max 10), records the full chain, and returns final status code, content type, and response time in ms. Only http/https URLs to public hosts are accepted. Cost: 1 credit per call.",
+        "x-price": 1,
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL to probe. Must be http or https. Private/loopback IPs are rejected.",
+                    "example": "https://example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "HTTP probe result",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "url": {
+                          "type": "string"
+                        },
+                        "status_code": {
+                          "type": "number"
+                        },
+                        "content_type": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "redirect_chain": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "number"
+                              }
+                            }
+                          }
+                        },
+                        "response_time_ms": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "url": {
+                          "type": "string"
+                        },
+                        "error": {
+                          "type": "string",
+                          "example": "unreachable"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
+    },
+    "/domain-intelligence/ssl": {
+      "post": {
+        "operationId": "domainSsl",
+        "summary": "TLS/SSL certificate inspection",
+        "description": "Inspects the TLS certificate for a domain: validity, expiry date, days remaining, issuer, SANs, and hostname match. Cost: 1 credit per call.",
+        "x-price": 1,
+        "tags": [
+          "Tools"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique key per request. Retry with the same key without double-charging."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "domain"
+                ],
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "description": "Domain to inspect. Do not include https://.",
+                    "example": "example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SSL certificate details",
+            "headers": {
+              "X-Credits-Remaining": {
+                "$ref": "#/components/headers/XCreditsRemaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "domain": {
+                          "type": "string"
+                        },
+                        "valid": {
+                          "type": "boolean"
+                        },
+                        "subject": {
+                          "type": "string"
+                        },
+                        "issuer": {
+                          "type": "string"
+                        },
+                        "valid_from": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "valid_to": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "days_remaining": {
+                          "type": "number"
+                        },
+                        "sans": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "hostname_match": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "domain": {
+                          "type": "string"
+                        },
+                        "error": {
+                          "type": "string",
+                          "example": "connection_failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientCredits"
+          }
+        }
+      }
     }
   }
 }

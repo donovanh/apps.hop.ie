@@ -667,6 +667,30 @@ pre code {
   color: var(--muted-bright);
 }
 
+/* ── Tools filter ── */
+.tools-filter {
+  margin: 0 0 0;
+}
+
+.tools-filter input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.tools-filter input:focus {
+  border-color: var(--accent);
+}
+
 /* ── Service list (home) ── */
 .service-list {
   list-style: none;

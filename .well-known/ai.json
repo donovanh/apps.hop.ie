@@ -120,6 +120,42 @@
       "path": "/date-utils/timezone-overlap",
       "openapi": "https://lightningapi.tools/.well-known/openapi.json",
       "price": 1
+    },
+    {
+      "id": "domain-intelligence",
+      "name": "DNS lookup for a domain",
+      "description": "Returns A, AAAA, MX, TXT, NS records and derived signals: spf_present, dmarc_present, mx_count.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/domain-intelligence/dns",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "domain-intelligence",
+      "name": "WHOIS / RDAP lookup for a domain",
+      "description": "Returns registrar, registration date, expiry date, domain age in days, and days until expiry.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/domain-intelligence/whois",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "domain-intelligence",
+      "name": "HTTP probe — status, redirects, content type, response time",
+      "description": "Follows redirects (max 10), records the full chain, and returns final status code, content type, and response time in ms.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/domain-intelligence/http",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "domain-intelligence",
+      "name": "TLS/SSL certificate inspection",
+      "description": "Inspects the TLS certificate for a domain: validity, expiry date, days remaining, issuer, SANs, and hostname match.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/domain-intelligence/ssl",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
     }
   ],
   "payment": {

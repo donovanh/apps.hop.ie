@@ -1,7 +1,8 @@
 {
   "serverInfo": {
     "name": "Lightning Tools",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description": "Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning, then call email validation, phone validation, QR code generation, readability extraction, and calculator tools."
   },
   "authentication": {
     "required": false,
@@ -408,6 +409,75 @@
                 "example": "17:00"
               }
             }
+          }
+        }
+      }
+    },
+    {
+      "name": "domain-intelligence_dns",
+      "description": "Returns A, AAAA, MX, TXT, NS records and derived signals: spf_present, dmarc_present, mx_count. Cost: 1 credit per call. Provide Idempotency-Key to retry safely. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "domain"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain name to look up",
+            "example": "example.com"
+          }
+        }
+      }
+    },
+    {
+      "name": "domain-intelligence_whois",
+      "description": "Returns registrar, registration date, expiry date, domain age in days, and days until expiry. Uses RDAP with WHOIS fallback. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "domain"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain name to look up",
+            "example": "example.com"
+          }
+        }
+      }
+    },
+    {
+      "name": "domain-intelligence_http",
+      "description": "Follows redirects (max 10), records the full chain, and returns final status code, content type, and response time in ms. Only http/https URLs to public hosts are accepted. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to probe. Must be http or https. Private/loopback IPs are rejected.",
+            "example": "https://example.com"
+          }
+        }
+      }
+    },
+    {
+      "name": "domain-intelligence_ssl",
+      "description": "Inspects the TLS certificate for a domain: validity, expiry date, days remaining, issuer, SANs, and hostname match. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "domain"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain to inspect. Do not include https://.",
+            "example": "example.com"
           }
         }
       }
