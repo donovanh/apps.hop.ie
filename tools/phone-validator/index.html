@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Phone Number Validator | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Phone Number Validator</h1>
+    <p class="service-desc">Validate and parse phone numbers. Returns country, type (mobile/fixed/VoIP), and formatted variants in national, international, and E.164 formats.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/phone-validator/validate">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-phone">Phone number</label>
+    
+      <input
+        type="text"
+        id="field-phone"
+        name="phone"
+        placeholder="+353861234567"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-country">Country hint (optional)</label>
+    
+      <input
+        type="text"
+        id="field-country"
+        name="country"
+        placeholder="IE"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Phone number formats vary enormously across countries: calling codes, national prefixes, number lengths, carrier ranges. libphonenumber (Google's library, used by Android) handles all of it and returns validity, country, type, and all three standard formats.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any number, any country</th>
+<th>1 credit</th>
+</tr>
+</thead>
+</table>
+<h2>Request format</h2>
+<pre><code class="language-json">{
+  &quot;phone&quot;: &quot;+353861234567&quot;,
+  &quot;country&quot;: &quot;IE&quot;
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>phone</code></td>
+<td>string</td>
+<td>Required. E.164 format preferred (<code>+353861234567</code>). National format accepted with <code>country</code> hint.</td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>string</td>
+<td>Optional ISO 3166-1 alpha-2 hint (e.g. <code>IE</code>, <code>US</code>, <code>GB</code>). Only needed for national-format numbers without a <code>+</code> prefix.</td>
+</tr>
+</tbody>
+</table>
+<h2>Response — valid number</h2>
+<pre><code class="language-json">{
+  &quot;valid&quot;: true,
+  &quot;phone&quot;: &quot;+353861234567&quot;,
+  &quot;country&quot;: &quot;IE&quot;,
+  &quot;countryCallingCode&quot;: &quot;353&quot;,
+  &quot;type&quot;: &quot;MOBILE&quot;,
+  &quot;formatted&quot;: {
+    &quot;national&quot;: &quot;086 123 4567&quot;,
+    &quot;international&quot;: &quot;+353 86 123 4567&quot;,
+    &quot;e164&quot;: &quot;+353861234567&quot;
+  }
+}
+</code></pre>
+<h2>Response — invalid number</h2>
+<pre><code class="language-json">{ &quot;valid&quot;: false, &quot;phone&quot;: &quot;+1234&quot; }
+</code></pre>
+<p>Invalid numbers return HTTP <code>200</code> with <code>valid: false</code>. This is not an error — the service ran, 1 credit is charged.</p>
+<h2>Number types</h2>
+<p><code>MOBILE</code>, <code>FIXED_LINE</code>, <code>FIXED_LINE_OR_MOBILE</code>, <code>TOLL_FREE</code>, <code>PREMIUM_RATE</code>, <code>SHARED_COST</code>, <code>VOIP</code>, <code>PERSONAL_NUMBER</code>, <code>PAGER</code>, <code>UAN</code>, <code>VOICEMAIL</code>, <code>UNKNOWN</code></p>
+<h2>Errors (400, no charge)</h2>
+<p>Missing or empty <code>phone</code> field only.</p>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/phone-validator/validate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;phone&quot;: &quot;+353861234567&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;valid&quot;: true,
+  &quot;phone&quot;: &quot;+353861234567&quot;,
+  &quot;country&quot;: &quot;IE&quot;,
+  &quot;countryCallingCode&quot;: &quot;353&quot;,
+  &quot;type&quot;: &quot;MOBILE&quot;,
+  &quot;formatted&quot;: {
+    &quot;national&quot;: &quot;086 123 4567&quot;,
+    &quot;international&quot;: &quot;+353 86 123 4567&quot;,
+    &quot;e164&quot;: &quot;+353861234567&quot;
+  }
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Data Freshness Check | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/questions/">Questions</a></p>
+    <h1>Data Freshness Check</h1>
+    <p class="service-desc">Check whether a URL is reachable, how recently its domain was updated, and whether its TLS certificate is about to expire.</p>
+    
+    <div class="credit-badge">⚡ 5 credits per call</div>
+    
+  </header>
+
+  
+  <section class="card">
+    <h2>Uses these tools</h2>
+    <ul>
+      
+      <li><a href="/tools/domain-intelligence/">Domain Intelligence</a></li>
+      
+      <li><a href="/tools/extract-text/">Text Extractor</a></li>
+      
+    </ul>
+  </section>
+  
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Agents frequently operate on stale data. This circuit checks recency signals without requiring the agent to make multiple calls or parse raw WHOIS data. Four signals in one round trip: URL reachability, domain update date, TLS certificate expiry, and content word count.</p>
+<h2>Flags</h2>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url_unreachable</code></td>
+<td>HTTP probe returned an error or status ≥ 400</td>
+</tr>
+<tr>
+<td><code>ssl_expiring_soon</code></td>
+<td>TLS certificate expires within 30 days</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>partial: true</code> field is added if one or more signals failed. <code>signals_checked</code> tells you how many actually ran.</p>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/questions/data-freshness-check</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;url&quot;: &quot;https://example.com&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;signals&quot;: {
+    &quot;url_reachable&quot;: true,
+    &quot;domain_updated&quot;: &quot;2025-06-01T00:00:00Z&quot;,
+    &quot;ssl_days_remaining&quot;: 180,
+    &quot;ssl_valid_to&quot;: &quot;2026-12-31T00:00:00Z&quot;,
+    &quot;word_count&quot;: 1842
+  },
+  &quot;flags&quot;: [],
+  &quot;anomaly_count&quot;: 0,
+  &quot;signals_checked&quot;: 4
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

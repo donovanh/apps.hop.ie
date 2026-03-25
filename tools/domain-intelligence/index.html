@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Domain Intelligence | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Domain Intelligence</h1>
+    <p class="service-desc">Four signals for any domain or URL — DNS records, WHOIS registration data, HTTP probe, and TLS certificate details.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/domain-intelligence/dns">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-domain">Domain</label>
+    
+      <input
+        type="text"
+        id="field-domain"
+        name="domain"
+        placeholder="example.com"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>AI agents often need to assess a domain before acting on it — is this a real business, is their email set up correctly, is their site live, is their certificate about to expire? These four tools provide the raw signals; your agent decides what to do with them.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any call to any endpoint</th>
+<th>1 credit</th>
+</tr>
+</thead>
+</table>
+<hr>
+<h2><code>/domain-intelligence/dns</code></h2>
+<p>Returns A, AAAA, MX, TXT, and NS records, plus three derived signals.</p>
+<pre><code class="language-json">{ &quot;domain&quot;: &quot;example.com&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;domain&quot;: &quot;example.com&quot;,
+  &quot;a&quot;: [&quot;93.184.216.34&quot;],
+  &quot;aaaa&quot;: [],
+  &quot;mx&quot;: [{ &quot;exchange&quot;: &quot;mail.example.com&quot;, &quot;priority&quot;: 10 }],
+  &quot;txt&quot;: [&quot;v=spf1 include:_spf.example.com ~all&quot;],
+  &quot;ns&quot;: [&quot;a.iana-servers.net&quot;, &quot;b.iana-servers.net&quot;],
+  &quot;spf_present&quot;: true,
+  &quot;dmarc_present&quot;: false,
+  &quot;mx_count&quot;: 1
+}
+</code></pre>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;domain&quot;: &quot;notreal.example&quot;, &quot;error&quot;: &quot;nxdomain&quot; }
+</code></pre>
+<hr>
+<h2><code>/domain-intelligence/whois</code></h2>
+<p>Returns registrar, registration date, expiry date, domain age, and days until expiry via RDAP (IANA bootstrap) with WHOIS fallback.</p>
+<pre><code class="language-json">{ &quot;domain&quot;: &quot;example.com&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;domain&quot;: &quot;example.com&quot;,
+  &quot;registrar&quot;: &quot;RESERVED-Internet Assigned Numbers Authority&quot;,
+  &quot;created&quot;: &quot;1995-08-14&quot;,
+  &quot;expires&quot;: &quot;2025-08-13&quot;,
+  &quot;updated&quot;: &quot;2024-08-14&quot;,
+  &quot;age_days&quot;: 10620,
+  &quot;expires_in_days&quot;: 150,
+  &quot;registrant_country&quot;: null,
+  &quot;source&quot;: &quot;rdap&quot;
+}
+</code></pre>
+<p>Note: <code>registrant_country</code> is always <code>null</code> — registrant contact data is redacted by RDAP registries under GDPR.</p>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;domain&quot;: &quot;notreal.example&quot;, &quot;error&quot;: &quot;not_found&quot; }
+</code></pre>
+<p>Error values: <code>not_found</code>, <code>timeout</code>, <code>parse_error</code>.</p>
+<hr>
+<h2><code>/domain-intelligence/http</code></h2>
+<p>Probes a URL, follows redirects (up to 10), and returns the final status, content type, redirect chain, and response time. Only <code>http://</code> and <code>https://</code> URLs to public hosts are accepted.</p>
+<pre><code class="language-json">{ &quot;url&quot;: &quot;https://example.com&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;url&quot;: &quot;https://www.example.com/&quot;,
+  &quot;status_code&quot;: 200,
+  &quot;content_type&quot;: &quot;text/html; charset=UTF-8&quot;,
+  &quot;redirect_chain&quot;: [
+    { &quot;url&quot;: &quot;https://example.com&quot;, &quot;status&quot;: 301 }
+  ],
+  &quot;response_time_ms&quot;: 212
+}
+</code></pre>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;url&quot;: &quot;https://down.example.com&quot;, &quot;error&quot;: &quot;unreachable&quot; }
+</code></pre>
+<hr>
+<h2><code>/domain-intelligence/ssl</code></h2>
+<p>Inspects the TLS certificate for a domain — validity, expiry, issuer, SANs, hostname match.</p>
+<pre><code class="language-json">{ &quot;domain&quot;: &quot;example.com&quot; }
+</code></pre>
+<p><strong>Response (success)</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;domain&quot;: &quot;example.com&quot;,
+  &quot;valid&quot;: true,
+  &quot;subject&quot;: &quot;CN=example.com&quot;,
+  &quot;issuer&quot;: &quot;C=US, O=DigiCert Inc, CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1&quot;,
+  &quot;valid_from&quot;: &quot;2024-01-15T00:00:00.000Z&quot;,
+  &quot;valid_to&quot;: &quot;2025-01-14T23:59:59.000Z&quot;,
+  &quot;days_remaining&quot;: 42,
+  &quot;sans&quot;: [&quot;example.com&quot;, &quot;www.example.com&quot;],
+  &quot;hostname_match&quot;: true
+}
+</code></pre>
+<p><strong>Response (failure)</strong></p>
+<pre><code class="language-json">{ &quot;ok&quot;: false, &quot;domain&quot;: &quot;expired.example.com&quot;, &quot;error&quot;: &quot;connection_failed&quot; }
+</code></pre>
+<h2>Errors (400, no charge)</h2>
+<ul>
+<li>Missing or empty <code>domain</code> / <code>url</code> field</li>
+<li><code>url</code> not a valid http/https URI</li>
+<li><code>url</code> pointing to a private IP or loopback address</li>
+<li><code>domain</code> pointing to a loopback/private hostname</li>
+</ul>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/domain-intelligence/{tool}</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;domain&quot;: &quot;example.com&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;ok&quot;: true,
+  &quot;domain&quot;: &quot;example.com&quot;,
+  &quot;a&quot;: [&quot;93.184.216.34&quot;],
+  &quot;mx&quot;: [],
+  &quot;spf_present&quot;: false,
+  &quot;dmarc_present&quot;: false,
+  &quot;mx_count&quot;: 0
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

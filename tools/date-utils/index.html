@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Date Utils | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Date Utils</h1>
+    <p class="service-desc">Eight date and timezone utilities for AI agents: current date info, time zone conversion, working day checks, and meeting window finder.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call (2 for meeting-windows)</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/date-utils/today">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-timezone">Timezone (optional)</label>
+    
+      <input
+        type="text"
+        id="field-timezone"
+        name="timezone"
+        placeholder="Europe/Dublin"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Models don't have a reliable clock, and date arithmetic is error-prone. These utilities give agents accurate time data, timezone-aware conversions, and working day calculations without hallucination.</p>
+<h2>Endpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>What it does</th>
+<th>Credits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /date-utils/today</code></td>
+<td>Current date, day, week, quarter, DST, next working day</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/convert-time</code></td>
+<td>Convert a datetime between timezones</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/is-working-day</code></td>
+<td>Check if a date is a working day in a country</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/next-working-day</code></td>
+<td>Find next/previous working day from a date</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/add-working-days</code></td>
+<td>Add N working days to a date</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/count-working-days</code></td>
+<td>Count working days between two dates</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/timezone-overlap</code></td>
+<td>Find overlapping working hours across timezones</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>POST /date-utils/meeting-windows</code></td>
+<td>List working days across countries in a date range</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><code>/date-utils/today</code></h2>
+<p>Returns full context about the current date in a given timezone.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timezone</code></td>
+<td>string</td>
+<td>Optional. IANA timezone (e.g. <code>Europe/Dublin</code>). Defaults to <code>UTC</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>ISO 8601 date (<code>YYYY-MM-DD</code>)</td>
+</tr>
+<tr>
+<td><code>day_of_week</code></td>
+<td>string</td>
+<td>Full day name</td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>string</td>
+<td>Timezone used</td>
+</tr>
+<tr>
+<td><code>utc_offset</code></td>
+<td>string</td>
+<td>Offset string e.g. <code>+01:00</code></td>
+</tr>
+<tr>
+<td><code>is_dst</code></td>
+<td>boolean</td>
+<td>Whether DST is active</td>
+</tr>
+<tr>
+<td><code>working_day</code></td>
+<td>boolean</td>
+<td>Whether today is a working day</td>
+</tr>
+<tr>
+<td><code>week_number</code></td>
+<td>number</td>
+<td>ISO 8601 week number</td>
+</tr>
+<tr>
+<td><code>quarter</code></td>
+<td>number</td>
+<td>Quarter (1–4)</td>
+</tr>
+<tr>
+<td><code>days_until_month_end</code></td>
+<td>number</td>
+<td>Calendar days remaining in month</td>
+</tr>
+<tr>
+<td><code>days_until_quarter_end</code></td>
+<td>number</td>
+<td>Calendar days remaining in quarter</td>
+</tr>
+<tr>
+<td><code>next_working_day</code></td>
+<td>string</td>
+<td>Next working day date</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>string</td>
+<td>Why today is not a working day (if applicable)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2><code>/date-utils/convert-time</code></h2>
+<p>Convert a datetime from one timezone to another.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>datetime</code></td>
+<td>string</td>
+<td>Required. ISO 8601 datetime e.g. <code>2026-03-15T14:00:00</code></td>
+</tr>
+<tr>
+<td><code>from_timezone</code></td>
+<td>string</td>
+<td>Required. IANA timezone of the source</td>
+</tr>
+<tr>
+<td><code>to_timezone</code></td>
+<td>string</td>
+<td>Required. IANA timezone of the target</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{
+  &quot;datetime&quot;: &quot;2026-03-15T14:00:00&quot;,
+  &quot;from_timezone&quot;: &quot;Europe/Dublin&quot;,
+  &quot;to_timezone&quot;: &quot;America/New_York&quot;
+}
+</code></pre>
+<pre><code class="language-json">{
+  &quot;original&quot;: { &quot;datetime&quot;: &quot;2026-03-15T14:00:00&quot;, &quot;timezone&quot;: &quot;Europe/Dublin&quot;, &quot;utc_offset&quot;: &quot;+00:00&quot;, &quot;is_dst&quot;: false },
+  &quot;converted&quot;: { &quot;datetime&quot;: &quot;2026-03-15T10:00:00&quot;, &quot;timezone&quot;: &quot;America/New_York&quot;, &quot;utc_offset&quot;: &quot;-04:00&quot;, &quot;is_dst&quot;: true },
+  &quot;difference_minutes&quot;: -240
+}
+</code></pre>
+<hr>
+<h2><code>/date-utils/is-working-day</code></h2>
+<p>Check whether a specific date is a working day in a country.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>string</td>
+<td>Optional. ISO 3166-1 alpha-2 country code (e.g. <code>IE</code>, <code>US</code>, <code>GB</code>). Omit to skip holiday checks.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{ &quot;date&quot;: &quot;2026-03-17&quot;, &quot;country&quot;: &quot;IE&quot; }
+</code></pre>
+<pre><code class="language-json">{ &quot;date&quot;: &quot;2026-03-17&quot;, &quot;country&quot;: &quot;IE&quot;, &quot;working_day&quot;: false, &quot;reason&quot;: &quot;Saint Patrick's Day&quot; }
+</code></pre>
+<hr>
+<h2><code>/date-utils/next-working-day</code></h2>
+<p>Find the next (or previous) working day from a given date, optionally skipping country holidays.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>string</td>
+<td>Optional. ISO 3166-1 alpha-2 country code.</td>
+</tr>
+<tr>
+<td><code>direction</code></td>
+<td>string</td>
+<td>Optional. <code>&quot;forward&quot;</code> (default) or <code>&quot;backward&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{ &quot;date&quot;: &quot;2026-03-15&quot;, &quot;country&quot;: &quot;IE&quot; }
+</code></pre>
+<pre><code class="language-json">{
+  &quot;from_date&quot;: &quot;2026-03-15&quot;,
+  &quot;direction&quot;: &quot;forward&quot;,
+  &quot;next_working_day&quot;: &quot;2026-03-16&quot;,
+  &quot;skipped&quot;: []
+}
+</code></pre>
+<hr>
+<h2><code>/date-utils/add-working-days</code></h2>
+<p>Add (or subtract) N working days to a date, respecting weekends and country holidays.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>days</code></td>
+<td>number</td>
+<td>Required. Number of working days to add (negative to subtract)</td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>string</td>
+<td>Optional. ISO 3166-1 alpha-2 country code.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{ &quot;date&quot;: &quot;2026-03-15&quot;, &quot;days&quot;: 5, &quot;country&quot;: &quot;IE&quot; }
+</code></pre>
+<pre><code class="language-json">{
+  &quot;from_date&quot;: &quot;2026-03-15&quot;,
+  &quot;days&quot;: 5,
+  &quot;country&quot;: &quot;IE&quot;,
+  &quot;result_date&quot;: &quot;2026-03-23&quot;,
+  &quot;working_days_added&quot;: 5,
+  &quot;calendar_days_elapsed&quot;: 8,
+  &quot;skipped_holidays&quot;: [
+    { &quot;date&quot;: &quot;2026-03-17&quot;, &quot;name&quot;: &quot;Saint Patrick's Day&quot; }
+  ]
+}
+</code></pre>
+<hr>
+<h2><code>/date-utils/count-working-days</code></h2>
+<p>Count working days between two dates, optionally excluding country holidays.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>string</td>
+<td>Optional. ISO 3166-1 alpha-2 country code.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{ &quot;start&quot;: &quot;2026-03-15&quot;, &quot;end&quot;: &quot;2026-03-31&quot;, &quot;country&quot;: &quot;IE&quot; }
+</code></pre>
+<pre><code class="language-json">{
+  &quot;start&quot;: &quot;2026-03-15&quot;,
+  &quot;end&quot;: &quot;2026-03-31&quot;,
+  &quot;country&quot;: &quot;IE&quot;,
+  &quot;working_days&quot;: 11,
+  &quot;calendar_days&quot;: 17,
+  &quot;weekends_excluded&quot;: 5,
+  &quot;holidays_excluded&quot;: [
+    { &quot;date&quot;: &quot;2026-03-17&quot;, &quot;name&quot;: &quot;Saint Patrick's Day&quot; }
+  ]
+}
+</code></pre>
+<hr>
+<h2><code>/date-utils/timezone-overlap</code></h2>
+<p>Find overlapping working hours (09:00–17:00 local) across a list of timezones for a given date.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timezones</code></td>
+<td>string[]</td>
+<td>Required. List of IANA timezone identifiers</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>Optional. <code>YYYY-MM-DD</code>. Defaults to today (UTC).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{ &quot;timezones&quot;: [&quot;Europe/Dublin&quot;, &quot;America/New_York&quot;], &quot;date&quot;: &quot;2026-03-15&quot; }
+</code></pre>
+<pre><code class="language-json">{
+  &quot;date&quot;: &quot;2026-03-15&quot;,
+  &quot;working_hours&quot;: { &quot;start&quot;: &quot;09:00&quot;, &quot;end&quot;: &quot;17:00&quot; },
+  &quot;timezones&quot;: [&quot;Europe/Dublin&quot;, &quot;America/New_York&quot;],
+  &quot;overlap_minutes&quot;: 240,
+  &quot;best_windows&quot;: [
+    {
+      &quot;start_utc&quot;: &quot;2026-03-15T13:00:00Z&quot;,
+      &quot;end_utc&quot;: &quot;2026-03-15T17:00:00Z&quot;,
+      &quot;duration_minutes&quot;: 240,
+      &quot;local_times&quot;: [
+        { &quot;timezone&quot;: &quot;Europe/Dublin&quot;, &quot;start&quot;: &quot;13:00&quot;, &quot;end&quot;: &quot;17:00&quot; },
+        { &quot;timezone&quot;: &quot;America/New_York&quot;, &quot;start&quot;: &quot;09:00&quot;, &quot;end&quot;: &quot;13:00&quot; }
+      ]
+    }
+  ]
+}
+</code></pre>
+<hr>
+<h2><code>/date-utils/meeting-windows</code></h2>
+<p>List all days in a date range and show whether each country considers it a working day. Useful for scheduling across countries. Costs 2 credits per call.</p>
+<p><strong>Request</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>from_date</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>to_date</code></td>
+<td>string</td>
+<td>Required. <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td><code>countries</code></td>
+<td>string[]</td>
+<td>Required. ISO 3166-1 alpha-2 country codes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="language-json">{ &quot;from_date&quot;: &quot;2026-03-16&quot;, &quot;to_date&quot;: &quot;2026-03-20&quot;, &quot;countries&quot;: [&quot;IE&quot;, &quot;US&quot;] }
+</code></pre>
+<pre><code class="language-json">{
+  &quot;from_date&quot;: &quot;2026-03-16&quot;,
+  &quot;to_date&quot;: &quot;2026-03-20&quot;,
+  &quot;countries&quot;: [&quot;IE&quot;, &quot;US&quot;],
+  &quot;windows&quot;: [
+    { &quot;date&quot;: &quot;2026-03-16&quot;, &quot;day_of_week&quot;: &quot;Monday&quot;, &quot;available_in_all&quot;: true, &quot;availability&quot;: [
+      { &quot;country&quot;: &quot;IE&quot;, &quot;working_day&quot;: true },
+      { &quot;country&quot;: &quot;US&quot;, &quot;working_day&quot;: true }
+    ]},
+    { &quot;date&quot;: &quot;2026-03-17&quot;, &quot;day_of_week&quot;: &quot;Tuesday&quot;, &quot;available_in_all&quot;: false, &quot;availability&quot;: [
+      { &quot;country&quot;: &quot;IE&quot;, &quot;working_day&quot;: false, &quot;reason&quot;: &quot;Saint Patrick's Day&quot; },
+      { &quot;country&quot;: &quot;US&quot;, &quot;working_day&quot;: true }
+    ]}
+  ]
+}
+</code></pre>
+<hr>
+<h2>Errors</h2>
+<p>All endpoints return <code>400</code> with no credit charge for validation errors:</p>
+<pre><code class="language-json">{
+  &quot;error&quot;: &quot;VALIDATION_ERROR&quot;,
+  &quot;message&quot;: &quot;Invalid request body&quot;,
+  &quot;details&quot;: [{ &quot;path&quot;: [&quot;timezone&quot;], &quot;message&quot;: &quot;Invalid timezone&quot; }]
+}
+</code></pre>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/date-utils/today</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;timezone&quot;: &quot;Europe/Dublin&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;date&quot;: &quot;2026-03-15&quot;,
+  &quot;day_of_week&quot;: &quot;Sunday&quot;,
+  &quot;timezone&quot;: &quot;Europe/Dublin&quot;,
+  &quot;utc_offset&quot;: &quot;+00:00&quot;,
+  &quot;is_dst&quot;: false,
+  &quot;working_day&quot;: false,
+  &quot;week_number&quot;: 11,
+  &quot;quarter&quot;: 1,
+  &quot;days_until_month_end&quot;: 16,
+  &quot;days_until_quarter_end&quot;: 16,
+  &quot;next_working_day&quot;: &quot;2026-03-16&quot;,
+  &quot;reason&quot;: &quot;Sunday&quot;
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

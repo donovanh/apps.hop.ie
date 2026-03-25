@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Scam Signal Check | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/questions/">Questions</a></p>
+    <h1>Scam Signal Check</h1>
+    <p class="service-desc">Check domain age, MX configuration, and email deliverability to surface common scam patterns.</p>
+    
+    <div class="credit-badge">⚡ 4 credits per call</div>
+    
+  </header>
+
+  
+  <section class="card">
+    <h2>Uses these tools</h2>
+    <ul>
+      
+      <li><a href="/tools/domain-intelligence/">Domain Intelligence</a></li>
+      
+      <li><a href="/tools/email-validator/">Email Validator</a></li>
+      
+    </ul>
+  </section>
+  
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>LLMs give vague answers about scams because they can't verify anything. This circuit provides deterministic anchors — domain age, email deliverability — that the agent can reason against. Text analysis (urgency language, brand impersonation) stays with the LLM; factual signal extraction comes here.</p>
+<h2>Input</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain</code></td>
+<td>string</td>
+<td>✓</td>
+<td>The sender's domain (e.g. <code>suspicious-domain.com</code>)</td>
+</tr>
+<tr>
+<td><code>sender_email</code></td>
+<td>string (email)</td>
+<td>✓</td>
+<td>The sender's email address</td>
+</tr>
+<tr>
+<td><code>payment_method</code></td>
+<td>string</td>
+<td>—</td>
+<td>Payment method mentioned (e.g. <code>gift_cards</code>, <code>crypto</code>, <code>wire_transfer</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2>Flags</h2>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dns_failed</code></td>
+<td>Domain does not resolve</td>
+</tr>
+<tr>
+<td><code>new_domain</code></td>
+<td>Domain registered less than 30 days ago</td>
+</tr>
+<tr>
+<td><code>mx_not_configured</code></td>
+<td>No MX records — domain cannot receive email</td>
+</tr>
+<tr>
+<td><code>email_not_deliverable</code></td>
+<td>Email address fails validation</td>
+</tr>
+<tr>
+<td><code>suspicious_payment_method</code></td>
+<td>Payment method is a known scam vector (gift cards, crypto, wire transfer, Western Union)</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>partial: true</code> field is added if one or more signals failed. <code>signals_checked</code> tells you how many ran. Whois is skipped if DNS fails (domain doesn't exist).</p>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/questions/scam-signal-check</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;domain&quot;: &quot;suspicious-domain.com&quot;,
+  &quot;sender_email&quot;: &quot;support@suspicious-domain.com&quot;,
+  &quot;payment_method&quot;: &quot;gift_cards&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;signals&quot;: {
+    &quot;domain_age_days&quot;: 12,
+    &quot;mx_configured&quot;: false,
+    &quot;email_deliverable&quot;: false,
+    &quot;payment_method&quot;: &quot;gift_cards&quot;
+  },
+  &quot;flags&quot;: [&quot;new_domain&quot;, &quot;mx_not_configured&quot;, &quot;email_not_deliverable&quot;, &quot;suspicious_payment_method&quot;],
+  &quot;anomaly_count&quot;: 4,
+  &quot;signals_checked&quot;: 3
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

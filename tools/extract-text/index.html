@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Text Extractor | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Text Extractor</h1>
+    <p class="service-desc">Fetch any URL and get back clean readable text: title, plain text, clean HTML, excerpt, byline, and word count. Powered by Mozilla Readability, the same library that drives Firefox Reader View.</p>
+    
+    <div class="credit-badge">⚡ 2 credits per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/extract-text">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-url">URL</label>
+    
+      <input
+        type="text"
+        id="field-url"
+        name="url"
+        placeholder="https://example.com/article"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Language models can't retrieve URLs at inference time, and raw HTML is mostly noise. A typical news page is 80-90% navigation, ads, and scripts.</p>
+<p>This service fetches the URL server-side, strips the boilerplate using Mozilla Readability (the library that powers Firefox Reader View), and returns just the article content. It handles redirects, cookies, and compressed responses without any extra work on your end.</p>
+<p>Good for:</p>
+<ul>
+<li>Summarising articles without feeding raw HTML to your model</li>
+<li>Pulling developer docs (MDN, GitHub READMEs, API references) into context</li>
+<li>Research pipelines that need article text before analysis</li>
+<li>Fact-checking tasks where the model needs the actual page content</li>
+</ul>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any URL</th>
+<th>2 credits</th>
+</tr>
+</thead>
+</table>
+<p>Charged on any reachable URL, including pages with no extractable content.</p>
+<h2>Request format</h2>
+<pre><code class="language-json">{ &quot;url&quot;: &quot;https://example.com/article&quot; }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>Required. Must be a valid URL including protocol (<code>https://</code>).</td>
+</tr>
+</tbody>
+</table>
+<h2>Response</h2>
+<pre><code class="language-json">{
+  &quot;url&quot;: &quot;https://example.com/article&quot;,
+  &quot;title&quot;: &quot;Article Title&quot;,
+  &quot;byline&quot;: &quot;Author Name&quot;,
+  &quot;excerpt&quot;: &quot;First sentence or lede...&quot;,
+  &quot;html&quot;: &quot;&lt;div&gt;&lt;p&gt;Clean HTML body...&lt;/p&gt;&lt;/div&gt;&quot;,
+  &quot;text&quot;: &quot;Clean plain text body...&quot;,
+  &quot;wordCount&quot;: 842
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Page or article title. <code>null</code> if not detected.</td>
+</tr>
+<tr>
+<td><code>byline</code></td>
+<td>Author name or byline. <code>null</code> if not present.</td>
+</tr>
+<tr>
+<td><code>excerpt</code></td>
+<td>Short excerpt or lede. <code>null</code> if not detected.</td>
+</tr>
+<tr>
+<td><code>html</code></td>
+<td>Clean article HTML with navigation, ads, and boilerplate stripped. <code>null</code> if Readability found no article.</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>Plain text body. <code>null</code> if Readability found no article.</td>
+</tr>
+<tr>
+<td><code>wordCount</code></td>
+<td>Word count of the plain text body. <code>null</code> if <code>text</code> is null.</td>
+</tr>
+</tbody>
+</table>
+<p>All fields except <code>url</code> are nullable.</p>
+<h2>Errors (400, no charge)</h2>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invalid URL</td>
+<td>Missing protocol, malformed URL</td>
+</tr>
+<tr>
+<td>Fetch failed</td>
+<td>DNS error, connection refused, network timeout (10s)</td>
+</tr>
+<tr>
+<td>Non-200 response</td>
+<td>Target URL returned 4xx or 5xx</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/extract-text</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;url&quot;: &quot;https://en.wikipedia.org/wiki/Node.js&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;url&quot;: &quot;https://en.wikipedia.org/wiki/Node.js&quot;,
+  &quot;title&quot;: &quot;Node.js&quot;,
+  &quot;byline&quot;: null,
+  &quot;excerpt&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser.&quot;,
+  &quot;html&quot;: &quot;&lt;div id=&#92;&quot;readability-page-1&#92;&quot;&gt;&lt;p&gt;Node.js is...&lt;/p&gt;&lt;/div&gt;&quot;,
+  &quot;text&quot;: &quot;Node.js is a cross-platform, open-source JavaScript runtime environment...&quot;,
+  &quot;wordCount&quot;: 4821
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

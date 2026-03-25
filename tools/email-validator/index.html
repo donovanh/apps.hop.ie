@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Email Validator | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Email Validator</h1>
+    <p class="service-desc">Validate an email address and get back a full quality signal: syntax, DNS, MX, disposable check, role account detection, and a quality score.</p>
+    
+    <div class="credit-badge">⚡ 2 credits per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/email-validator/validate">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-email">Email address</label>
+    
+      <input
+        type="email"
+        id="field-email"
+        name="email"
+        placeholder="test@example.com"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Agents don't just want valid/invalid. They want to decide: should I contact this person? Is this a real person or a bot? Is this address worth the effort?</p>
+<p>One call runs all checks and returns a structured signal.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any email</th>
+<th>2 credits</th>
+</tr>
+</thead>
+</table>
+<h2>Request format</h2>
+<pre><code class="language-json">{ &quot;email&quot;: &quot;john@acmecorp.com&quot; }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>email</code></td>
+<td>string</td>
+<td>Required. Must be a valid email format.</td>
+</tr>
+</tbody>
+</table>
+<h2>Response</h2>
+<pre><code class="language-json">{
+  &quot;email&quot;: &quot;john@acmecorp.com&quot;,
+  &quot;valid&quot;: true,
+  &quot;syntax&quot;: true,
+  &quot;dns&quot;: true,
+  &quot;mx&quot;: true,
+  &quot;role_account&quot;: false,
+  &quot;disposable&quot;: false,
+  &quot;free_provider&quot;: false,
+  &quot;domain_type&quot;: &quot;corporate&quot;,
+  &quot;domain_age_days&quot;: 3200,
+  &quot;score&quot;: 0.93
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>valid</code></td>
+<td>boolean</td>
+<td><code>true</code> only if syntax, DNS, and MX all pass</td>
+</tr>
+<tr>
+<td><code>syntax</code></td>
+<td>boolean</td>
+<td>Basic format check</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>boolean</td>
+<td>Domain resolves in DNS</td>
+</tr>
+<tr>
+<td><code>mx</code></td>
+<td>boolean</td>
+<td>Domain has mail exchange records</td>
+</tr>
+<tr>
+<td><code>role_account</code></td>
+<td>boolean</td>
+<td>Local part is a role address (admin, support, sales…)</td>
+</tr>
+<tr>
+<td><code>disposable</code></td>
+<td>boolean</td>
+<td>Domain is a known throwaway provider</td>
+</tr>
+<tr>
+<td><code>free_provider</code></td>
+<td>boolean</td>
+<td>Domain is a known free email provider (Gmail, Yahoo…)</td>
+</tr>
+<tr>
+<td><code>domain_type</code></td>
+<td>string</td>
+<td><code>&quot;disposable&quot;</code> | <code>&quot;free&quot;</code> | <code>&quot;corporate&quot;</code> | <code>&quot;unknown&quot;</code></td>
+</tr>
+<tr>
+<td><code>domain_age_days</code></td>
+<td>number | null</td>
+<td>Days since domain registration. <code>null</code> if WHOIS unavailable.</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>number</td>
+<td>0–1 quality signal. 1 = strong signal of a real address.</td>
+</tr>
+</tbody>
+</table>
+<h2>Score</h2>
+<p>Starts at 1.0. Deductions:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Deduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Syntax / DNS / MX fail</td>
+<td>→ 0 immediately</td>
+</tr>
+<tr>
+<td>Disposable domain</td>
+<td>−0.4</td>
+</tr>
+<tr>
+<td>Role account</td>
+<td>−0.2</td>
+</tr>
+<tr>
+<td>Free provider</td>
+<td>−0.1</td>
+</tr>
+<tr>
+<td>Domain age &lt; 30 days</td>
+<td>−0.2</td>
+</tr>
+<tr>
+<td>Domain age 30–364 days</td>
+<td>−0.1</td>
+</tr>
+<tr>
+<td>Domain age unknown</td>
+<td>−0.05</td>
+</tr>
+</tbody>
+</table>
+<h2>Errors (400, no charge)</h2>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Email is required</code></td>
+<td>Empty email field</td>
+</tr>
+<tr>
+<td>Zod validation error</td>
+<td>Invalid email format</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/email-validator/validate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;email&quot;: &quot;john@acmecorp.com&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;email&quot;: &quot;john@acmecorp.com&quot;,
+  &quot;valid&quot;: true,
+  &quot;syntax&quot;: true,
+  &quot;dns&quot;: true,
+  &quot;mx&quot;: true,
+  &quot;role_account&quot;: false,
+  &quot;disposable&quot;: false,
+  &quot;free_provider&quot;: false,
+  &quot;domain_type&quot;: &quot;corporate&quot;,
+  &quot;domain_age_days&quot;: 3200,
+  &quot;score&quot;: 0.93
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

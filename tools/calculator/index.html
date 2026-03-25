@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Calculator | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Calculator</h1>
+    <p class="service-desc">Evaluate mathematical expressions: arithmetic, algebra, trig, logarithms, unit conversions, and plain English queries.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="https://api.lightningapi.tools/calculator/calculate">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-expression">Expression</label>
+    
+      <input
+        type="text"
+        id="field-expression"
+        name="expression"
+        placeholder="sqrt(144)"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>Models get maths wrong. This offloads calculation to a proper evaluator. Accepts mathjs syntax or plain English.</p>
+<h2>Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Any call</th>
+<th>1 credit</th>
+</tr>
+</thead>
+</table>
+<h2>Request format</h2>
+<p>Send a single <code>expression</code> field — either mathjs syntax or plain English:</p>
+<pre><code class="language-json">{ &quot;expression&quot;: &quot;sqrt(144)&quot; }
+</code></pre>
+<pre><code class="language-json">{ &quot;expression&quot;: &quot;square root of 144&quot; }
+</code></pre>
+<p>Plain English input is echoed back in its normalised mathjs form:</p>
+<pre><code class="language-json">{ &quot;result&quot;: 12, &quot;expression&quot;: &quot;sqrt(144)&quot; }
+</code></pre>
+<hr>
+<h2>What you can send</h2>
+<h3>mathjs expressions</h3>
+<p>Anything the <a href="https://mathjs.org/docs/expressions/syntax.html">mathjs expression parser</a> accepts:</p>
+<pre><code>2 + 3 * 4           → 14
+(2 + 3) * 4         → 20
+sqrt(81)            → 9
+2^8                 → 256
+pi * 5^2            → 78.54...
+log(100, 10)        → 2
+sin(pi / 2)         → 1
+</code></pre>
+<h3>Unit conversions (mathjs native)</h3>
+<pre><code>1 mile to km                    → 1.609...
+1 feet to m                     → 0.3048
+100 celsius to fahrenheit       → 212
+32 fahrenheit to celsius        → 0
+</code></pre>
+<h3>Plain English</h3>
+<pre><code>what is 2 + 2                   → 4
+15 percent of 340               → 51
+15% of 340                      → 51
+square root of 144              → 12
+cube root of 27                 → 3
+2 to the power of 8             → 256
+9 squared                       → 81
+3 cubed                         → 27
+half of 60                      → 30
+double 15                       → 30
+10 plus 5                       → 15
+10 divided by 5                 → 2
+</code></pre>
+<hr>
+<h2>Error responses</h2>
+<p>Invalid or unrecognisable expressions return <code>400</code> — no credit charged:</p>
+<pre><code class="language-json">{
+  &quot;error&quot;: &quot;VALIDATION_ERROR&quot;,
+  &quot;message&quot;: &quot;Cannot evaluate: \&quot;banana phone\&quot;. Try a mathjs expression (e.g. \&quot;sqrt(144)\&quot;) or plain English (e.g. \&quot;square root of 144\&quot;).&quot;
+}
+</code></pre>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/calculator/calculate</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;expression&quot;: &quot;sqrt(144)&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;result&quot;: 12,
+  &quot;expression&quot;: &quot;sqrt(144)&quot;
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>
