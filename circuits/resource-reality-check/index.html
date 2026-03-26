@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Resource Reality Check | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/circuits/">Circuits</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/circuits/">Circuits</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/circuits/">Circuits</a></p>
+    <h1>Resource Reality Check</h1>
+    <p class="service-desc">Verify that a URL is reachable, DNS-valid, and TLS-secure before an agent reads, cites, or calls it.</p>
+    
+    <div class="credit-badge">⚡ 3 credits per call</div>
+    
+  </header>
+
+  
+  <section class="card">
+    <h2>Uses these tools</h2>
+    <ul>
+      
+      <li><a href="/tools/domain-intelligence/">Domain Intelligence</a></li>
+      
+    </ul>
+  </section>
+  
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>AI agents hallucinate URLs, operate on stale links, and call APIs that have moved. Run this before reading, citing, or calling anything. Three signals in one round trip: DNS resolution, HTTP reachability, and TLS validity.</p>
+<h2>Flags</h2>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dns_failed</code></td>
+<td>Domain does not resolve</td>
+</tr>
+<tr>
+<td><code>http_unreachable</code></td>
+<td>HTTP probe returned an error (timeout, connection refused)</td>
+</tr>
+<tr>
+<td><code>http_error</code></td>
+<td>HTTP status code ≥ 400</td>
+</tr>
+<tr>
+<td><code>ssl_invalid</code></td>
+<td>TLS certificate is invalid or expired</td>
+</tr>
+<tr>
+<td><code>ssl_expiring_soon</code></td>
+<td>Certificate expires within 30 days</td>
+</tr>
+<tr>
+<td><code>ssl_check_failed</code></td>
+<td>TLS probe failed (no HTTPS, connection refused)</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>partial: true</code> field is added when one or more signals failed to run. <code>signals_checked</code> tells you how many actually ran.</p>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/circuits/resource-reality-check</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;url&quot;: &quot;https://example.com&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;reachable&quot;: true,
+  &quot;signals&quot;: {
+    &quot;dns_resolves&quot;: true,
+    &quot;http_status&quot;: 200,
+    &quot;content_type&quot;: &quot;text/html&quot;,
+    &quot;ssl_valid&quot;: true,
+    &quot;ssl_days_remaining&quot;: 180
+  },
+  &quot;flags&quot;: [],
+  &quot;anomaly_count&quot;: 0,
+  &quot;signals_checked&quot;: 3
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>
