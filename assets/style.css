@@ -249,6 +249,7 @@ h1 {
   letter-spacing: -0.03em;
   color: #fff;
   margin-bottom: 16px;
+  text-wrap: pretty;
 }
 
 h2 {
@@ -259,6 +260,7 @@ h2 {
   color: var(--accent);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  text-wrap: pretty;
 }
 h2::before {
   content: '// ';
@@ -277,11 +279,13 @@ h3 {
   color: var(--muted-bright);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  text-wrap: pretty;
 }
 
 p {
   margin-bottom: 16px;
   color: var(--text);
+  text-wrap: pretty;
 }
 
 strong {
