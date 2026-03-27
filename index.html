@@ -87,7 +87,7 @@ curl -X POST https://api.lightningapi.tools/api/v1/credits/verify \
 # → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;credits&quot;: 1000&quot;... }
 
 # 3. Call a tool
-curl -X POST https://api.lightningapi.tools/email-validator/validate \
+curl -X POST https://api.lightningapi.tools/email-validator \
   -H &quot;Authorization: Bearer &lt;apiKey&gt;&quot; \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;email&quot;: &quot;test@example.com&quot;}'
