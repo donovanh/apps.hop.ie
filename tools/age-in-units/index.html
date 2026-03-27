@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Age in Units | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/circuits/">Circuits</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/circuits/">Circuits</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Age in Units</h1>
+    <p class="service-desc">Calculate age in years, months, weeks, days, hours, and heartbeats from a birthdate.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-birthdate">Birthdate (YYYY-MM-DD)</label>
+    
+      <input
+        type="text"
+        id="field-birthdate"
+        name="birthdate"
+        placeholder="1990-01-01"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-reference_date">Reference Date (YYYY-MM-DD, optional)</label>
+    
+      <input
+        type="text"
+        id="field-reference_date"
+        name="reference_date"
+        placeholder="2025-01-01"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>LLMs can't reliably calculate precise age in multiple time units. Use this for age verification, demographic analysis, or any task requiring precise age calculations in different time units (years, months, weeks, days, hours, and even heartbeats).</p>
+<h2>Input</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>birthdate</code></td>
+<td>string</td>
+<td>✓</td>
+<td>Birthdate in YYYY-MM-DD format</td>
+</tr>
+<tr>
+<td><code>reference_date</code></td>
+<td>string</td>
+<td></td>
+<td>Reference date in YYYY-MM-DD format. Defaults to today if omitted</td>
+</tr>
+</tbody>
+</table>
+<h2>Response</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>years</code></td>
+<td>number</td>
+<td>Age in complete years</td>
+</tr>
+<tr>
+<td><code>months</code></td>
+<td>number</td>
+<td>Total age in complete months</td>
+</tr>
+<tr>
+<td><code>weeks</code></td>
+<td>number</td>
+<td>Total age in complete weeks</td>
+</tr>
+<tr>
+<td><code>days</code></td>
+<td>number</td>
+<td>Total age in complete days</td>
+</tr>
+<tr>
+<td><code>hours</code></td>
+<td>number</td>
+<td>Total age in complete hours</td>
+</tr>
+<tr>
+<td><code>heartbeats</code></td>
+<td>number</td>
+<td>Approximate heartbeats (calculated as hours × 60 × 70)</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/age-in-units</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;birthdate&quot;: &quot;1990-01-01&quot;,
+  &quot;reference_date&quot;: &quot;2025-01-01&quot;
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;years&quot;: 35,
+  &quot;months&quot;: 420,
+  &quot;weeks&quot;: 1826,
+  &quot;days&quot;: 12784,
+  &quot;hours&quot;: 306816,
+  &quot;heartbeats&quot;: 1288627200
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060606">
+  <title>Loan Payoff Calculator | Lightning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="staging-banner" class="staging-banner" style="display:none"></div>
+  <header class="site-header">
+    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/circuits/">Circuits</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+  </header>
+  <div class="nav-overlay"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <nav class="nav-drawer-links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/circuits/">Circuits</a>
+      <a href="/buy/">Buy credits</a>
+      <a href="/docs/">Docs</a>
+    </nav>
+  </div>
+  <main class="site-main">
+    <article class="service-page">
+
+  <header class="service-header">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
+    <h1>Loan Payoff Calculator</h1>
+    <p class="service-desc">Calculate months to payoff, total interest, and total amount paid for a loan given principal, annual rate, and monthly payment.</p>
+    
+    <div class="credit-badge">⚡ 1 credit per call</div>
+    
+  </header>
+
+  <section class="card" id="try-it-section">
+    <h2>Try it</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+      Fill in the fields below and hit Send.
+    </p>
+
+    <form class="try-it" id="try-it-form"
+  data-endpoint="">
+
+  <div class="field">
+    <label for="try-it-api-key">API key</label>
+    <div class="api-key-field-wrap">
+      <input
+        type="password"
+        id="try-it-api-key"
+        placeholder="Paste your API key…"
+        autocomplete="off"
+      />
+      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+    </div>
+    <label class="save-key-label">
+      <input type="checkbox" id="try-it-save-key" />
+      Save to this browser
+    </label>
+  </div>
+
+  
+  <div class="field">
+    <label for="field-principal">Principal (loan amount)</label>
+    
+      <input
+        type="number"
+        id="field-principal"
+        name="principal"
+        placeholder="200000"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-annual_rate_pct">Annual Interest Rate (%)</label>
+    
+      <input
+        type="number"
+        id="field-annual_rate_pct"
+        name="annual_rate_pct"
+        placeholder="4"
+      />
+    
+  </div>
+  
+  <div class="field">
+    <label for="field-monthly_payment">Monthly Payment</label>
+    
+      <input
+        type="number"
+        id="field-monthly_payment"
+        name="monthly_payment"
+        placeholder="955"
+      />
+    
+  </div>
+  
+
+  <button type="submit" class="btn" id="try-it-btn">Send request</button>
+
+  <div class="try-it-response" id="try-it-response">
+    <div class="response-meta">
+      <span class="response-status" id="response-status"></span>
+      <span class="credits-remaining" id="credits-remaining"></span>
+    </div>
+    <pre><code id="response-body"></code></pre>
+  </div>
+
+</form>
+
+  </section>
+
+  <section class="card">
+    <h2>Why use this</h2>
+<p>LLMs can't reliably iterate through amortisation schedules. Use this when you need accurate loan payoff timelines, total interest costs, or to check whether a monthly payment is sufficient to ever pay off a loan.</p>
+<h2>Input</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>principal</code></td>
+<td>number</td>
+<td>✓</td>
+<td>Loan principal amount</td>
+</tr>
+<tr>
+<td><code>annual_rate_pct</code></td>
+<td>number</td>
+<td>✓</td>
+<td>Annual interest rate as a percentage (e.g. 4 for 4%)</td>
+</tr>
+<tr>
+<td><code>monthly_payment</code></td>
+<td>number</td>
+<td>✓</td>
+<td>Fixed monthly payment amount</td>
+</tr>
+</tbody>
+</table>
+<h2>Response</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>principal</code></td>
+<td>number</td>
+<td>Original loan amount</td>
+</tr>
+<tr>
+<td><code>months_to_payoff</code></td>
+<td>number</td>
+<td>Number of months until paid off</td>
+</tr>
+<tr>
+<td><code>total_interest</code></td>
+<td>number</td>
+<td>Total interest paid over the loan term</td>
+</tr>
+<tr>
+<td><code>total_paid</code></td>
+<td>number</td>
+<td>Total amount paid (principal + interest)</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>payment_too_low</code></td>
+<td>Returned when payment doesn't cover monthly interest</td>
+</tr>
+<tr>
+<td><code>minimum_payment</code></td>
+<td>number</td>
+<td>Minimum payment needed to cover interest (only when error is set)</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="card">
+    <h2>API Reference</h2>
+    <h3>Endpoint</h3>
+    <pre><code>POST https://api.lightningapi.tools/loan-payoff</code></pre>
+
+    <h3>Required headers</h3>
+    <pre><code>Authorization: Bearer &lt;apiKey&gt;
+Content-Type: application/json
+</code></pre>
+
+    <h3>Example request</h3>
+    <pre><code>{
+  &quot;principal&quot;: 200000,
+  &quot;annual_rate_pct&quot;: 4,
+  &quot;monthly_payment&quot;: 955
+}
+</code></pre>
+
+    <h3>Example response</h3>
+    <pre><code>{
+  &quot;principal&quot;: 200000,
+  &quot;months_to_payoff&quot;: 299,
+  &quot;total_interest&quot;: 85545.00,
+  &quot;total_paid&quot;: 285545.00
+}
+</code></pre>
+  </section>
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+  </footer>
+  <script src="/assets/staging.js"></script>
+  <script src="/assets/try-it.js"></script>
+  <script src="/assets/nav.js"></script>
+</body>
+</html>
