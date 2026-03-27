@@ -314,7 +314,7 @@ strong {
 }
 
 .hero-title {
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
   margin-bottom: 20px;
   background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
   -webkit-background-clip: text;
