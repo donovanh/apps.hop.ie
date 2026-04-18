@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1c1a14">
-  <title>Compound Interest | Lightning Tools</title>
+  <title>API Status | Lightning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
         </a>
         <div class="nav-links">
           <a href="/" >home</a>
-          <a href="/tools/" class="active">tools</a>
+          <a href="/tools/" >tools</a>
           <a href="/circuits/" >circuits</a>
           <a href="/buy/" >buy credits</a>
           <a href="/docs/" >docs</a>
@@ -55,210 +55,64 @@
   </div>
 
   <main class="site-main">
-    <article class="service-page">
-
-  <header class="service-header">
-    <p class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a></p>
-    <h1>Compound Interest</h1>
-    <p class="service-desc">Calculate compound interest with a year-by-year breakdown. Supports any compounding frequency — annual, monthly, daily.</p>
     
-    <div class="credit-badge">⚡ 1 credit per call</div>
-    
-  </header>
+<section class="container" style="padding-top:48px;padding-bottom:64px;max-width:640px">
 
-  <section class="card" id="try-it-section">
-    <h2>Try it</h2>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
-      Fill in the fields below and hit Send.
-    </p>
+  <div style="margin-bottom:32px">
+    <div class="eyebrow" style="margin-bottom:8px">system status</div>
+    <h1 class="display" style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">api.lightningapi.tools</h1>
+    <p style="color:var(--fg-muted);font-size:14px;margin:0">live check · updates on page load</p>
+  </div>
 
-    <form class="try-it" id="try-it-form"
-  data-endpoint="https://api.lightningapi.tools/compound-interest">
-
-  <div class="field">
-    <label for="try-it-api-key">API key</label>
-    <div class="api-key-field-wrap">
-      <input
-        type="password"
-        id="try-it-api-key"
-        placeholder="Paste your API key…"
-        autocomplete="off"
-      />
-      <button type="button" class="btn-clear" id="try-it-api-key-clear">Clear</button>
+  <div id="status-banner" class="card" style="padding:20px 24px;display:flex;align-items:center;gap:16px">
+    <span id="status-dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--fg-dim);flex-shrink:0;animation:pulse 1.4s ease-in-out infinite"></span>
+    <div style="flex:1;min-width:0">
+      <div id="status-label" style="font-size:15px;font-weight:600;color:var(--fg)">checking…</div>
+      <div id="status-sub" style="font-size:12px;color:var(--fg-muted);margin-top:3px"> </div>
     </div>
-    <label class="save-key-label">
-      <input type="checkbox" id="try-it-save-key" />
-      Save to this browser
-    </label>
-  </div>
-
-  
-  <div class="field">
-    <label for="field-principal">Principal (€)</label>
-    
-      <input
-        type="number"
-        id="field-principal"
-        name="principal"
-        placeholder="1000"
-      />
-    
-  </div>
-  
-  <div class="field">
-    <label for="field-annual_rate_pct">Annual Rate (%)</label>
-    
-      <input
-        type="number"
-        id="field-annual_rate_pct"
-        name="annual_rate_pct"
-        placeholder="5"
-      />
-    
-  </div>
-  
-  <div class="field">
-    <label for="field-years">Years</label>
-    
-      <input
-        type="number"
-        id="field-years"
-        name="years"
-        placeholder="10"
-      />
-    
-  </div>
-  
-  <div class="field">
-    <label for="field-compounds_per_year">Compounds per Year (optional, default 12)</label>
-    
-      <input
-        type="number"
-        id="field-compounds_per_year"
-        name="compounds_per_year"
-        placeholder="12"
-      />
-    
-  </div>
-  
-
-  <button type="submit" class="btn" id="try-it-btn">Send request</button>
-
-  <div class="try-it-response" id="try-it-response">
-    <div class="response-meta">
-      <span class="response-status" id="response-status"></span>
-      <span class="credits-remaining" id="credits-remaining"></span>
+    <div style="text-align:right;flex-shrink:0">
+      <div class="eyebrow" style="margin-bottom:3px">response time</div>
+      <div id="status-latency" class="tnum" style="font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--fg-dim)">—</div>
     </div>
-    <pre><code id="response-body"></code></pre>
   </div>
 
-</form>
+</section>
 
-  </section>
+<style>
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+</style>
 
-  <section class="card">
-    <h2>Why use this</h2>
-<p>LLMs struggle with precise financial calculations. Use this for accurate compound interest projections with a full year-by-year breakdown.</p>
-<h2>Input</h2>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>principal</code></td>
-<td>number</td>
-<td>✓</td>
-<td>Initial investment amount</td>
-</tr>
-<tr>
-<td><code>annual_rate_pct</code></td>
-<td>number</td>
-<td>✓</td>
-<td>Annual interest rate as a percentage (e.g. 5 for 5%)</td>
-</tr>
-<tr>
-<td><code>years</code></td>
-<td>number</td>
-<td>✓</td>
-<td>Number of years to calculate (1–100)</td>
-</tr>
-<tr>
-<td><code>compounds_per_year</code></td>
-<td>number</td>
-<td>—</td>
-<td>How many times interest compounds per year (default: 12 for monthly)</td>
-</tr>
-</tbody>
-</table>
-<h2>Response</h2>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>final_amount</code></td>
-<td>number</td>
-<td>Balance at end of term</td>
-</tr>
-<tr>
-<td><code>total_interest</code></td>
-<td>number</td>
-<td>Total interest earned</td>
-</tr>
-<tr>
-<td><code>year_by_year</code></td>
-<td>array</td>
-<td>Per-year breakdown of balance and interest earned</td>
-</tr>
-</tbody>
-</table>
+<script>
+(function () {
+  var dot     = document.getElementById('status-dot');
+  var label   = document.getElementById('status-label');
+  var sub     = document.getElementById('status-sub');
+  var latency = document.getElementById('status-latency');
 
-  </section>
-
-  <section class="card">
-    <h2>API Reference</h2>
-    <h3>Endpoint</h3>
-    <pre><code>POST https://api.lightningapi.tools/compound-interest</code></pre>
-
-    <h3>Required headers</h3>
-    <pre><code>Authorization: Bearer &lt;apiKey&gt;
-Content-Type: application/json
-</code></pre>
-
-    <h3>Example request</h3>
-    <pre><code>{
-  &quot;principal&quot;: 1000,
-  &quot;annual_rate_pct&quot;: 5,
-  &quot;years&quot;: 10,
-  &quot;compounds_per_year&quot;: 12
-}
-</code></pre>
-
-    <h3>Example response</h3>
-    <pre><code>{
-  &quot;final_amount&quot;: 1647.01,
-  &quot;total_interest&quot;: 647.01,
-  &quot;year_by_year&quot;: [
-    { &quot;year&quot;: 1, &quot;balance&quot;: 1051.16, &quot;interest_earned&quot;: 51.16 },
-    { &quot;year&quot;: 2, &quot;balance&quot;: 1104.94, &quot;interest_earned&quot;: 53.78 },
-    ...
-  ]
-}
-</code></pre>
-  </section>
-
-</article>
+  var t0 = Date.now();
+  fetch('https://api.lightningapi.tools/health')
+    .then(function (r) {
+      var ms = Date.now() - t0;
+      return r.json().then(function (data) {
+        var ok = r.ok && data.status === 'ok';
+        dot.style.animation  = 'none';
+        dot.style.background = ok ? 'var(--success)' : 'var(--danger)';
+        label.textContent    = ok ? 'all systems operational' : 'service disruption detected';
+        label.style.color    = ok ? 'var(--success)' : 'var(--danger)';
+        sub.textContent      = 'checked ' + new Date().toUTCString();
+        latency.textContent  = ms + 'ms';
+        latency.style.color  = ms < 400 ? 'var(--success)' : ms < 900 ? 'var(--accent)' : 'var(--danger)';
+      });
+    })
+    .catch(function () {
+      dot.style.animation  = 'none';
+      dot.style.background = 'var(--danger)';
+      label.textContent    = 'api unreachable';
+      label.style.color    = 'var(--danger)';
+      sub.textContent      = 'checked ' + new Date().toUTCString();
+    });
+})();
+</script>
 
   </main>
 
