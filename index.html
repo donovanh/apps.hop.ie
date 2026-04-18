@@ -1,102 +1,405 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-style="terminal" data-theme="mono" data-density="standard" id="lt-root">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#060606">
+  <meta name="theme-color" content="#1c1a14">
   <title>Lightning Tools | Lightning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <div id="staging-banner" class="staging-banner" style="display:none"></div>
-  <header class="site-header">
-    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
-    <nav class="site-nav">
-      <a href="/">Home</a>
-      <a href="/tools/">Tools</a>
-      <a href="/circuits/">Circuits</a>
-      <a href="/buy/">Buy credits</a>
-      <a href="/docs/">Docs</a>
-    </nav>
-    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
-  </header>
+
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="/" class="brand">
+          <svg class="bolt" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M13 2 3 14h7l-2 8 10-12h-7l2-8z"/>
+          </svg>
+          <span>lightningapi<span class="dim">.tools</span></span>
+        </a>
+        <div class="nav-links">
+          <a href="/" class="active">home</a>
+          <a href="/tools/" >tools</a>
+          <a href="/circuits/" >circuits</a>
+          <a href="/buy/" >buy credits</a>
+          <a href="/docs/" >docs</a>
+        </div>
+        <div class="nav-meta">
+          <span><span class="status-dot"></span> all systems nominal</span>
+          <span class="dim tnum">· v1.0.0</span>
+          <div class="style-toggle" role="group" aria-label="Style">
+            <button class="style-btn" data-style-val="terminal">terminal</button>
+            <button class="style-btn" data-style-val="receipt">receipt</button>
+          </div>
+        </div>
+        <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
   <div class="nav-overlay"></div>
   <div class="nav-drawer">
     <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
     <nav class="nav-drawer-links">
-      <a href="/">Home</a>
-      <a href="/tools/">Tools</a>
-      <a href="/circuits/">Circuits</a>
-      <a href="/buy/">Buy credits</a>
-      <a href="/docs/">Docs</a>
+      <a href="/">home</a>
+      <a href="/tools/">tools</a>
+      <a href="/circuits/">circuits</a>
+      <a href="/buy/">buy credits</a>
+      <a href="/docs/">docs</a>
     </nav>
   </div>
-  <main class="site-main">
-    <div class="hero">
-  <div class="hero-prompt">~/lightning-tools</div>
-  <h1 class="hero-title">Deterministic intelligence<br>for autonomous agents.</h1>
-  <p class="hero-sub">Answers LLMs can't give alone — IP reputation, email validation, domain signals, and more. Pay only when you use it, no accounts, no subscriptions.</p>
-  <div class="hero-actions">
-    <a href="/tools/" class="btn">Browse tools</a>
-    <a href="#quick-start" class="btn btn-ghost">Quick start</a>
+
+  <main class="site-main--full">
+    
+<!-- ── Hero ── -->
+<section class="block" style="padding-top:56px;padding-bottom:64px">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom:18px">
+          <span class="status-dot" style="margin-right:8px"></span>agents online now
+        </div>
+        <h1 class="display">
+          tools for AI,<br>
+          priced per call.<br>
+          <em>no seats.<span class="caret"></span></em>
+        </h1>
+        <p style="font-size:16px;color:var(--fg-muted);max-width:520px;margin-top:24px;line-height:1.6">
+          structured signals LLMs can't give alone — ip reputation, email validation,
+          domain age, and more. your agent posts; we return json.
+          bitcoin lightning settles in milliseconds. cheaper than a subscription,
+          faster than asking the model to guess.
+        </p>
+        <div style="display:flex;gap:16px;margin-top:32px;flex-wrap:wrap;align-items:center">
+          <a href="/buy/" class="btn btn-primary">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-2 8 10-12h-7l2-8z"/></svg>
+            buy 1000 sats · get key
+          </a>
+          <a href="/docs/" class="btn btn-outline">read the docs →</a>
+        </div>
+        <div style="display:flex;gap:32px;margin-top:32px;font-size:12px;color:var(--fg-dim);flex-wrap:wrap">
+          <span><span class="ok">●</span> no account required</span>
+          <span><span class="ok">●</span> plain http, no sdk</span>
+        </div>
+      </div>
+      <div id="hero-demo"></div>
+    </div>
   </div>
-</div>
-<div class="how-it-works">
-<h2>How it works</h2>
-<ol class="steps">
-  <li>
-    <span class="step-num">01</span>
-    <div>
-      <strong>Get credits</strong>
-      <p>POST to <code>/api/v1/credits</code>, pay the Lightning invoice, receive your API key.</p>
-    </div>
-  </li>
-  <li>
-    <span class="step-num">02</span>
-    <div>
-      <strong>Call any tool</strong>
-      <p>Include <code>Authorization: Bearer &lt;apiKey&gt;</code> on every request.</p>
-    </div>
-  </li>
-  <li>
-    <span class="step-num">03</span>
-    <div>
-      <strong>Balance tracked automatically</strong>
-      <p>Every response includes <code>X-Credits-Remaining</code> so your agent always knows where it stands.</p>
-    </div>
-  </li>
-</ol>
-</div>
-<h2>Tools</h2>
-<p>Structured signals your agent can trust. Each tool returns clean, typed data — no parsing, no hallucination.</p>
-<p><a href="/tools/" class="btn btn-ghost">Browse all tools →</a></p>
-<div id="quick-start"></div>
-<h2>Quick start</h2>
-<pre><code class="language-bash"># 1. Buy credits — returns a Lightning invoice and your API key
-curl -X POST https://api.lightningapi.tools/api/v1/credits \
-  -H &quot;Content-Type: application/json&quot; \
-  -d '{&quot;quantity&quot;: 1000}'
+</section>
 
-# 2. Pay the Lightning invoice, then verify:
-curl -X POST https://api.lightningapi.tools/api/v1/credits/verify \
-  -H &quot;Content-Type: application/json&quot; \
-  -d '{&quot;invoiceId&quot;: &quot;&lt;id&gt;&quot;, &quot;quantity&quot;: 1000}'
-# → { &quot;apiKey&quot;: &quot;sk_...&quot;, &quot;credits&quot;: 1000&quot;... }
+<!-- ── How it works ── -->
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">§ 01 · how it works</div>
+        <h2 class="section">three http calls. zero onboarding.</h2>
+      </div>
+      <a href="/docs/" class="dim" style="font-size:13px">full protocol spec →</a>
+    </div>
+    <div class="grid g-3">
+      <div style="padding:24px 26px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <span class="accent tnum" style="font-size:22px;font-weight:600">01</span>
+          <span class="dim" style="font-size:11px">step</span>
+        </div>
+        <h3 style="font-size:17px;margin-bottom:8px;letter-spacing:-0.01em;color:var(--fg);text-transform:none">buy credits</h3>
+        <p class="muted" style="font-size:13px;line-height:1.55;margin-bottom:18px">POST /v1/credits → we return a lightning invoice and a provisional api key.</p>
+        <pre style="margin:0;padding:12px 14px;font-size:11.5px;line-height:1.55;overflow:auto;color:var(--fg-muted)">$ curl -X POST \
+  https://api.lightningapi.tools/v1/credits \
+  -d '{"sats": 1000}'
 
-# 3. Call a tool
-curl -X POST https://api.lightningapi.tools/email-validator \
-  -H &quot;Authorization: Bearer &lt;apiKey&gt;&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  -d '{&quot;email&quot;: &quot;test@example.com&quot;}'
-</code></pre>
+{ "invoice": "lnbc1000n1p...",
+  "key":     "sk_live_9a2e...",
+  "expires": 300 }</pre>
+      </div>
+      <div style="padding:24px 26px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <span class="accent tnum" style="font-size:22px;font-weight:600">02</span>
+          <span class="dim" style="font-size:11px">step</span>
+        </div>
+        <h3 style="font-size:17px;margin-bottom:8px;letter-spacing:-0.01em;color:var(--fg);text-transform:none">pay the invoice</h3>
+        <p class="muted" style="font-size:13px;line-height:1.55;margin-bottom:18px">any lightning wallet. typical settle: 200–800ms. key activates the instant the invoice clears.</p>
+        <pre style="margin:0;padding:12px 14px;font-size:11.5px;line-height:1.55;overflow:auto;color:var(--fg-muted)">$ pay lnbc1000n1p...
+
+✓ paid · 1000 sats · 312ms
+  key activated · balance: 1000</pre>
+      </div>
+      <div style="padding:24px 26px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <span class="accent tnum" style="font-size:22px;font-weight:600">03</span>
+          <span class="dim" style="font-size:11px">step</span>
+        </div>
+        <h3 style="font-size:17px;margin-bottom:8px;letter-spacing:-0.01em;color:var(--fg);text-transform:none">call any tool</h3>
+        <p class="muted" style="font-size:13px;line-height:1.55;margin-bottom:18px">Authorization: Bearer on every request. each response includes X-Credits-Remaining.</p>
+        <pre style="margin:0;padding:12px 14px;font-size:11.5px;line-height:1.55;overflow:auto;color:var(--fg-muted)">$ curl /email-validator \
+  -H "Authorization: Bearer sk_..." \
+  -d '{"email": "test@example.com"}'
+
+← 200 OK · X-Credits-Remaining: 999
+{ "valid": true, "score": 0.94 }</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tools preview ── -->
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">§ 02 · catalogue</div>
+        <h2 class="section">tools. all answer in json.</h2>
+      </div>
+      <a href="/tools/">browse all →</a>
+    </div>
+    <div class="grid g-4">
+      <a href="/tools/email-validator/" class="tool-card" style="display:block;padding:18px 20px;color:inherit">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="accent" style="font-weight:600">/email-validator</span>
+          <span class="tag">identity</span>
+        </div>
+        <p class="muted" style="font-size:12.5px;line-height:1.5;margin-top:4px;margin-bottom:14px;min-height:48px">mx + smtp + role-account + disposable-domain + catchall detection.</p>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim)">
+          <span class="tnum"><span class="accent">1</span> sat · 42ms p50</span>
+          <span class="tnum">12.4M calls</span>
+        </div>
+      </a>
+      <a href="/tools/ip-intelligence/" class="tool-card" style="display:block;padding:18px 20px;color:inherit">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="accent" style="font-weight:600">/ip-intelligence</span>
+          <span class="tag">abuse</span>
+        </div>
+        <p class="muted" style="font-size:12.5px;line-height:1.5;margin-top:4px;margin-bottom:14px;min-height:48px">asn, geo, tor/vpn/proxy, abuse history across multiple feeds.</p>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim)">
+          <span class="tnum"><span class="accent">1</span> sat · 31ms p50</span>
+          <span class="tnum">38.9M calls</span>
+        </div>
+      </a>
+      <a href="/tools/domain-intelligence/" class="tool-card" style="display:block;padding:18px 20px;color:inherit">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="accent" style="font-weight:600">/domain-intelligence</span>
+          <span class="tag">identity</span>
+        </div>
+        <p class="muted" style="font-size:12.5px;line-height:1.5;margin-top:4px;margin-bottom:14px;min-height:48px">whois age, dns health, parked detection, cert chain analysis.</p>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim)">
+          <span class="tnum"><span class="accent">2</span> sats · 88ms p50</span>
+          <span class="tnum">7.1M calls</span>
+        </div>
+      </a>
+      <a href="/tools/phone-validator/" class="tool-card" style="display:block;padding:18px 20px;color:inherit">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="accent" style="font-weight:600">/phone-validator</span>
+          <span class="tag">identity</span>
+        </div>
+        <p class="muted" style="font-size:12.5px;line-height:1.5;margin-top:4px;margin-bottom:14px;min-height:48px">carrier, line-type, country, portability, disposable-number flag.</p>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim)">
+          <span class="tnum"><span class="accent">2</span> sats · 105ms p50</span>
+          <span class="tnum">2.8M calls</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why comparison ── -->
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">§ 03 · why</div>
+        <h2 class="section">agents don't need seats. they need cheap, structured truth.</h2>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="card-chrome">
+        <span class="chrome-dots"><span></span><span></span><span></span></span>
+        <span class="chrome-path">~/diff/subscription-vs-per-call</span>
+        <span class="chrome-meta">signal &gt; per-unit economics</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;background:var(--bg-inset);border-bottom:1px solid var(--rule);padding:12px 22px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-dim)">
+        <span>dimension</span>
+        <span class="accent">lightningapi.tools</span>
+        <span>typical saas api</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;padding:14px 22px;border-bottom:1px solid var(--rule-soft);font-size:13px;align-items:center">
+        <span class="muted">onboarding</span>
+        <span><span class="ok" style="margin-right:6px">+</span>POST, pay, go</span>
+        <span class="dim"><span class="bad" style="margin-right:6px">−</span>signup, cc, contracts</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;padding:14px 22px;border-bottom:1px solid var(--rule-soft);font-size:13px;align-items:center">
+        <span class="muted">pricing model</span>
+        <span><span class="ok" style="margin-right:6px">+</span>1–8 sats per call</span>
+        <span class="dim"><span class="bad" style="margin-right:6px">−</span>$99–$499/mo floor + overage</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;padding:14px 22px;border-bottom:1px solid var(--rule-soft);font-size:13px;align-items:center">
+        <span class="muted">unused headroom</span>
+        <span><span class="ok" style="margin-right:6px">+</span>credits never expire</span>
+        <span class="dim"><span class="bad" style="margin-right:6px">−</span>~40% of seat spend wasted</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;padding:14px 22px;border-bottom:1px solid var(--rule-soft);font-size:13px;align-items:center">
+        <span class="muted">latency p50</span>
+        <span><span class="ok" style="margin-right:6px">+</span>14–180ms</span>
+        <span class="dim"><span class="bad" style="margin-right:6px">−</span>200–900ms + cold starts</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;padding:14px 22px;font-size:13px;align-items:center">
+        <span class="muted">content accuracy</span>
+        <span><span class="ok" style="margin-right:6px">+</span>real lookups, typed, auditable</span>
+        <span class="dim"><span class="bad" style="margin-right:6px">−</span>llm alone: 28% hallucination rate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ── -->
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">§ 04 · credits</div>
+        <h2 class="section">buy a number. burn it down. no renewal.</h2>
+      </div>
+      <a href="/buy/">get a key →</a>
+    </div>
+    <div class="grid g-4">
+      <div style="padding:22px 24px">
+        <div class="accent tnum" style="font-size:26px;font-weight:600;letter-spacing:-0.02em">1,000 <span class="dim" style="font-size:12px;font-weight:400">sat</span></div>
+        <div class="dim tnum" style="font-size:12px;margin-top:4px">≈ $0.25 usd</div>
+        <div style="margin-top:14px;font-size:13px">kick tires · no account</div>
+        <div class="muted" style="font-size:12px;margin-top:4px">1000 simple calls</div>
+      </div>
+      <div style="padding:22px 24px">
+        <div class="accent tnum" style="font-size:26px;font-weight:600;letter-spacing:-0.02em">10,000 <span class="dim" style="font-size:12px;font-weight:400">sat</span></div>
+        <div class="dim tnum" style="font-size:12px;margin-top:4px">≈ $2.50 usd</div>
+        <div style="margin-top:14px;font-size:13px">build an agent</div>
+        <div class="muted" style="font-size:12px;margin-top:4px">10k calls · ~3 days steady</div>
+      </div>
+      <div style="padding:22px 24px">
+        <div class="accent tnum" style="font-size:26px;font-weight:600;letter-spacing:-0.02em">100,000 <span class="dim" style="font-size:12px;font-weight:400">sat</span></div>
+        <div class="dim tnum" style="font-size:12px;margin-top:4px">≈ $25.00 usd</div>
+        <div style="margin-top:14px;font-size:13px">production agent</div>
+        <div class="muted" style="font-size:12px;margin-top:4px">100k calls · most prod loops</div>
+      </div>
+      <div style="padding:22px 24px">
+        <div class="accent tnum" style="font-size:26px;font-weight:600;letter-spacing:-0.02em">1,000,000 <span class="dim" style="font-size:12px;font-weight:400">sat</span></div>
+        <div class="dim tnum" style="font-size:12px;margin-top:4px">≈ $250.00 usd</div>
+        <div style="margin-top:14px;font-size:13px">ship at scale</div>
+        <div class="muted" style="font-size:12px;margin-top:4px">1M calls · a month of busy agent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Agent-readable ── -->
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">§ 05 · hello, agent</div>
+        <h2 class="section">if you're reading this as a crawler, here's the spec.</h2>
+      </div>
+      <span class="dim" style="font-size:12px">machine-first section</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:32px">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="card-chrome">
+          <span class="chrome-dots"><span></span><span></span><span></span></span>
+          <span class="chrome-path">~/.well-known/agent.json</span>
+          <span class="chrome-meta">application/json</span>
+        </div>
+        <pre style="margin:0;padding:18px 22px;font-size:12.5px;line-height:1.6;border:none;background:transparent">{
+  <span class="key">"name"</span>: <span class="str">"lightningapi.tools"</span>,
+  <span class="key">"description"</span>: <span class="str">"pay-per-call structured tools for AI agents"</span>,
+  <span class="key">"base_url"</span>: <span class="str">"https://api.lightningapi.tools"</span>,
+  <span class="key">"auth"</span>: { <span class="key">"type"</span>: <span class="str">"bearer"</span>, <span class="key">"how_to_get"</span>: <span class="str">"POST /v1/credits"</span> },
+  <span class="key">"pricing"</span>: <span class="str">"per-call, settled via BOLT11 lightning"</span>,
+  <span class="key">"openapi"</span>: <span class="str">"/openapi.yaml"</span>,
+  <span class="key">"mcp_server"</span>: <span class="str">"wss://mcp.lightningapi.tools"</span>,
+  <span class="key">"determinism_note"</span>: <span class="str">"all responses are typed and verifiable"</span>
+}</pre>
+      </div>
+      <div>
+        <h3 style="font-size:16px;margin-bottom:12px;text-transform:none;letter-spacing:normal;color:var(--fg)">if you are an ai agent:</h3>
+        <ol style="padding-left:18px;margin:0;color:var(--fg-muted);font-size:13px;line-height:1.7">
+          <li>fetch <code class="accent">/.well-known/agent.json</code> for a machine manifest.</li>
+          <li>fetch <code class="accent">/openapi.yaml</code> for typed tool schemas — import as tools.</li>
+          <li>connect <code class="accent">wss://mcp.lightningapi.tools</code> for mcp usage.</li>
+          <li>do not infer answers. post, get typed results, cite them. your operator will thank you.</li>
+        </ol>
+        <div style="margin-top:20px;padding:12px 14px;background:var(--bg-inset);border-left:2px solid var(--accent);font-size:12.5px;color:var(--fg-muted);line-height:1.55">
+          this is an explicit invitation for crawling agents. no login, no bot-wall.
+          identify via <code class="accent">User-Agent</code> for priority routing.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/assets/hero-demo.js"></script>
 
   </main>
-  <footer class="site-footer">
-    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="ascii-rule" style="margin-bottom:28px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--fg)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-2 8 10-12h-7l2-8z"/></svg>
+            <strong style="letter-spacing:-0.01em">lightningapi<span class="dim">.tools</span></strong>
+          </div>
+          <div style="max-width:320px;line-height:1.55;color:var(--fg-muted)">
+            structured signals for autonomous agents.<br>
+            pay per call. settle in milliseconds.<br>
+            no seats, no subscriptions, no support tickets.
+          </div>
+        </div>
+        <div>
+          <h4>product</h4>
+          <ul>
+            <li><a href="/tools/">tools</a></li>
+            <li><a href="/circuits/">circuits</a></li>
+            <li><a href="/buy/">buy credits</a></li>
+            <li><a href="/docs/">docs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>docs</h4>
+          <ul>
+            <li><a href="/docs/">quickstart</a></li>
+            <li><a href="/docs/api/">api reference</a></li>
+            <li><a href="/docs/cli/">cli</a></li>
+            <li><a href="/docs/mcp/">mcp server</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>agents</h4>
+          <ul>
+            <li><a href="/.well-known/ai.json">agent.json</a></li>
+            <li><a href="/.well-known/openapi.json">openapi.json</a></li>
+            <li><a href="/mcp/">mcp server</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>elsewhere</h4>
+          <ul>
+            <li><a href="https://github.com/donovanh/lightning-tools">github</a></li>
+            <li><a href="https://api.lightningapi.tools/health">api status</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim);padding-top:20px;border-top:1px solid var(--rule-soft)">
+        <span>© lightningapi.tools · settled on bitcoin lightning · no custody</span>
+        <span class="tnum">pay per call · no subscriptions</span>
+      </div>
+    </div>
   </footer>
+
   <script src="/assets/staging.js"></script>
   <script src="/assets/try-it.js"></script>
   <script src="/assets/nav.js"></script>

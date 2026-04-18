@@ -1,39 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-style="terminal" data-theme="mono" data-density="standard" id="lt-root">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#060606">
+  <meta name="theme-color" content="#1c1a14">
   <title>Docs | Lightning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <div id="staging-banner" class="staging-banner" style="display:none"></div>
-  <header class="site-header">
-    <a href="/" class="site-logo"><span class="logo-bolt">⚡</span>Lightning Tools</a>
-    <nav class="site-nav">
-      <a href="/">Home</a>
-      <a href="/tools/">Tools</a>
-      <a href="/circuits/">Circuits</a>
-      <a href="/buy/">Buy credits</a>
-      <a href="/docs/">Docs</a>
-    </nav>
-    <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
-  </header>
+
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="/" class="brand">
+          <svg class="bolt" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M13 2 3 14h7l-2 8 10-12h-7l2-8z"/>
+          </svg>
+          <span>lightningapi<span class="dim">.tools</span></span>
+        </a>
+        <div class="nav-links">
+          <a href="/" >home</a>
+          <a href="/tools/" >tools</a>
+          <a href="/circuits/" >circuits</a>
+          <a href="/buy/" >buy credits</a>
+          <a href="/docs/" class="active">docs</a>
+        </div>
+        <div class="nav-meta">
+          <span><span class="status-dot"></span> all systems nominal</span>
+          <span class="dim tnum">· v1.0.0</span>
+          <div class="style-toggle" role="group" aria-label="Style">
+            <button class="style-btn" data-style-val="terminal">terminal</button>
+            <button class="style-btn" data-style-val="receipt">receipt</button>
+          </div>
+        </div>
+        <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
   <div class="nav-overlay"></div>
   <div class="nav-drawer">
     <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
     <nav class="nav-drawer-links">
-      <a href="/">Home</a>
-      <a href="/tools/">Tools</a>
-      <a href="/circuits/">Circuits</a>
-      <a href="/buy/">Buy credits</a>
-      <a href="/docs/">Docs</a>
+      <a href="/">home</a>
+      <a href="/tools/">tools</a>
+      <a href="/circuits/">circuits</a>
+      <a href="/buy/">buy credits</a>
+      <a href="/docs/">docs</a>
     </nav>
   </div>
+
   <main class="site-main">
     
 <div class="service-header">
@@ -73,9 +93,63 @@
 </ul>
 
   </main>
-  <footer class="site-footer">
-    <p>Lightning Tools &mdash; Pay-per-call tools for AI agents &mdash; <a href="https://api.lightningapi.tools/health">API status</a></p>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="ascii-rule" style="margin-bottom:28px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--fg)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-2 8 10-12h-7l2-8z"/></svg>
+            <strong style="letter-spacing:-0.01em">lightningapi<span class="dim">.tools</span></strong>
+          </div>
+          <div style="max-width:320px;line-height:1.55;color:var(--fg-muted)">
+            structured signals for autonomous agents.<br>
+            pay per call. settle in milliseconds.<br>
+            no seats, no subscriptions, no support tickets.
+          </div>
+        </div>
+        <div>
+          <h4>product</h4>
+          <ul>
+            <li><a href="/tools/">tools</a></li>
+            <li><a href="/circuits/">circuits</a></li>
+            <li><a href="/buy/">buy credits</a></li>
+            <li><a href="/docs/">docs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>docs</h4>
+          <ul>
+            <li><a href="/docs/">quickstart</a></li>
+            <li><a href="/docs/api/">api reference</a></li>
+            <li><a href="/docs/cli/">cli</a></li>
+            <li><a href="/docs/mcp/">mcp server</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>agents</h4>
+          <ul>
+            <li><a href="/.well-known/ai.json">agent.json</a></li>
+            <li><a href="/.well-known/openapi.json">openapi.json</a></li>
+            <li><a href="/mcp/">mcp server</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>elsewhere</h4>
+          <ul>
+            <li><a href="https://github.com/donovanh/lightning-tools">github</a></li>
+            <li><a href="https://api.lightningapi.tools/health">api status</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim);padding-top:20px;border-top:1px solid var(--rule-soft)">
+        <span>© lightningapi.tools · settled on bitcoin lightning · no custody</span>
+        <span class="tnum">pay per call · no subscriptions</span>
+      </div>
+    </div>
   </footer>
+
   <script src="/assets/staging.js"></script>
   <script src="/assets/try-it.js"></script>
   <script src="/assets/nav.js"></script>
