@@ -309,26 +309,33 @@
       <div class="card" style="padding:0;overflow:hidden">
         <div class="card-chrome">
           <span class="chrome-dots"><span></span><span></span><span></span></span>
-          <span class="chrome-path">~/.well-known/agent.json</span>
-          <span class="chrome-meta">application/json</span>
+          <span class="chrome-path">/.well-known/ai.json</span>
+          <span class="chrome-meta"><a href="/.well-known/ai.json" style="color:inherit;text-decoration:underline;text-underline-offset:3px">view raw ↗</a></span>
         </div>
         <pre style="margin:0;padding:18px 22px;font-size:12.5px;line-height:1.6;border:none;background:transparent">{
-  <span class="key">"name"</span>: <span class="str">"lightningapi.tools"</span>,
-  <span class="key">"description"</span>: <span class="str">"pay-per-call structured tools for AI agents"</span>,
-  <span class="key">"base_url"</span>: <span class="str">"https://api.lightningapi.tools"</span>,
-  <span class="key">"auth"</span>: { <span class="key">"type"</span>: <span class="str">"bearer"</span>, <span class="key">"how_to_get"</span>: <span class="str">"POST /v1/credits"</span> },
-  <span class="key">"pricing"</span>: <span class="str">"per-call, settled via BOLT11 lightning"</span>,
-  <span class="key">"openapi"</span>: <span class="str">"/openapi.yaml"</span>,
-  <span class="key">"mcp_server"</span>: <span class="str">"wss://mcp.lightningapi.tools"</span>,
-  <span class="key">"determinism_note"</span>: <span class="str">"all responses are typed and verifiable"</span>
+  <span class="key">"name"</span>: <span class="str">"Lightning Tools"</span>,
+  <span class="key">"version"</span>: <span class="str">"1.0.0"</span>,
+  <span class="key">"description"</span>: <span class="str">"Pay-per-call tools for AI agents. Buy credits with Bitcoin Lightning."</span>,
+  <span class="key">"openapi"</span>: <span class="str">"https://lightningapi.tools/.well-known/openapi.json"</span>,
+  <span class="key">"services"</span>: [ <span class="dim">/* 17 tools — email-validator, domain-intelligence, date-utils… */</span> ],
+  <span class="key">"payment"</span>: {
+    <span class="key">"endpoint"</span>: <span class="str">"https://api.lightningapi.tools/api/v1/credits"</span>,
+    <span class="key">"protocol"</span>: <span class="str">"Lightning"</span>,
+    <span class="key">"rates"</span>: <span class="str">"1 sat = 1 credit"</span>
+  },
+  <span class="key">"authentication"</span>: {
+    <span class="key">"type"</span>: <span class="str">"token"</span>,
+    <span class="key">"header"</span>: <span class="str">"Authorization"</span>,
+    <span class="key">"format"</span>: <span class="str">"Bearer &lt;token&gt;"</span>
+  }
 }</pre>
       </div>
       <div>
         <h3 style="font-size:16px;margin-bottom:12px;text-transform:none;letter-spacing:normal;color:var(--fg)">if you are an ai agent:</h3>
         <ol style="padding-left:18px;margin:0;color:var(--fg-muted);font-size:13px;line-height:1.7">
-          <li>fetch <code class="accent">/.well-known/agent.json</code> for a machine manifest.</li>
-          <li>fetch <code class="accent">/openapi.yaml</code> for typed tool schemas — import as tools.</li>
-          <li>connect <code class="accent">wss://mcp.lightningapi.tools</code> for mcp usage.</li>
+          <li>fetch <code class="accent">/.well-known/ai.json</code> for a machine manifest and service list.</li>
+          <li>fetch <code class="accent">/.well-known/openapi.json</code> for typed tool schemas — import as tools.</li>
+          <li>post to <code class="accent">/api/v1/credits</code> with a lightning invoice to get an api key.</li>
           <li>do not infer answers. post, get typed results, cite them. your operator will thank you.</li>
         </ol>
         <div style="margin-top:20px;padding:12px 14px;background:var(--bg-inset);border-left:2px solid var(--accent);font-size:12.5px;color:var(--fg-muted);line-height:1.55">

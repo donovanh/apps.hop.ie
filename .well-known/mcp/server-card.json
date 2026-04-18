@@ -190,6 +190,315 @@
       }
     },
     {
+      "name": "feels-like",
+      "description": "Calculates the apparent (feels-like) temperature using heat index or wind chill. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "temp_c"
+        ],
+        "properties": {
+          "temp_c": {
+            "type": "number",
+            "description": "Temperature in Celsius"
+          },
+          "humidity_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Relative humidity percentage (0-100)"
+          },
+          "wind_speed_kmh": {
+            "type": "number",
+            "description": "Wind speed in km/h"
+          }
+        }
+      }
+    },
+    {
+      "name": "sunrise-sunset",
+      "description": "Calculates sunrise, sunset, solar noon, and day length for a given location and date. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "date"
+        ],
+        "properties": {
+          "lat": {
+            "type": "number",
+            "description": "Latitude"
+          },
+          "lon": {
+            "type": "number",
+            "description": "Longitude"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date in YYYY-MM-DD format",
+            "example": "2026-06-21"
+          }
+        }
+      }
+    },
+    {
+      "name": "age-in-units",
+      "description": "Calculates age in multiple units from a birthdate. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "birthdate"
+        ],
+        "properties": {
+          "birthdate": {
+            "type": "string",
+            "description": "Birthdate in YYYY-MM-DD format",
+            "example": "1990-05-15"
+          },
+          "reference_date": {
+            "type": "string",
+            "description": "Optional reference date in YYYY-MM-DD format. Defaults to today."
+          }
+        }
+      }
+    },
+    {
+      "name": "loan-payoff",
+      "description": "Calculates loan payoff schedule including months to payoff, total interest, and total paid. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "principal",
+          "annual_rate_pct",
+          "monthly_payment"
+        ],
+        "properties": {
+          "principal": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Loan principal amount"
+          },
+          "annual_rate_pct": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Annual interest rate as a percentage"
+          },
+          "monthly_payment": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Monthly payment amount"
+          }
+        }
+      }
+    },
+    {
+      "name": "compound-interest",
+      "description": "Calculates compound interest with year-by-year breakdown. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "principal",
+          "annual_rate_pct",
+          "years",
+          "compounds_per_year"
+        ],
+        "properties": {
+          "principal": {
+            "type": "number",
+            "description": "Initial principal amount"
+          },
+          "annual_rate_pct": {
+            "type": "number",
+            "description": "Annual interest rate as a percentage"
+          },
+          "years": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "Number of years"
+          },
+          "compounds_per_year": {
+            "type": "integer",
+            "description": "Number of compounding periods per year"
+          }
+        }
+      }
+    },
+    {
+      "name": "elo-rating",
+      "description": "Calculates new Elo ratings after a match. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "rating_a",
+          "rating_b",
+          "outcome"
+        ],
+        "properties": {
+          "rating_a": {
+            "type": "number",
+            "description": "Current rating of player A"
+          },
+          "rating_b": {
+            "type": "number",
+            "description": "Current rating of player B"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "a_wins",
+              "b_wins",
+              "draw"
+            ],
+            "description": "Match outcome"
+          },
+          "k_factor": {
+            "type": "number",
+            "default": 32,
+            "description": "K-factor (default 32)"
+          }
+        }
+      }
+    },
+    {
+      "name": "password-entropy",
+      "description": "Calculates password entropy and estimated crack time. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "properties": {
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Password to analyse"
+          }
+        }
+      }
+    },
+    {
+      "name": "boiling-point",
+      "description": "Calculates the boiling point of water at a given altitude. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "altitude_m"
+        ],
+        "properties": {
+          "altitude_m": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Altitude in metres (0-10000)"
+          }
+        }
+      }
+    },
+    {
+      "name": "horizon-distance",
+      "description": "Calculates the distance to the geometric and radio horizons from a given height. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "height_m"
+        ],
+        "properties": {
+          "height_m": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Height in metres (positive)"
+          }
+        }
+      }
+    },
+    {
+      "name": "speed-of-sound",
+      "description": "Calculates the speed of sound in a given medium at a given temperature. Cost: 1 credit per call. Costs 1 credit per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "temp_c",
+          "medium"
+        ],
+        "properties": {
+          "temp_c": {
+            "type": "number",
+            "description": "Temperature in Celsius"
+          },
+          "medium": {
+            "type": "string",
+            "enum": [
+              "air",
+              "water",
+              "steel",
+              "concrete"
+            ],
+            "description": "Medium for sound propagation"
+          }
+        }
+      }
+    },
+    {
+      "name": "circuits_resource-reality-check",
+      "description": "Checks whether a URL is reachable and gathers signals about DNS, HTTP, SSL, and content. Cost: 3 credits per call. Costs 3 credits per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL to check"
+          }
+        }
+      }
+    },
+    {
+      "name": "circuits_scam-signal-check",
+      "description": "Analyses domain age, MX configuration, email deliverability, and payment method for scam signals. Cost: 4 credits per call. Costs 4 credits per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "domain",
+          "sender_email"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain to check"
+          },
+          "sender_email": {
+            "type": "string",
+            "format": "email",
+            "description": "Sender email address"
+          },
+          "payment_method": {
+            "type": "string",
+            "description": "Payment method mentioned (optional)"
+          }
+        }
+      }
+    },
+    {
+      "name": "circuits_data-freshness-check",
+      "description": "Checks URL reachability, domain update recency, SSL validity, and content word count for data freshness signals. Cost: 5 credits per call. Costs 5 credits per call.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL to check"
+          }
+        }
+      }
+    },
+    {
       "name": "date-utils_today",
       "description": "Returns the current date, day of week, UTC offset, DST status, working day status, week number, quarter, days until month/quarter end, next working day, and upcoming holidays. Cost: 1 credit. Costs 1 credit per call.",
       "inputSchema": {

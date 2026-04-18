@@ -50,6 +50,123 @@
       "price": 1
     },
     {
+      "id": "feels-like",
+      "name": "Apparent temperature",
+      "description": "Calculates the apparent (feels-like) temperature using heat index or wind chill.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/feels-like",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "sunrise-sunset",
+      "name": "Solar times",
+      "description": "Calculates sunrise, sunset, solar noon, and day length for a given location and date.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/sunrise-sunset",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "age-in-units",
+      "name": "Age calculator",
+      "description": "Calculates age in multiple units from a birthdate.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/age-in-units",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "loan-payoff",
+      "name": "Amortisation calculator",
+      "description": "Calculates loan payoff schedule including months to payoff, total interest, and total paid.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/loan-payoff",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "compound-interest",
+      "name": "Compound interest calculator",
+      "description": "Calculates compound interest with year-by-year breakdown.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/compound-interest",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "elo-rating",
+      "name": "Elo chess rating calculator",
+      "description": "Calculates new Elo ratings after a match.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/elo-rating",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "password-entropy",
+      "name": "Password strength analyser",
+      "description": "Calculates password entropy and estimated crack time.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/password-entropy",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "boiling-point",
+      "name": "Boiling point at altitude",
+      "description": "Calculates the boiling point of water at a given altitude.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/boiling-point",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "horizon-distance",
+      "name": "Horizon distance calculator",
+      "description": "Calculates the distance to the geometric and radio horizons from a given height.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/horizon-distance",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "speed-of-sound",
+      "name": "Speed of sound calculator",
+      "description": "Calculates the speed of sound in a given medium at a given temperature.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/speed-of-sound",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 1
+    },
+    {
+      "id": "circuits",
+      "name": "Resource reality check",
+      "description": "Checks whether a URL is reachable and gathers signals about DNS, HTTP, SSL, and content.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/circuits/resource-reality-check",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 3
+    },
+    {
+      "id": "circuits",
+      "name": "Scam signal check",
+      "description": "Analyses domain age, MX configuration, email deliverability, and payment method for scam signals.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/circuits/scam-signal-check",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 4
+    },
+    {
+      "id": "circuits",
+      "name": "Data freshness check",
+      "description": "Checks URL reachability, domain update recency, SSL validity, and content word count for data freshness signals.",
+      "endpoint": "https://api.lightningapi.tools",
+      "path": "/circuits/data-freshness-check",
+      "openapi": "https://lightningapi.tools/.well-known/openapi.json",
+      "price": 5
+    },
+    {
       "id": "date-utils",
       "name": "Get current date and time info",
       "description": "Returns the current date, day of week, UTC offset, DST status, working day status, week number, quarter, days until month/quarter end, next working day, and upcoming holidays.",
